@@ -14,7 +14,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="contact" className="w-full bg-[#f5f5f7] text-[#1d1d1f] pt-24 pb-12 mt-20 border-t border-black/[0.08]">
+    <footer id="contact" className="w-full bg-[#f5f5f7] text-[#1d1d1f] pt-16 pb-12 mt-10 border-t border-black/[0.08]">
       <div className="max-w-[1360px] mx-auto px-6 lg:px-12">
         {/* ── Top Inquiry Manifesto ── */}
         <div className="max-w-4xl">

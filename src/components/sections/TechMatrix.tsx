@@ -71,7 +71,7 @@ export default function TechMatrix() {
     <section
       ref={sectionRef}
       id="stack"
-      className="py-24 md:py-36 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
+      className="py-16 md:py-24 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
     >
       <div className="tech-reveal mb-16 pb-6 border-b border-black/[0.08]">
         <span className="font-mono text-[11px] text-[#86868b] tracking-wider uppercase block mb-2 font-medium">

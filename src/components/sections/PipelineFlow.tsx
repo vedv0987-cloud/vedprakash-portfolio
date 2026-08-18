@@ -36,7 +36,7 @@ export default function PipelineFlow() {
     <section
       ref={sectionRef}
       id="pipeline"
-      className="py-24 md:py-36 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
+      className="py-16 md:py-24 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
     >
       {/* Header */}
       <div className="pipeline-reveal mb-16 pb-6 border-b border-black/[0.08]">

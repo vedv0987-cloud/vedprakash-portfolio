@@ -38,7 +38,7 @@ export default function BentoShowcase() {
     <section
       ref={sectionRef}
       id="work"
-      className="py-24 md:py-36 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
+      className="py-16 md:py-24 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
     >
       {/* Section Header */}
       <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-black/[0.08] gap-6">
