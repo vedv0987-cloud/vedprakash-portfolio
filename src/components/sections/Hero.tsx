@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 import HeroImageStack from '@/components/ui/HeroImageStack';
+import HeroBackgroundEffects from '@/components/ui/HeroBackgroundEffects';
 import { gsap } from '@/hooks/useGSAP';
 
 export default function Hero() {
@@ -36,8 +37,8 @@ export default function Hero() {
       id="hero"
       className="relative w-full pt-28 pb-12 px-6 lg:px-12 overflow-hidden bg-[#ffffff] text-[#1d1d1f]"
     >
-      {/* ── Background Subtle Ambient Glow ── */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,113,227,0.05),rgba(255,255,255,0))]" />
+      {/* ── Background Particle System & Floating AI Bubbles ── */}
+      <HeroBackgroundEffects />
 
       {/* ── Main Two-Column Container (Left: Content | Right: Dynamic Image Stack) ── */}
       <div className="max-w-[1360px] w-full mx-auto">
