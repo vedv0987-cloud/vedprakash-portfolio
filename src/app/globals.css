@@ -12,8 +12,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
-  background-color: var(--bg);
+  background-color: #08080a;
   color: var(--text-main);
 }
 
@@ -22,8 +21,15 @@ body {
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* ── Lenis Integration ── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
 }
 
 /* ── Minimalist Scrollbar ── */

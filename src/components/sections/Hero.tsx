@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
@@ -12,6 +12,8 @@ const fadeUp = {
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,21 +23,25 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-screen w-full flex flex-col justify-between pt-32 pb-16 px-6 lg:px-12 overflow-hidden">
+    <section id="hero" className="relative min-h-screen w-full flex flex-col justify-between pt-32 pb-16 px-6 lg:px-12 overflow-hidden bg-[#0a0a0c] text-white">
       {/* ── 1. Full-Bleed 16:9 Ambient Background Video ── */}
-      <div className="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-black">
+      <div className="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-[#08080a]">
         <video
+          ref={videoRef}
           src="/videos/hero-background.mp4"
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-90 scale-105"
+          onLoadedData={() => setVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            videoLoaded ? 'opacity-85 scale-102' : 'opacity-40 scale-100'
+          }`}
         />
       </div>
 
       {/* ── 2. Cinematic Gradient & Glass Vignette Overlay ── */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/25 to-black/80 pointer-events-none" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/70 via-black/35 to-[#0a0a0c] pointer-events-none" />
 
       {/* ── Main Content Container with Glassmorphism ── */}
       <div className="relative max-w-[1400px] w-full mx-auto flex-1 flex flex-col justify-between z-10">
@@ -46,7 +52,7 @@ export default function Hero() {
           variants={fadeUp}
           className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/15"
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white text-xs font-mono">
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-xl border border-white/20 text-white text-xs font-mono">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="tracking-wider uppercase font-semibold">
               Available for Lead AI Roles &amp; Global Commissions
@@ -68,10 +74,10 @@ export default function Hero() {
             hidden: {},
             visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
           }}
-          className="my-auto py-12 md:py-16"
+          className="my-auto py-10 md:py-14"
         >
-          {/* Glass Card Housing the Typographic Manifesto */}
-          <div className="p-8 sm:p-12 md:p-14 rounded-3xl bg-white/[0.08] backdrop-blur-2xl border border-white/20 shadow-2xl max-w-5xl">
+          {/* High-Contrast Frosted Glass Card Housing the Typographic Manifesto */}
+          <div className="p-8 sm:p-12 md:p-14 rounded-3xl bg-black/55 backdrop-blur-2xl border border-white/20 shadow-2xl max-w-5xl">
             {/* Dynamic Kinetic Title with Changing Text */}
             <motion.div variants={fadeUp} className="flex flex-col gap-2">
               <span className="font-mono text-xs text-[#06b6d4] tracking-widest uppercase font-semibold">
@@ -157,7 +163,7 @@ export default function Hero() {
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/15 text-white"
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 p-6 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/15 text-white"
         >
           {keyStats.map((stat, i) => (
             <div key={i} className="flex flex-col">

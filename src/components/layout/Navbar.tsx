@@ -39,8 +39,8 @@ export default function Navbar() {
 
   const handleScroll = useCallback(() => {
     const currentY = window.scrollY;
-    setIsScrolled(currentY > 30);
-    setIsHidden(currentY > lastScrollY.current && currentY > 150);
+    setIsScrolled(currentY > 60);
+    setIsHidden(currentY > lastScrollY.current && currentY > 200);
     lastScrollY.current = currentY;
   }, []);
 
@@ -60,8 +60,8 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#f8f8f6]/95 backdrop-blur-md border-b border-black/[0.08] py-3.5 shadow-xs'
-            : 'bg-transparent py-6'
+            ? 'bg-[#f8f8f6]/95 backdrop-blur-md border-b border-black/[0.08] py-3.5 shadow-xs text-[#111111]'
+            : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5 text-white'
         }`}
         style={{
           transform: isHidden && !isMobileOpen ? 'translateY(-100%)' : 'translateY(0)',
@@ -74,27 +74,45 @@ export default function Navbar() {
             onClick={(e) => handleNavClick(e, '#hero')}
             className="flex items-center gap-3 group"
           >
-            <span className="w-7 h-7 rounded-full bg-[#111111] text-white flex items-center justify-center font-mono text-[10px] font-bold group-hover:scale-105 transition-transform">
+            <span
+              className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-[10px] font-bold group-hover:scale-105 transition-transform ${
+                isScrolled ? 'bg-[#111111] text-white' : 'bg-white text-black'
+              }`}
+            >
               VP
             </span>
             <div className="flex flex-col">
-              <span className="font-bold text-[13px] sm:text-[14px] tracking-tight uppercase text-[#111111] leading-none">
+              <span
+                className={`font-bold text-[13px] sm:text-[14px] tracking-tight uppercase leading-none transition-colors ${
+                  isScrolled ? 'text-[#111111]' : 'text-white'
+                }`}
+              >
                 Vedprakash Vishwakarma
               </span>
-              <span className="text-[10px] text-[#8e8e93] tracking-widest uppercase font-mono mt-0.5">
+              <span
+                className={`text-[10px] tracking-widest uppercase font-mono mt-0.5 transition-colors ${
+                  isScrolled ? 'text-[#8e8e93]' : 'text-white/70'
+                }`}
+              >
                 Creative AI Lead · Mumbai
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-7 text-[12px] font-mono uppercase tracking-widest text-[#666664]">
+          <nav
+            className={`hidden lg:flex items-center gap-7 text-[12px] font-mono uppercase tracking-widest transition-colors ${
+              isScrolled ? 'text-[#666664]' : 'text-white/80'
+            }`}
+          >
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="hover:text-[#111111] transition-colors py-1 cursor-pointer"
+                className={`transition-colors py-1 cursor-pointer ${
+                  isScrolled ? 'hover:text-[#111111]' : 'hover:text-white'
+                }`}
               >
                 {item.label}
               </a>
@@ -104,8 +122,12 @@ export default function Navbar() {
           {/* External Action Links & Live Clock */}
           <div className="hidden sm:flex items-center gap-3">
             {currentTime && (
-              <span className="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-mono text-[#8e8e93] pr-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span
+                className={`hidden xl:inline-flex items-center gap-1.5 text-[11px] font-mono pr-2 transition-colors ${
+                  isScrolled ? 'text-[#8e8e93]' : 'text-white/70'
+                }`}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 MUMBAI · {currentTime} IST
               </span>
             )}
@@ -114,7 +136,11 @@ export default function Navbar() {
               href={siteConfig.behance}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-mono uppercase tracking-wider font-semibold text-[#111111] hover:bg-black/[0.05] transition-colors px-3.5 py-1.5 rounded-full border border-black/[0.15]"
+              className={`text-[12px] font-mono uppercase tracking-wider font-semibold transition-colors px-3.5 py-1.5 rounded-full ${
+                isScrolled
+                  ? 'text-[#111111] hover:bg-black/[0.05] border border-black/[0.15]'
+                  : 'text-white hover:bg-white/15 border border-white/25 backdrop-blur-md'
+              }`}
             >
               Behance ↗
             </a>
@@ -123,7 +149,11 @@ export default function Navbar() {
               href={siteConfig.portfolioDrive}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-mono uppercase tracking-wider font-semibold bg-[#111111] text-white hover:bg-black transition-colors px-4 py-1.5 rounded-full shadow-xs"
+              className={`text-[12px] font-mono uppercase tracking-wider font-semibold px-4 py-1.5 rounded-full shadow-xs transition-colors ${
+                isScrolled
+                  ? 'bg-[#111111] text-white hover:bg-black'
+                  : 'bg-white text-black hover:bg-[#e5e5e0]'
+              }`}
             >
               Drive Vault ↗
             </a>
@@ -132,7 +162,9 @@ export default function Navbar() {
           {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setIsMobileOpen((p) => !p)}
-            className="lg:hidden p-2 text-[#111111] cursor-pointer"
+            className={`lg:hidden p-2 cursor-pointer transition-colors ${
+              isScrolled ? 'text-[#111111]' : 'text-white'
+            }`}
             aria-label="Toggle Menu"
           >
             <span className="text-xs font-mono font-bold tracking-widest uppercase">
@@ -149,7 +181,7 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed inset-0 z-40 bg-[#f8f8f6] pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
+            className="fixed inset-0 z-40 bg-[#0c0c0e] text-white pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
           >
             <div className="flex flex-col gap-6">
               {navItems.map((item, i) => (
@@ -157,7 +189,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-3xl font-light tracking-tight text-[#111111] hover:italic transition-all flex items-baseline gap-4 cursor-pointer"
+                  className="text-3xl font-light tracking-tight text-white hover:italic transition-all flex items-baseline gap-4 cursor-pointer"
                 >
                   <span className="font-mono text-xs text-[#8e8e93]">0{i + 1}</span>
                   <span>{item.label}</span>
@@ -165,13 +197,13 @@ export default function Navbar() {
               ))}
             </div>
 
-            <div className="pt-8 border-t border-black/[0.08] flex flex-col gap-4">
+            <div className="pt-8 border-t border-white/10 flex flex-col gap-4">
               <div className="flex gap-4">
                 <a
                   href={siteConfig.behance}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3 text-center rounded-full bg-[#111111] text-white text-xs font-mono uppercase tracking-wider font-semibold"
+                  className="flex-1 py-3 text-center rounded-full bg-white text-black text-xs font-mono uppercase tracking-wider font-semibold"
                 >
                   Behance ↗
                 </a>
@@ -179,7 +211,7 @@ export default function Navbar() {
                   href={siteConfig.portfolioDrive}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3 text-center rounded-full border border-black/20 text-[#111111] text-xs font-mono uppercase tracking-wider font-semibold"
+                  className="flex-1 py-3 text-center rounded-full border border-white/20 text-white text-xs font-mono uppercase tracking-wider font-semibold"
                 >
                   Drive Archive ↗
                 </a>
