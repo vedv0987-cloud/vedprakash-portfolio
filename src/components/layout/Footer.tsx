@@ -8,55 +8,47 @@ export default function Footer() {
   };
 
   return (
-    <footer className="py-12 border-t border-black/[0.06] bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <span className="w-6 h-6 rounded-full bg-gradient-to-tr from-[#7c3aed] to-[#06b6d4] flex items-center justify-center text-white font-bold text-[10px]">
-              VP
-            </span>
-            <span className="font-semibold text-[14px] text-[#0a0a0c]">
-              {siteConfig.name}
-            </span>
-          </div>
-          <span className="hidden sm:inline text-[#d4d4d8]">|</span>
-          <p className="text-[13px] text-[#71717a]">
-            {siteConfig.tagline}
-          </p>
+    <footer className="py-12 border-t border-black/[0.08] bg-[#f8f8f6]">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-[#666664]">
+        <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+          <span className="font-bold text-[#111111] uppercase tracking-wider">
+            {siteConfig.name}
+          </span>
+          <span className="hidden sm:inline text-[#d1d1cf]">/</span>
+          <span>{siteConfig.tagline}</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-5 text-[13px] text-[#71717a]">
+        <div className="flex flex-wrap items-center gap-6">
           <a
             href={siteConfig.behance}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#0057ff] font-medium transition-colors"
+            className="hover:text-[#111111] transition-colors"
           >
-            Behance ↗
+            Behance
           </a>
           <a
             href={siteConfig.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#0a0a0c] font-medium transition-colors"
+            className="hover:text-[#111111] transition-colors"
           >
-            LinkedIn ↗
+            LinkedIn
           </a>
           <a
             href={siteConfig.portfolioDrive}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#7c3aed] font-medium transition-colors"
+            className="hover:text-[#111111] transition-colors"
           >
-            Drive ↗
+            Drive Vault
           </a>
           <span>© {new Date().getFullYear()}</span>
           <button
             onClick={scrollToTop}
-            className="text-[#0a0a0c] font-semibold hover:text-[#7c3aed] transition-colors cursor-pointer flex items-center gap-1 ml-2"
+            className="text-[#111111] font-semibold hover:opacity-70 transition-opacity cursor-pointer ml-2"
           >
-            <span>Top</span>
-            <span>↑</span>
+            Back to top ↑
           </button>
         </div>
       </div>

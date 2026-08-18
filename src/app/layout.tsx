@@ -1,53 +1,46 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
 import CustomCursor from '@/components/ui/CustomCursor';
 import GrainOverlay from '@/components/ui/GrainOverlay';
 import './globals.css';
 
-const inter = Inter({
+const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
 });
 
-const spaceGrotesk = Space_Grotesk({
+const serif = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: 'Vedprakash Vishwakarma — Creative AI Lead & Visual Content Architect',
   description:
-    'International Portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in luxury real estate visual production, prompt engineering pipelines, and commercial cinematic multimedia.',
+    'Executive portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in luxury real estate visual production, architectural CGI, and commercial cinematic multimedia.',
   keywords: [
     'Vedprakash Vishwakarma',
     'Creative AI Lead',
     'Visual Content Architect',
-    'AI Production Director',
-    'Generative AI Multimedia',
-    'Luxury Real Estate Visuals',
-    'Runway Gen-3',
-    'Midjourney Director',
+    'Luxury Real Estate CGI',
+    'AI Film Director',
+    'Multimedia Lead Mumbai',
   ],
   authors: [{ name: 'Vedprakash Vishwakarma' }],
   creator: 'Vedprakash Vishwakarma',
   openGraph: {
     title: 'Vedprakash Vishwakarma — Creative AI Lead',
     description:
-      'International Portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in generative AI production, creative direction, luxury branding, and next-generation multimedia systems.',
+      'Executive portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in luxury real estate visual production, architectural CGI, and commercial cinematic multimedia.',
     siteName: 'Vedprakash Vishwakarma Portfolio',
     locale: 'en_US',
     type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Vedprakash Vishwakarma — Creative AI Lead',
-    description:
-      'International Portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in generative AI production, creative direction, luxury branding, and next-generation multimedia systems.',
   },
 };
 
@@ -59,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${inter.className} antialiased bg-[#fafafa] text-[#0a0a0c] overflow-x-hidden`}
+        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#f8f8f6] text-[#111111] overflow-x-hidden selection:bg-[#111111] selection:text-white`}
         suppressHydrationWarning
       >
         <GrainOverlay />

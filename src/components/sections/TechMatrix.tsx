@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { techMatrix } from '@/data/portfolio';
 import { SiAutodesk, SiDavinciresolve, SiGooglegemini, SiAnthropic, SiPython, SiHtml5, SiJavascript } from 'react-icons/si';
 
-/* Real brand SVG badges */
 function AdobePs() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><rect width="24" height="24" rx="4" fill="#31A8FF"/><text x="12" y="16" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="Arial">Ps</text></svg>; }
 function AdobeAi() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><rect width="24" height="24" rx="4" fill="#FF9A00"/><text x="12" y="16" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="Arial">Ai</text></svg>; }
 function AdobeId() { return <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><rect width="24" height="24" rx="4" fill="#FF3366"/><text x="12" y="16" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="Arial">Id</text></svg>; }
@@ -33,42 +32,40 @@ const iconLookup: Record<string, React.ReactNode> = {
   'Lightroom': <AdobeLr />,
   'Autodesk 3ds Max': <SiAutodesk className="w-5 h-5 text-[#0696D7]" />,
   'DaVinci Resolve': <SiDavinciresolve className="w-5 h-5 text-[#233A51]" />,
-  'Final Cut Pro': <span className="w-5 h-5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold text-[10px]">FC</span>,
+  'Final Cut Pro': <span className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center font-bold text-[10px]">FC</span>,
   'Python': <SiPython className="w-5 h-5 text-[#3776AB]" />,
   'HTML5 & CSS3': <SiHtml5 className="w-5 h-5 text-[#E34F26]" />,
   'JavaScript & JSON': <SiJavascript className="w-5 h-5 text-[#F7DF1E]" />,
-  'REST APIs': <span className="w-5 h-5 rounded-full bg-[#06b6d4] text-white flex items-center justify-center font-bold text-[10px]">API</span>,
+  'REST APIs': <span className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center font-bold text-[10px]">API</span>,
 };
 
 export default function TechMatrix() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section id="stack" className="py-24 md:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <div>
-          <div className="inline-flex items-center gap-2 text-[12px] font-semibold text-[#7c3aed] uppercase tracking-widest bg-[#7c3aed]/10 px-3.5 py-1 rounded-full mb-3">
-            <span>Tools & Ecosystem</span>
-          </div>
-          <h2 className="text-[clamp(2rem,4.5vw,3.5rem)] font-bold tracking-tight text-[#0a0a0c]">
-            Technical Stack & Competencies
-          </h2>
-          <p className="mt-2 text-base sm:text-lg text-[#52525b] max-w-2xl">
-            12+ years of professional software mastery fused with the most modern frontier generative AI platforms.
-          </p>
-        </div>
+    <section id="stack" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto bg-[#ffffff] border-y border-black/[0.08]">
+      <div className="mb-16 pb-8 border-b border-black/[0.08]">
+        <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase block mb-2">
+          TOOL ECOSYSTEM &amp; MASTERY
+        </span>
+        <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-[#111111] leading-[1.08]">
+          Technical &amp; Creative <span className="serif-italic font-normal">Proficiency</span>
+        </h2>
+        <p className="mt-3 text-base text-[#666664] max-w-2xl font-normal">
+          12+ years of professional post-production and vector mastery fused with state-of-the-art generative diffusion systems.
+        </p>
       </div>
 
       {/* Category Tabs */}
-      <div className="flex flex-wrap gap-2.5 mb-10 pb-2 border-b border-black/[0.06]">
+      <div className="flex flex-wrap gap-2 mb-10">
         {techMatrix.map((cat, idx) => (
           <button
             key={cat.category}
             onClick={() => setActiveTab(idx)}
-            className={`px-5 py-2.5 rounded-full text-[14px] font-semibold transition-all duration-200 cursor-pointer ${
+            className={`px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
               activeTab === idx
-                ? 'bg-[#0a0a0c] text-white shadow-md'
-                : 'bg-black/[0.04] text-[#52525b] hover:bg-black/[0.08]'
+                ? 'bg-[#111111] text-white'
+                : 'bg-[#f8f8f6] text-[#666664] hover:text-[#111111] border border-black/[0.08]'
             }`}
           >
             {cat.category} ({cat.items.length})
@@ -76,27 +73,27 @@ export default function TechMatrix() {
         ))}
       </div>
 
-      {/* Grid of Tools for Active Category */}
+      {/* Grid of Tools */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {techMatrix[activeTab].items.map((tool, i) => (
           <motion.div
             key={tool.name}
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] as const }}
-            className="p-5 rounded-3xl bg-white border border-black/[0.07] hover:border-black/[0.18] hover:shadow-lg hover:shadow-black/[0.03] transition-all duration-300 flex items-center justify-between"
+            transition={{ duration: 0.35, delay: i * 0.03, ease: [0.16, 1, 0.3, 1] as const }}
+            className="p-5 rounded-2xl bg-[#f8f8f6] border border-black/[0.06] flex items-center justify-between hover:border-black/[0.2] transition-colors"
           >
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-[#fafafa] border border-black/[0.06] flex items-center justify-center shrink-0">
-                {iconLookup[tool.name] || <span className="w-2.5 h-2.5 rounded-full bg-black" />}
+              <div className="w-10 h-10 rounded-xl bg-white border border-black/[0.06] flex items-center justify-center shrink-0">
+                {iconLookup[tool.name] || <span className="w-2 h-2 rounded-full bg-black" />}
               </div>
               <div>
-                <h4 className="text-[15px] font-bold text-[#0a0a0c]">{tool.name}</h4>
-                <p className="text-[12px] text-[#71717a]">{tool.type}</p>
+                <h4 className="text-sm font-bold text-[#111111]">{tool.name}</h4>
+                <p className="text-xs text-[#8e8e93] font-normal">{tool.type}</p>
               </div>
             </div>
 
-            <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-black/[0.04] text-[#0a0a0c] border border-black/[0.04]">
+            <span className="text-[11px] font-mono font-medium text-[#666664]">
               {tool.level}
             </span>
           </motion.div>
