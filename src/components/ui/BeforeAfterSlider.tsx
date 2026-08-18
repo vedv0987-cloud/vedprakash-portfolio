@@ -50,7 +50,7 @@ export default function BeforeAfterSlider({
       onMouseUp={() => setIsDragging(false)}
       className={`relative w-full ${aspectRatio} rounded-3xl overflow-hidden select-none cursor-ew-resize border border-black/[0.08] shadow-lg group`}
     >
-      {/* ── After Image (Full Background) ── */}
+      {/* ── After Image (Full Master) ── */}
       <Image
         src={afterImage}
         alt="Final Master Render"
@@ -60,50 +60,43 @@ export default function BeforeAfterSlider({
       />
 
       {/* ── After Label ── */}
-      <div className="absolute top-4 right-4 z-10">
+      <div className="absolute top-4 right-4 z-10 pointer-events-none">
         <span className="px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono font-bold tracking-wider border border-white/20">
           {afterLabel}
         </span>
       </div>
 
-      {/* ── Before Image (Clipped Left Layer) ── */}
+      {/* ── Before Image (Full Size, Clipped via clip-path) ── */}
       <div
-        className="absolute inset-0 overflow-hidden"
-        style={{ width: `${sliderPos}%` }}
+        className="absolute inset-0 z-20 pointer-events-none"
+        style={{
+          clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
+        }}
       >
-        <div className="relative w-full h-full min-w-full">
-          <Image
-            src={beforeImage}
-            alt="Raw AI Pass"
-            fill
-            className="object-cover grayscale contrast-125 filter"
-            sizes="(max-width: 1024px) 100vw, 60vw"
-          />
+        <Image
+          src={beforeImage}
+          alt="Raw Generative Synthesis Pass"
+          fill
+          className="object-cover"
+          sizes="(max-width: 1024px) 100vw, 60vw"
+        />
+
+        {/* ── Before Label ── */}
+        <div className="absolute top-4 left-4 z-10">
+          <span className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[#111111] text-[11px] font-mono font-bold tracking-wider border border-black/10">
+            {beforeLabel}
+          </span>
         </div>
       </div>
 
-      {/* ── Before Label ── */}
-      <div className="absolute top-4 left-4 z-10">
-        <span className="px-3 py-1.5 rounded-full bg-[#7c3aed]/85 backdrop-blur-md text-white text-[11px] font-mono font-bold tracking-wider border border-white/20">
-          {beforeLabel}
-        </span>
-      </div>
-
-      {/* ── Draggable Splitter Handle Line ── */}
+      {/* ── Divider Line & Interactive Handle ── */}
       <div
-        className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,0.6)] z-20"
+        className="absolute top-0 bottom-0 z-30 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,0.5)] pointer-events-none"
         style={{ left: `${sliderPos}%` }}
       >
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white/95 backdrop-blur-md border border-black/15 shadow-xl flex items-center justify-center text-[#0a0a0c] transition-transform duration-150 group-hover:scale-110">
-          <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M8.5 7l-5 5 5 5v-10zm7 0v10l5-5-5-5z" />
-          </svg>
+        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white text-[#111111] shadow-2xl flex items-center justify-center border border-black/10 font-bold text-xs">
+          ↔
         </div>
-      </div>
-
-      {/* Subtle Hint Bar at Bottom */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 px-4 py-1 rounded-full bg-black/60 backdrop-blur-md text-white/90 text-[11px] font-medium pointer-events-none">
-        ↔ Drag splitter to compare transformation
       </div>
     </div>
   );

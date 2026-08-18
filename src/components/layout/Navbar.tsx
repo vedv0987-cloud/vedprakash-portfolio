@@ -17,10 +17,8 @@ const navItems = [
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const updateTime = () => {
