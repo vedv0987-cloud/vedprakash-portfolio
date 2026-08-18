@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     siteName: 'Vedprakash Vishwakarma Portfolio',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/images/hero-bg.jpg', alt: 'Vedprakash Vishwakarma creative portfolio' }],
+    ...(siteUrl ? { images: [{ url: '/images/hero-bg.jpg', alt: 'Vedprakash Vishwakarma creative portfolio' }] } : {}),
   },
   twitter: { card: 'summary_large_image', title: 'Vedprakash Vishwakarma — Creative AI Lead', description: 'Creative AI direction, CGI, and commercial visual production.' },
 };

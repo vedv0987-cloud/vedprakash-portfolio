@@ -5,10 +5,13 @@ import { notFound } from 'next/navigation';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import { bentoProjects, getProjectBySlug, projectNarratives, siteConfig, toolLinks } from '@/data/portfolio';
+import { getSiteUrl } from '@/lib/site-url';
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+const siteUrl = getSiteUrl();
 
 export function generateStaticParams() {
   return bentoProjects.map((project) => ({ slug: project.id }));
@@ -28,7 +31,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
       title: `${project.title} — ${siteConfig.name}`,
       description: project.description,
       type: 'article',
-      images: [{ url: project.image, alt: project.title }],
+      ...(siteUrl ? { images: [{ url: project.image, alt: project.title }] } : {}),
     },
   };
 }
