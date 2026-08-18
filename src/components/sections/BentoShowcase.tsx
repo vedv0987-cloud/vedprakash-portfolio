@@ -1,15 +1,37 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { bentoProjects, siteConfig, toolLinks } from '@/data/portfolio';
 import BeforeAfterSlider from '@/components/ui/BeforeAfterSlider';
 import { gsap } from '@/hooks/useGSAP';
 
+const dynamicMetrics = [
+  { label: 'Production Efficiency', value: '5x', suffix: 'Speedup', badge: 'AI Automation' },
+  { label: 'Render Fidelity', value: '8K', suffix: 'Broadcast Master', badge: 'Lossless CGI' },
+  { label: 'Timeline Compression', value: '60%', suffix: 'Faster Delivery', badge: 'Zero Latency' },
+  { label: 'Prompt Architecture', value: '99.4%', suffix: 'Accuracy', badge: 'Seed Locked' },
+  { label: 'Campaign Impact', value: '3x', suffix: 'Engagement Lift', badge: 'Luxury Real Estate' },
+  { label: 'Cost Optimization', value: '40%', suffix: 'Budget Saved', badge: 'Scalable Pipeline' },
+  { label: 'Visual Consistency', value: '100%', suffix: 'Persistence', badge: 'Multi-Model' },
+  { label: 'Camera Direction', value: '60 FPS', suffix: 'Cinema Flow', badge: 'Volumetric Flight' },
+  { label: 'Audio Spatial Design', value: 'Lossless', suffix: 'Studio SFX', badge: 'ElevenLabs Voice' },
+];
+
 export default function BentoShowcase() {
+  const [metricIndex, setMetricIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
   const featured = bentoProjects[0];
   const secondary = bentoProjects.slice(1);
+
+  // Auto-cycle dynamic metrics every 2.6 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMetricIndex((prev) => (prev + 1) % dynamicMetrics.length);
+    }, 2600);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -33,6 +55,8 @@ export default function BentoShowcase() {
     }, sectionRef);
     return () => ctx.revert();
   }, []);
+
+  const currentMetric = dynamicMetrics[metricIndex];
 
   return (
     <section
@@ -102,14 +126,49 @@ export default function BentoShowcase() {
                 {featured.description}
               </p>
 
-              {/* Verified Impact Pill */}
-              <div className="mt-6 py-3.5 px-4 rounded-xl bg-white border border-black/[0.06] flex items-center justify-between shadow-2xs">
-                <span className="text-xs font-medium uppercase tracking-wider text-[#86868b]">
-                  Production Efficiency
-                </span>
-                <span className="text-xl font-bold text-[#1d1d1f] font-mono">
-                  {featured.stats.metric} <span className="text-xs text-[#0071e3] font-sans">Speedup</span>
-                </span>
+              {/* Dynamic Cycling Impact Pill */}
+              <div className="mt-6 p-4 rounded-2xl bg-white border border-black/[0.08] shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between min-h-[44px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={currentMetric.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as const }}
+                      className="flex flex-col"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-mono uppercase tracking-wider text-[#86868b] font-medium">
+                          {currentMetric.label}
+                        </span>
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#0071e3]/10 text-[#0071e3] font-semibold">
+                          {currentMetric.badge}
+                        </span>
+                      </div>
+                      <div className="mt-0.5">
+                        <span className="text-2xl font-bold text-[#1d1d1f] font-mono tabular-nums">
+                          {currentMetric.value}
+                        </span>{' '}
+                        <span className="text-xs text-[#0071e3] font-semibold">
+                          {currentMetric.suffix}
+                        </span>
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+
+                  {/* Dot step indicator */}
+                  <div className="flex items-center gap-1">
+                    {dynamicMetrics.map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          metricIndex === idx ? 'w-4 bg-[#0071e3]' : 'w-1.5 bg-black/15'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Clickable Tool Tags */}
