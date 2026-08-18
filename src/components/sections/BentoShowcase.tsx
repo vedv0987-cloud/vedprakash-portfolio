@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { bentoProjects, siteConfig } from '@/data/portfolio';
+import BeforeAfterSlider from '@/components/ui/BeforeAfterSlider';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -44,7 +45,7 @@ export default function BentoShowcase() {
 
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* ── Featured Large Card (Realatte Luxury Real Estate) ── */}
+        {/* ── Featured Large Card (Realatte Luxury Real Estate with Draggable Comparison) ── */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -52,24 +53,15 @@ export default function BentoShowcase() {
           viewport={{ once: true, margin: '-60px' }}
           className="lg:col-span-12 group relative rounded-3xl overflow-hidden glass-panel border border-black/[0.08] shadow-lg grid lg:grid-cols-12"
         >
-          {/* Visual Canvas Half */}
-          <div className="lg:col-span-7 relative min-h-[380px] lg:min-h-[480px] overflow-hidden bg-black/[0.04]">
-            <Image
-              src={featured.image}
-              alt={featured.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 1024px) 100vw, 60vw"
+          {/* Interactive Before/After Visual Canvas Half */}
+          <div className="lg:col-span-7 p-4 sm:p-6 bg-black/[0.02] flex items-center justify-center">
+            <BeforeAfterSlider
+              beforeImage="/images/luxury-realestate.jpg"
+              afterImage="/images/realestate-cinema.jpg"
+              beforeLabel="RAW AI WIREFRAME PASS"
+              afterLabel="FINAL 8K BROADCAST MASTER"
+              aspectRatio="aspect-[16/10]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent lg:hidden" />
-            <div className="absolute top-4 left-4 flex gap-2">
-              <span className="bg-black/70 backdrop-blur-md text-white text-[12px] font-semibold px-3 py-1 rounded-full border border-white/20">
-                ⭐ FEATURED PRODUCTION
-              </span>
-              <span className="bg-white/90 backdrop-blur-md text-[#0a0a0c] text-[12px] font-semibold px-3 py-1 rounded-full">
-                {featured.period}
-              </span>
-            </div>
           </div>
 
           {/* Description & Metadata Half */}
@@ -123,14 +115,15 @@ export default function BentoShowcase() {
         </motion.div>
 
         {/* ── 3 Secondary Bento Cards ── */}
-        {secondary.map((project, i) => (
+        {secondary.map((project) => (
           <motion.div
             key={project.id}
+            data-cursor="view"
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-50px' }}
-            className="lg:col-span-4 group relative rounded-3xl overflow-hidden glass-panel border border-black/[0.08] shadow-md flex flex-col justify-between bg-white"
+            className="lg:col-span-4 group relative rounded-3xl overflow-hidden glass-panel border border-black/[0.08] shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col justify-between bg-white"
           >
             {/* Visual Header */}
             <div className="relative aspect-[16/10] overflow-hidden bg-black/[0.04]">

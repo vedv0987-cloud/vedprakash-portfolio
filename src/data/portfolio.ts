@@ -78,6 +78,42 @@ export const bentoProjects = [
   },
 ];
 
+export const videoProjects = [
+  {
+    id: 'vid-real-estate-flythrough',
+    title: 'Cinematic Waterfront Villa Flythrough',
+    category: 'AI Camera Direction',
+    client: 'Realatte Luxury Real Estate',
+    duration: '00:45 · 4K 60FPS',
+    posterImage: '/images/realestate-cinema.jpg',
+    driveLink: 'https://drive.google.com/drive/folders/1JGFK7WRER47rG3Q5QD0fDchD4OAYtZMY',
+    modelTags: ['Runway Gen-3', 'Midjourney v6', '3ds Max', 'DaVinci Resolve'],
+    description: 'A 60FPS volumetric camera flight through a luxury Mumbai waterfront penthouse at golden hour, orchestrating dynamic reflection caustics and photorealistic interior spatial flow.',
+  },
+  {
+    id: 'vid-jewelry-spark',
+    title: 'Haute Joaillerie Dynamic Refraction',
+    category: 'Commercial 3D Cinema',
+    client: 'Luxury Brand Campaign',
+    duration: '00:30 · 4K 60FPS',
+    posterImage: '/images/jewelry-luxury.jpg',
+    driveLink: 'https://drive.google.com/drive/folders/1JGFK7WRER47rG3Q5QD0fDchD4OAYtZMY',
+    modelTags: ['Leonardo AI', '3ds Max Raytracing', 'After Effects', 'ElevenLabs SFX'],
+    description: 'Macro studio showcase highlighting diamond light refraction, micro-facet dispersion, and cinematic orchestral pacing for high-end luxury digital billboards.',
+  },
+  {
+    id: 'vid-healthcare-system',
+    title: 'Interactive Medical Science & Infographics',
+    category: 'Scientific Motion',
+    client: 'Medisage Clinical Learning',
+    duration: '01:15 · 1080P 60FPS',
+    posterImage: '/images/healthcare-elearning.jpg',
+    driveLink: 'https://drive.google.com/drive/folders/1JGFK7WRER47rG3Q5QD0fDchD4OAYtZMY',
+    modelTags: ['After Effects', 'Premiere Pro', 'Illustrator', 'AI Motion Pipeline'],
+    description: 'Complex cellular biology and pharmaceutical mechanism-of-action visualized with crystal clarity for medical professionals and clinical researchers.',
+  },
+];
+
 export const pipelineWorkflow = [
   {
     step: '01',

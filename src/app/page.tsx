@@ -1,6 +1,7 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
+import VideoShowcase from '@/components/sections/VideoShowcase';
 import BentoShowcase from '@/components/sections/BentoShowcase';
 import PipelineFlow from '@/components/sections/PipelineFlow';
 import TechMatrix from '@/components/sections/TechMatrix';
@@ -13,6 +14,7 @@ export default function HomePage() {
       <Navbar />
       <main className="relative flex flex-col w-full">
         <Hero />
+        <VideoShowcase />
         <BentoShowcase />
         <PipelineFlow />
         <TechMatrix />
