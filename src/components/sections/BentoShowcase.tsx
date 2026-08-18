@@ -2,91 +2,80 @@
 
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { bentoProjects, siteConfig } from '@/data/portfolio';
+import { bentoProjects, siteConfig, toolLinks } from '@/data/portfolio';
 import BeforeAfterSlider from '@/components/ui/BeforeAfterSlider';
-import { gsap, ScrollTrigger } from '@/hooks/useGSAP';
+import { gsap } from '@/hooks/useGSAP';
 
 export default function BentoShowcase() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const featuredRef = useRef<HTMLDivElement | null>(null);
-  const gridRef = useRef<HTMLDivElement | null>(null);
-
   const featured = bentoProjects[0];
   const secondary = bentoProjects.slice(1);
 
   useEffect(() => {
     if (!sectionRef.current) return;
-
     const ctx = gsap.context(() => {
-      // Header reveal
-      if (headerRef.current) {
-        gsap.fromTo(headerRef.current, { opacity: 0, y: 50 }, {
-          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: headerRef.current, start: 'top 88%', toggleActions: 'play none none none' },
-        });
-      }
-
-      // Featured project: slide in from left
-      if (featuredRef.current) {
-        gsap.fromTo(featuredRef.current, { opacity: 0, y: 60 }, {
-          opacity: 1, y: 0, duration: 1.1, ease: 'power3.out',
-          scrollTrigger: { trigger: featuredRef.current, start: 'top 85%', toggleActions: 'play none none none' },
-        });
-      }
-
-      // Secondary cards: staggered cascade
-      if (gridRef.current) {
-        gsap.fromTo(gridRef.current.children, { opacity: 0, y: 50 }, {
-          opacity: 1, y: 0, stagger: 0.15, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: gridRef.current, start: 'top 85%', toggleActions: 'play none none none' },
-        });
-      }
-
-      // Image parallax inside cards
-      const imageContainers = sectionRef.current?.querySelectorAll('[data-parallax-image]');
-      imageContainers?.forEach((container) => {
-        const img = container.querySelector('img');
-        if (img) {
-          gsap.fromTo(img, { yPercent: -8 }, {
-            yPercent: 8, ease: 'none',
-            scrollTrigger: { trigger: container, start: 'top bottom', end: 'bottom top', scrub: true },
-          });
+      gsap.fromTo(
+        '.bento-reveal',
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
         }
-      });
+      );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="work" className="py-28 md:py-40 px-6 lg:px-12 max-w-[1400px] mx-auto">
+    <section
+      ref={sectionRef}
+      id="work"
+      className="py-24 md:py-36 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
+    >
       {/* Section Header */}
-      <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-20 pb-8 border-b border-white/[0.08] gap-6 opacity-0">
+      <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-black/[0.08] gap-6">
         <div>
-          <span className="font-mono text-[10px] text-white/30 tracking-widest uppercase block mb-3">
+          <span className="font-mono text-[11px] text-[#86868b] tracking-wider uppercase block mb-2 font-medium">
             01 / SELECTED COMMISSIONS
           </span>
-          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-[-0.02em] text-white leading-[1.08]">
-            Curated Visual <span className="serif-italic font-normal">Productions</span>
+          <h2 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold tracking-[-0.03em] text-[#1d1d1f] leading-[1.08]">
+            Curated Visual <span className="serif-italic font-normal text-[#0071e3]">Productions</span>
           </h2>
         </div>
 
         <div className="flex items-center gap-4">
-          <a href={siteConfig.behance} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold uppercase tracking-wider text-white/60 hover:text-white transition-colors">
-            Behance ↗
+          <a
+            href={siteConfig.behance}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold uppercase tracking-wider text-[#0071e3] hover:underline"
+          >
+            Behance Index ↗
           </a>
-          <span className="text-white/15">·</span>
-          <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold uppercase tracking-wider text-white/60 hover:text-white transition-colors">
-            Drive Vault ↗
+          <span className="text-[#d2d2d7]">·</span>
+          <a
+            href={siteConfig.portfolioDrive}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-semibold uppercase tracking-wider text-[#0071e3] hover:underline"
+          >
+            Drive Vault (50+ Items) ↗
           </a>
         </div>
       </div>
 
-      {/* Featured Primary Project */}
-      <div ref={featuredRef} className="mb-24 pb-24 border-b border-white/[0.06] opacity-0">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
-          {/* Interactive Before/After */}
+      {/* Featured Primary Project: Realatte Luxury Real Estate */}
+      <div className="bento-reveal mb-16 p-8 lg:p-12 rounded-3xl bg-[#f5f5f7] border border-black/[0.06] shadow-sm">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Interactive Before/After Visual Canvas */}
           <div className="lg:col-span-7">
             <BeforeAfterSlider
               beforeImage="/images/luxury-realestate.jpg"
@@ -97,96 +86,134 @@ export default function BentoShowcase() {
             />
           </div>
 
-          {/* Project Breakdown */}
+          {/* Project Details */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-[10px] font-mono text-white/30 mb-5 uppercase tracking-widest">
+              <div className="flex items-center justify-between text-xs font-mono text-[#86868b] mb-4">
                 <span>01 / REALATTE CREATIVE</span>
                 <span>2025 – PRESENT</span>
               </div>
 
-              <h3 className="text-3xl sm:text-4xl font-light tracking-tight text-white leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight text-[#1d1d1f] leading-snug">
                 {featured.title}
               </h3>
 
-              <p className="mt-6 text-base text-white/50 leading-relaxed font-light">
+              <p className="mt-4 text-base text-[#6e6e73] leading-relaxed font-normal">
                 {featured.description}
               </p>
 
-              {/* Impact Metric */}
-              <div className="mt-10 py-5 border-y border-white/[0.08] flex items-center justify-between">
-                <span className="text-[10px] font-mono font-semibold tracking-widest uppercase text-white/40">
+              {/* Verified Impact Pill */}
+              <div className="mt-6 py-3.5 px-4 rounded-xl bg-white border border-black/[0.06] flex items-center justify-between shadow-2xs">
+                <span className="text-xs font-medium uppercase tracking-wider text-[#86868b]">
                   Production Efficiency
                 </span>
-                <span className="text-2xl font-light text-white tabular-nums">
-                  {featured.stats.metric} <span className="text-sm text-white/40">Speedup</span>
+                <span className="text-xl font-bold text-[#1d1d1f] font-mono">
+                  {featured.stats.metric} <span className="text-xs text-[#0071e3] font-sans">Speedup</span>
                 </span>
               </div>
 
-              {/* Stack Tags */}
-              <div className="mt-6 flex flex-wrap gap-2">
-                {featured.models.map((tool) => (
-                  <span key={tool} className="text-[11px] font-mono px-3 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-white/60">
-                    {tool}
-                  </span>
-                ))}
+              {/* Clickable Tool Tags */}
+              <div className="mt-6">
+                <span className="text-[11px] font-mono text-[#86868b] uppercase tracking-wider block mb-2">
+                  Integrated Toolchain (Click to View):
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {featured.models.map((tool) => {
+                    const url = toolLinks[tool] || 'https://google.com';
+                    return (
+                      <a
+                        key={tool}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-medium px-3 py-1.5 rounded-full bg-white hover:bg-[#0071e3] text-[#1d1d1f] hover:text-white border border-black/[0.08] transition-all duration-200 shadow-2xs hover:shadow-xs flex items-center gap-1.5"
+                      >
+                        <span>{tool}</span>
+                        <span className="text-[10px] opacity-60">↗</span>
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            <div className="mt-10">
-              <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-light text-white/70 hover:text-white transition-colors group">
-                <span>Full Campaign Deck</span>
-                <span className="group-hover:translate-x-1 transition-transform">↗</span>
+            <div className="mt-8 pt-6 border-t border-black/[0.06]">
+              <a
+                href={siteConfig.portfolioDrive}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#0071e3] hover:underline"
+              >
+                <span>Access Full Real Estate Campaign Deck on Drive</span>
+                <span>↗</span>
               </a>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Secondary Projects with Image Parallax */}
-      <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-10">
+      {/* Secondary Project Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {secondary.map((project, i) => (
-          <div key={project.id} className="group flex flex-col opacity-0">
-            {/* Image with Parallax */}
-            <div data-parallax-image className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#111113] mb-6">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.03] will-change-transform"
-                sizes="(max-width: 1024px) 100vw, 33vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
-
-            {/* Content */}
-            <div className="flex flex-col flex-1 justify-between">
-              <div>
-                <div className="flex items-center justify-between text-[10px] font-mono text-white/25 mb-2 uppercase tracking-widest">
-                  <span>0{i + 2} / {project.client.toUpperCase()}</span>
-                  <span>{project.stats.metric}</span>
-                </div>
-
-                <h4 className="text-xl sm:text-2xl font-light tracking-tight text-white group-hover:text-white/90 transition-colors">
-                  {project.title}
-                </h4>
-
-                <p className="mt-3 text-sm text-white/45 leading-relaxed line-clamp-3 font-light">
-                  {project.description}
-                </p>
+          <div
+            key={project.id}
+            className="bento-reveal p-6 rounded-3xl bg-[#f5f5f7] border border-black/[0.06] hover:border-black/[0.14] transition-all duration-300 flex flex-col justify-between shadow-2xs hover:shadow-md"
+          >
+            <div>
+              {/* Visual Thumbnail */}
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white mb-6 border border-black/[0.04]">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
               </div>
 
-              <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                <div className="flex flex-wrap gap-1.5">
-                  {project.models.slice(0, 2).map((m) => (
-                    <span key={m} className="text-[10px] font-mono text-white/30">
-                      {m}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center justify-between text-xs font-mono text-[#86868b] mb-2">
+                <span>0{i + 2} / {project.client.toUpperCase()}</span>
+                <span className="font-semibold text-[#1d1d1f]">{project.stats.metric}</span>
+              </div>
 
-                <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="text-xs font-light text-white/50 group-hover:text-white transition-colors">
-                  View ↗
+              <h4 className="text-xl font-semibold tracking-tight text-[#1d1d1f] leading-snug">
+                {project.title}
+              </h4>
+
+              <p className="mt-3 text-sm text-[#6e6e73] leading-relaxed line-clamp-3">
+                {project.description}
+              </p>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-black/[0.06]">
+              {/* Clickable Tool Tags */}
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {project.models.slice(0, 3).map((m) => {
+                  const url = toolLinks[m] || 'https://google.com';
+                  return (
+                    <a
+                      key={m}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white hover:bg-[#0071e3] text-[#1d1d1f] hover:text-white border border-black/[0.06] transition-colors flex items-center gap-1 shadow-2xs"
+                    >
+                      <span>{m}</span>
+                      <span className="opacity-50">↗</span>
+                    </a>
+                  );
+                })}
+              </div>
+
+              <div className="flex items-center justify-between">
+                <a
+                  href={siteConfig.portfolioDrive}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-semibold text-[#0071e3] hover:underline flex items-center gap-1"
+                >
+                  <span>View Case Deck</span>
+                  <span>↗</span>
                 </a>
               </div>
             </div>

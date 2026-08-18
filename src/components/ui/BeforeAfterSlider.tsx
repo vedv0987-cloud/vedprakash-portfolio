@@ -48,7 +48,7 @@ export default function BeforeAfterSlider({
       onTouchMove={handleTouchMove}
       onMouseDown={() => setIsDragging(true)}
       onMouseUp={() => setIsDragging(false)}
-      className={`relative w-full ${aspectRatio} rounded-3xl overflow-hidden select-none cursor-ew-resize border border-white/[0.1] shadow-lg group`}
+      className={`relative w-full ${aspectRatio} rounded-3xl overflow-hidden select-none cursor-ew-resize border border-black/[0.08] shadow-md group`}
     >
       {/* ── After Image (Full Master) ── */}
       <Image

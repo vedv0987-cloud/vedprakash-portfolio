@@ -36,7 +36,7 @@ export default function Navbar() {
   }, []);
 
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 40);
+    setIsScrolled(window.scrollY > 20);
   }, []);
 
   useEffect(() => {
@@ -55,58 +55,71 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#050505]/80 backdrop-blur-xl border-b border-white/10 py-4 shadow-2xl'
-            : 'bg-gradient-to-b from-black/90 via-black/40 to-transparent py-6'
+            ? 'bg-white/80 backdrop-blur-2xl border-b border-black/[0.08] py-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.03)]'
+            : 'bg-white/60 backdrop-blur-lg border-b border-black/[0.04] py-4'
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between">
-          {/* Logo */}
+        <div className="max-w-[1360px] mx-auto px-6 lg:px-12 flex items-center justify-between">
+          {/* Logo / Name */}
           <Link href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="flex items-center gap-3 group">
-            <span className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform">
+            <span className="w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform shadow-xs">
               VP
             </span>
             <div className="flex flex-col">
-              <span className="font-bold text-[13px] sm:text-[14px] text-white tracking-tight uppercase leading-none">
+              <span className="font-semibold text-[13px] sm:text-[14px] text-[#1d1d1f] tracking-tight leading-none">
                 Vedprakash Vishwakarma
               </span>
-              <span className="text-[10px] tracking-widest text-white/50 uppercase font-mono mt-1">
+              <span className="text-[10px] tracking-wider text-[#86868b] uppercase font-mono mt-0.5">
                 Creative AI Lead · Mumbai
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8 text-[11px] font-mono uppercase tracking-widest text-white/60">
+          <nav className="hidden lg:flex items-center gap-7 text-[12px] font-medium text-[#6e6e73]">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="hover:text-white transition-colors py-2 cursor-pointer"
+                className="hover:text-[#0071e3] transition-colors py-1.5 cursor-pointer"
               >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          {/* Actions */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* Action CTAs */}
+          <div className="hidden sm:flex items-center gap-3">
             {currentTime && (
-              <span className="hidden xl:flex items-center gap-2 text-[10px] font-mono text-white/40 pr-4 border-r border-white/10">
+              <span className="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-[#86868b] pr-3 border-r border-black/[0.08]">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 BOM · {currentTime}
               </span>
             )}
-            <a href={siteConfig.behance} target="_blank" rel="noopener noreferrer" className="text-[11px] font-mono uppercase tracking-widest text-white hover:text-[#06b6d4] transition-colors font-bold px-2">
+            <a
+              href={siteConfig.behance}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12px] font-medium text-[#1d1d1f] hover:text-[#0071e3] transition-colors px-3 py-1.5 rounded-full hover:bg-black/[0.04]"
+            >
               Behance ↗
             </a>
-            <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="text-[11px] font-mono uppercase tracking-widest bg-white text-black hover:bg-gray-200 transition-colors font-bold px-5 py-2.5 rounded-full">
+            <a
+              href={siteConfig.portfolioDrive}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12px] font-semibold bg-[#0071e3] text-white hover:bg-[#0077ed] transition-all px-4 py-2 rounded-full shadow-xs hover:shadow-sm"
+            >
               Drive Vault ↗
             </a>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button onClick={() => setIsMobileOpen((p) => !p)} className="lg:hidden text-white font-mono text-xs tracking-widest uppercase p-2">
+          <button
+            onClick={() => setIsMobileOpen((p) => !p)}
+            className="lg:hidden text-[#1d1d1f] font-medium text-xs px-3 py-1.5 rounded-full bg-black/[0.05]"
+          >
             {isMobileOpen ? 'Close' : 'Menu'}
           </button>
         </div>
@@ -116,18 +129,34 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-[#050505] text-white pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
+            exit={{ opacity: 0, y: -10 }}
+            className="fixed inset-0 z-40 bg-white/95 backdrop-blur-2xl text-[#1d1d1f] pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
           >
             <div className="flex flex-col gap-6">
               {navItems.map((item, i) => (
-                <a key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-3xl font-light text-white flex items-baseline gap-4">
-                  <span className="font-mono text-xs text-white/40">0{i + 1}</span>
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className="text-2xl font-light text-[#1d1d1f] hover:text-[#0071e3] flex items-baseline gap-4 py-2 border-b border-black/[0.04]"
+                >
+                  <span className="font-mono text-xs text-[#86868b]">0{i + 1}</span>
                   <span>{item.label}</span>
                 </a>
               ))}
+            </div>
+
+            <div className="flex flex-col gap-3 pt-6 border-t border-black/[0.08]">
+              <a
+                href={siteConfig.portfolioDrive}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center py-3.5 rounded-full bg-[#0071e3] text-white font-medium text-sm"
+              >
+                Access Google Drive Vault ↗
+              </a>
             </div>
           </motion.div>
         )}

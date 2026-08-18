@@ -53,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#050505] text-white overflow-x-hidden selection:bg-white selection:text-black`}
+        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#ffffff] text-[#1d1d1f] overflow-x-hidden selection:bg-[#0071e3] selection:text-white`}
         suppressHydrationWarning
       >
         <Preloader />

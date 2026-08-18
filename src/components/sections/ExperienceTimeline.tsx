@@ -3,88 +3,90 @@
 import { useRef, useEffect } from 'react';
 import { experienceData, siteConfig } from '@/data/portfolio';
 import { gsap } from '@/hooks/useGSAP';
-import MagneticButton from '@/components/ui/MagneticButton';
 
 export default function ExperienceTimeline() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const headerRef = useRef<HTMLDivElement | null>(null);
-  const rowsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
-
     const ctx = gsap.context(() => {
-      if (headerRef.current) {
-        gsap.fromTo(headerRef.current, { opacity: 0, y: 50 }, {
-          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: headerRef.current, start: 'top 88%', toggleActions: 'play none none none' },
-        });
-      }
-
-      if (rowsRef.current) {
-        gsap.fromTo(rowsRef.current.children, { opacity: 0, y: 40 }, {
-          opacity: 1, y: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: rowsRef.current, start: 'top 85%', toggleActions: 'play none none none' },
-        });
-      }
+      gsap.fromTo(
+        '.exp-reveal',
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="experience" className="py-28 md:py-40 px-6 lg:px-12 max-w-[1400px] mx-auto">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="py-24 md:py-36 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
+    >
       {/* Header */}
-      <div ref={headerRef} className="flex flex-col md:flex-row md:items-end justify-between mb-20 pb-8 border-b border-white/[0.08] gap-6 opacity-0">
+      <div className="exp-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-black/[0.08] gap-6">
         <div>
-          <span className="font-mono text-[10px] text-white/30 tracking-widest uppercase block mb-3">
+          <span className="font-mono text-[11px] text-[#86868b] tracking-wider uppercase block mb-2 font-medium">
             03 / CAREER &amp; LEADERSHIP
           </span>
-          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-[-0.02em] text-white leading-[1.08]">
-            Professional <span className="serif-italic font-normal">Trajectory</span>
+          <h2 className="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold tracking-[-0.03em] text-[#1d1d1f] leading-[1.08]">
+            Professional <span className="serif-italic font-normal text-[#0071e3]">Trajectory</span>
           </h2>
-          <p className="mt-3 text-base text-white/45 max-w-xl font-light">
-            Over a decade orchestrating creative departments, luxury campaigns, and AI production systems.
+          <p className="mt-3 text-base text-[#6e6e73] max-w-xl font-normal">
+            Over a decade orchestrating creative departments, luxury campaigns, and enterprise AI production systems.
           </p>
         </div>
 
-        <MagneticButton
+        <a
           href={siteConfig.cvPath}
+          download="Vedprakash_Vishwakarma_CV.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          download="Vedprakash_Vishwakarma_CV.pdf"
-          className="inline-flex items-center gap-2 border border-white/[0.12] hover:border-white/[0.2] bg-white/[0.04] hover:bg-white/[0.08] px-6 py-3 rounded-full text-xs font-mono uppercase tracking-wider text-white font-bold transition-all duration-300 shrink-0"
+          className="inline-flex items-center gap-2 border border-black/[0.12] hover:border-black/[0.25] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-[#1d1d1f] transition-colors shrink-0 shadow-2xs"
         >
-          <span>Download Resume</span>
+          <span>Download Verified Resume</span>
           <span>↓</span>
-        </MagneticButton>
+        </a>
       </div>
 
       {/* Timeline Rows */}
-      <div ref={rowsRef} className="divide-y divide-white/[0.06]">
+      <div className="divide-y divide-black/[0.08]">
         {experienceData.map((exp, i) => (
-          <div key={i} className="py-12 lg:py-14 grid lg:grid-cols-12 gap-8 items-start opacity-0">
+          <div key={i} className="exp-reveal py-12 grid lg:grid-cols-12 gap-8 items-start">
             {/* Period & Status */}
             <div className="lg:col-span-3">
-              <span className="font-mono text-[10px] text-white/25 block mb-2 uppercase tracking-widest">
+              <span className="font-mono text-xs text-[#86868b] block mb-2 font-medium">
                 {exp.period}
               </span>
               {exp.current && (
-                <span className="inline-block text-[10px] font-mono font-bold tracking-wider uppercase text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full border border-emerald-400/15">
-                  ● ACTIVE
+                <span className="inline-block text-[11px] font-mono font-bold tracking-wider uppercase text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                  ● ACTIVE POSITION
                 </span>
               )}
             </div>
 
-            {/* Role */}
+            {/* Role & Organization */}
             <div className="lg:col-span-4">
-              <h3 className="text-xl sm:text-2xl font-light tracking-tight text-white">
+              <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-[#1d1d1f]">
                 {exp.role}
               </h3>
-              <p className="text-sm font-medium text-white/60 mt-1.5">
+              <p className="text-sm font-medium text-[#1d1d1f] mt-1">
                 {exp.company}
               </p>
-              <p className="text-[11px] text-white/30 mt-1 font-mono uppercase tracking-wider">
+              <p className="text-xs text-[#86868b] mt-0.5 font-medium">
                 {exp.companyType} · {exp.location}
               </p>
             </div>
@@ -93,8 +95,8 @@ export default function ExperienceTimeline() {
             <div className="lg:col-span-5">
               <ul className="space-y-3">
                 {exp.achievements.map((ach, idx) => (
-                  <li key={idx} className="text-sm text-white/50 leading-relaxed flex items-start gap-3 font-light">
-                    <span className="text-white/20 font-mono text-xs mt-0.5 shrink-0">—</span>
+                  <li key={idx} className="text-sm text-[#48484a] leading-relaxed flex items-start gap-3">
+                    <span className="text-[#0071e3] font-mono text-xs mt-0.5">—</span>
                     <span>{ach}</span>
                   </li>
                 ))}

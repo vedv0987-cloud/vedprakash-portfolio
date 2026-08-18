@@ -1,15 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
-import { gsap, ScrollTrigger } from '@/hooks/useGSAP';
-import MagneticButton from '@/components/ui/MagneticButton';
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
-  const footerRef = useRef<HTMLElement | null>(null);
-  const headlineRef = useRef<HTMLHeadingElement | null>(null);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(siteConfig.email);
@@ -17,167 +13,113 @@ export default function Footer() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // GSAP: Reveal headline words with stagger
-  useEffect(() => {
-    if (!footerRef.current || !headlineRef.current) return;
-
-    const ctx = gsap.context(() => {
-      // Animate the CTA headline
-      gsap.fromTo(
-        headlineRef.current,
-        { opacity: 0, y: 80 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: headlineRef.current,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
-        }
-      );
-
-      // Stagger contact items
-      const contactItems = footerRef.current?.querySelectorAll('[data-footer-item]');
-      if (contactItems) {
-        gsap.fromTo(
-          contactItems,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.08,
-            duration: 0.7,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: contactItems[0],
-              start: 'top 90%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      }
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <footer ref={footerRef} id="contact" className="relative w-full bg-[#050505] text-white pt-32 pb-12 mt-0">
-      {/* Gradient merge from previous section */}
-      <div className="absolute -top-32 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#050505] pointer-events-none" />
+    <footer id="contact" className="w-full bg-[#f5f5f7] text-[#1d1d1f] pt-24 pb-12 mt-20 border-t border-black/[0.08]">
+      <div className="max-w-[1360px] mx-auto px-6 lg:px-12">
+        {/* ── Top Inquiry Manifesto ── */}
+        <div className="max-w-4xl">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-mono text-xs text-[#86868b] tracking-wider uppercase font-semibold">
+              INDEX 04 / DIRECT INQUIRY &amp; COMMISSIONS
+            </span>
+          </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* ── Grand CTA Headline ── */}
-        <div className="pb-16 border-b border-white/[0.08]">
-          <span className="font-mono text-xs text-white/30 tracking-widest uppercase block mb-8">
-            04 / INQUIRIES & COMMISSIONS
-          </span>
-
-          <h2
-            ref={headlineRef}
-            className="text-[clamp(2.75rem,8vw,7rem)] font-light tracking-[-0.04em] text-white leading-[1] max-w-5xl"
-          >
-            Let&apos;s direct your next{' '}
-            <span className="serif-italic font-normal">landmark visual</span>{' '}
-            production.
+          <h2 className="text-[clamp(2.5rem,6vw,4.75rem)] font-semibold tracking-[-0.035em] text-[#1d1d1f] leading-[1.05]">
+            Let&apos;s direct your next <span className="serif-italic font-normal text-[#0071e3]">landmark visual</span> production.
           </h2>
 
-          <p className="mt-8 text-base sm:text-lg text-white/50 max-w-2xl font-light leading-relaxed">
-            Open to Senior / Lead Creative AI roles, agency leadership, enterprise generative workflow consulting,
-            and high-budget luxury campaigns.
+          <p className="mt-6 text-base sm:text-lg text-[#6e6e73] max-w-2xl font-normal leading-relaxed">
+            Open to Senior / Lead Creative AI roles, agency creative leadership, enterprise generative workflow consulting, and high-budget luxury campaigns.
           </p>
 
-          {/* CTAs */}
-          <div className="mt-12 flex flex-wrap gap-4 items-center" data-footer-item>
-            <MagneticButton
+          {/* Action CTAs Cluster */}
+          <div className="mt-10 flex flex-wrap gap-4 items-center">
+            <a
               href={`mailto:${siteConfig.email}?subject=Production%20Inquiry%20-%20Creative%20AI%20Lead`}
-              className="inline-flex items-center gap-2.5 bg-white text-[#050505] hover:bg-white/90 px-8 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)]"
+              className="inline-flex items-center gap-2 bg-[#0071e3] text-white hover:bg-[#0077ed] px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] shadow-xs active:scale-98"
             >
               <span>Send Direct Email</span>
               <span>↗</span>
-            </MagneticButton>
+            </a>
 
-            <MagneticButton
+            <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/[0.1] hover:border-white/[0.2] px-6 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer"
+              className="inline-flex items-center gap-2 bg-white hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.12] px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
             >
-              <span>{copied ? '✓ Copied' : `${siteConfig.email}`}</span>
-            </MagneticButton>
+              <span>{copied ? '✓ Email Copied to Clipboard' : `${siteConfig.email} (Click to Copy)`}</span>
+            </button>
+          </div>
+
+          {/* Contact Direct Channels Grid */}
+          <div className="mt-16 pt-12 border-t border-black/[0.08] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+              <span className="font-mono text-xs text-[#86868b] uppercase block font-semibold">Phone / WhatsApp</span>
+              <a
+                href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}
+                className="text-base font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors mt-2 block"
+              >
+                {siteConfig.phone}
+              </a>
+            </div>
+
+            <div>
+              <span className="font-mono text-xs text-[#86868b] uppercase block font-semibold">Behance Portfolio</span>
+              <a
+                href={siteConfig.behance}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors mt-2 block"
+              >
+                behance.net/Vedvish0987 ↗
+              </a>
+            </div>
+
+            <div>
+              <span className="font-mono text-xs text-[#86868b] uppercase block font-semibold">LinkedIn Network</span>
+              <a
+                href={siteConfig.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors mt-2 block"
+              >
+                in/vedprakash-vishwakarma ↗
+              </a>
+            </div>
+
+            <div>
+              <span className="font-mono text-xs text-[#86868b] uppercase block font-semibold">Raw Asset Vault</span>
+              <a
+                href={siteConfig.portfolioDrive}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-base font-semibold text-[#0071e3] hover:underline transition-colors mt-2 block"
+              >
+                50+ Campaign Decks on Drive ↗
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* ── Contact Channels Grid ── */}
-        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          <div data-footer-item>
-            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Phone / WhatsApp</span>
-            <a
-              href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}
-              className="text-base font-light text-white hover:text-white/70 transition-colors block"
-            >
-              {siteConfig.phone}
-            </a>
-          </div>
-
-          <div data-footer-item>
-            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Behance Portfolio</span>
-            <a
-              href={siteConfig.behance}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-light text-white hover:text-[#06b6d4] transition-colors block"
-            >
-              behance.net/Vedvish0987 ↗
-            </a>
-          </div>
-
-          <div data-footer-item>
-            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">LinkedIn</span>
-            <a
-              href={siteConfig.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-light text-white hover:text-white/70 transition-colors block"
-            >
-              in/vedprakash-vishwakarma ↗
-            </a>
-          </div>
-
-          <div data-footer-item>
-            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Campaign Archives</span>
-            <a
-              href={siteConfig.portfolioDrive}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-light text-white hover:text-[#7c3aed] transition-colors block"
-            >
-              50+ Decks on Drive ↗
-            </a>
-          </div>
-        </div>
-
-        {/* ── Bottom Copyright ── */}
-        <div className="mt-24 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-6 text-[11px] text-white/25 font-mono uppercase tracking-wider">
+        {/* ── Bottom Copyright Bar & Working Top Button ── */}
+        <div className="mt-20 pt-8 border-t border-black/[0.08] flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-[#86868b] font-mono">
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <span className="text-white/50 font-bold">
+            <span className="font-bold text-[#1d1d1f] uppercase tracking-wider">
               {siteConfig.name}
             </span>
-            <span className="hidden sm:inline text-white/15">·</span>
-            <span>Creative AI Lead · Visual Content Architect</span>
+            <span className="hidden sm:inline text-black/20">/</span>
+            <span>{siteConfig.tagline}</span>
           </div>
 
-          <div className="flex items-center gap-8">
-            <span>© {new Date().getFullYear()}</span>
-            <MagneticButton
+          <div className="flex items-center gap-6">
+            <span>© {new Date().getFullYear()} ALL RIGHTS RESERVED</span>
+            <button
               onClick={() => scrollToSection('hero')}
-              className="text-white/50 font-bold hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
-              strength={0.4}
+              className="text-[#1d1d1f] font-bold hover:text-[#0071e3] transition-colors cursor-pointer flex items-center gap-1.5 uppercase tracking-wider"
             >
               <span>Back to top</span>
               <span>↑</span>
-            </MagneticButton>
+            </button>
           </div>
         </div>
       </div>

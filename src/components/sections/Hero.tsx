@@ -4,70 +4,30 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
-import { gsap, ScrollTrigger } from '@/hooks/useGSAP';
+import { gsap } from '@/hooks/useGSAP';
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-  const statsRef = useRef<HTMLDivElement | null>(null);
 
-  // Rotating roles
   useEffect(() => {
     const interval = setInterval(() => {
       setRoleIndex((prev) => (prev + 1) % heroRoles.length);
-    }, 3000);
+    }, 3200);
     return () => clearInterval(interval);
   }, []);
 
-  // GSAP parallax: video scrolls slower, content scrolls faster — creates cinematic depth
   useEffect(() => {
-    if (!sectionRef.current || !videoRef.current || !contentRef.current) return;
-
+    if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
-      // Video parallax (moves up at 30% of scroll speed)
-      gsap.to(videoRef.current, {
-        yPercent: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-
-      // Content fades out and moves up as you scroll past
-      gsap.to(contentRef.current, {
-        yPercent: -15,
-        opacity: 0.3,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'center center',
-          end: 'bottom top',
-          scrub: true,
-        },
-      });
-
-      // Stats bar reveal
-      if (statsRef.current) {
-        gsap.fromTo(
-          statsRef.current.children,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.15,
-            duration: 0.8,
-            ease: 'power3.out',
-            delay: 0.6,
-          }
-        );
-      }
+      // Subtle entrance
+      gsap.fromTo(
+        '.hero-reveal',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, stagger: 0.12, ease: 'power3.out' }
+      );
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
@@ -75,59 +35,27 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen w-full flex flex-col justify-center pt-32 pb-16 px-6 lg:px-12 overflow-hidden text-white bg-[#050505]"
+      className="relative min-h-[92vh] w-full flex flex-col justify-between pt-32 pb-16 px-6 lg:px-12 overflow-hidden bg-[#ffffff] text-[#1d1d1f]"
     >
-      {/* ── Background Video with Parallax ── */}
-      <div className="absolute inset-0 w-full h-full -z-20 overflow-hidden">
-        <video
-          ref={videoRef}
-          src="/videos/hero-background.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-[120%] object-cover will-change-transform"
-        />
-      </div>
+      {/* ── Background Subtle Ambient Gradient ── */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(0,113,227,0.06),rgba(255,255,255,0))]" />
 
-      {/* ── Cinematic Overlays ── */}
-      <div className="absolute inset-0 -z-10 bg-black/55" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/70 via-transparent to-transparent" />
-
-      {/* ── Main Content ── */}
-      <div
-        ref={contentRef}
-        className="relative max-w-[1400px] w-full mx-auto flex-1 flex flex-col justify-center z-10 mt-12 will-change-transform"
-      >
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-          }}
-          className="max-w-5xl"
-        >
-          {/* Status Pill */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } } }}
-            className="flex flex-wrap items-center gap-4 mb-10"
-          >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.07] backdrop-blur-md border border-white/[0.1] text-white text-[11px] font-mono uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Available for Global Commissions</span>
+      {/* ── Main Content Container ── */}
+      <div className="max-w-[1360px] w-full mx-auto flex-1 flex flex-col justify-center z-10 my-auto">
+        <div className="max-w-4xl">
+          {/* Eyebrow Status Pill */}
+          <div className="hero-reveal flex flex-wrap items-center gap-3 mb-8">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#f5f5f7] border border-black/[0.08] text-[#1d1d1f] text-[11px] font-mono font-medium uppercase tracking-wider shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Available for Creative Leadership</span>
             </div>
-            <span className="text-[11px] font-mono text-white/40 uppercase tracking-widest">
-              Mumbai · 12+ Yrs
+            <span className="text-[11px] font-mono text-[#86868b] uppercase tracking-widest">
+              Mumbai · 12+ Yrs Exp
             </span>
-          </motion.div>
+          </div>
 
-          {/* Title */}
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } } }}
-            className="text-[clamp(2.5rem,6.5vw,5.5rem)] font-light tracking-[-0.03em] text-white leading-[1.06]"
-          >
+          {/* Super Headline */}
+          <h1 className="hero-reveal text-[clamp(2.5rem,6vw,5.5rem)] font-semibold tracking-[-0.035em] text-[#1d1d1f] leading-[1.06]">
             Directing{' '}
             <span className="inline-block relative min-h-[1.15em] overflow-hidden align-bottom">
               <AnimatePresence mode="wait">
@@ -136,8 +64,8 @@ export default function Hero() {
                   initial={{ y: 45, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -45, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] as const }}
-                  className="serif-italic font-normal text-white inline-block border-b-2 border-white/25 pb-1"
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
+                  className="serif-italic font-normal text-[#0071e3] inline-block border-b-2 border-[#0071e3]/30 pb-0.5"
                 >
                   {heroRoles[roleIndex]}
                 </motion.span>
@@ -145,53 +73,70 @@ export default function Hero() {
             </span>
             <br />
             and commercial cinematic pipelines.
-          </motion.h1>
+          </h1>
 
           {/* Subtitle */}
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }}
-            className="mt-8 text-lg sm:text-xl text-white/60 max-w-2xl leading-relaxed font-light"
-          >
+          <p className="hero-reveal mt-7 text-lg sm:text-xl text-[#86868b] max-w-2xl leading-relaxed font-normal">
             {siteConfig.shortBio}
-          </motion.p>
+          </p>
 
-          {/* Buttons */}
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 25 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } } }}
-            className="mt-12 flex flex-wrap gap-4 items-center"
-          >
+          {/* Apple-Style Action Buttons */}
+          <div className="hero-reveal mt-10 flex flex-wrap gap-4 items-center">
             <button
               onClick={() => scrollToSection('work')}
-              className="group inline-flex items-center gap-2.5 bg-white text-[#050505] hover:bg-white/90 px-8 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#0071e3] text-white hover:bg-[#0077ed] px-7 py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] shadow-xs active:scale-98 cursor-pointer"
             >
-              Explore Selected Work
-              <span className="group-hover:translate-y-0.5 transition-transform">↓</span>
+              Explore Selected Work ↓
             </button>
 
             <button
               onClick={() => scrollToSection('films')}
-              className="inline-flex items-center gap-2.5 bg-white/[0.06] hover:bg-white/[0.12] backdrop-blur-md text-white border border-white/[0.12] hover:border-white/[0.2] px-8 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.08] px-7 py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:scale-98 cursor-pointer"
             >
-              <span className="w-2 h-2 rounded-full bg-[#06b6d4]" />
+              <span className="w-2 h-2 rounded-full bg-[#0071e3]" />
               Watch Film Reels
             </button>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
+
+        {/* ── Featured 16:9 Cinema Preview Canvas ── */}
+        <div className="hero-reveal mt-14 relative w-full aspect-[21/9] sm:aspect-[2.4/1] rounded-3xl overflow-hidden bg-[#000000] border border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.12)]">
+          <video
+            ref={videoRef}
+            src="/videos/hero-background.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-6 right-6 flex items-center justify-between text-white text-xs font-mono">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              CINEMATIC AI REEL (4K 60FPS)
+            </span>
+            <button
+              onClick={() => scrollToSection('films')}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white transition-colors cursor-pointer"
+            >
+              Stream Full Reel ↓
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* ── Bottom Stats ── */}
-      <div
-        ref={statsRef}
-        className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 py-8 flex flex-wrap items-end justify-between gap-6 z-10 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent"
-      >
-        <div className="flex items-center gap-10 md:gap-16">
+      {/* ── Bottom Key Metrics Bar ── */}
+      <div className="max-w-[1360px] w-full mx-auto mt-16 pt-8 border-t border-black/[0.08] flex flex-wrap items-center justify-between gap-6 z-10">
+        <div className="flex items-center gap-8 md:gap-16">
           {keyStats.slice(0, 3).map((stat, i) => (
-            <div key={i} className="flex flex-col opacity-0">
-              <span className="text-2xl md:text-3xl font-light text-white tabular-nums">
+            <div key={i} className="flex flex-col">
+              <span className="text-2xl md:text-3xl font-semibold text-[#1d1d1f] tabular-nums">
                 {stat.value}
-                <span className="serif-italic text-white/40">{stat.suffix}</span>
+                <span className="serif-italic font-normal text-[#0071e3]">{stat.suffix}</span>
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-white/40 mt-1">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-[#86868b] mt-0.5">
                 {stat.label}
               </span>
             </div>
@@ -203,9 +148,9 @@ export default function Hero() {
           download="Vedprakash_Vishwakarma_CV.pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[11px] font-mono uppercase tracking-widest text-white/50 hover:text-white transition-colors flex items-center gap-2 opacity-0"
+          className="text-[12px] font-semibold text-[#0071e3] hover:underline flex items-center gap-1.5"
         >
-          Download Resume <span>↓</span>
+          Download Verified Resume <span>↓</span>
         </a>
       </div>
     </section>
