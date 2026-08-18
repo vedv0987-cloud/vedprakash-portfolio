@@ -20,7 +20,6 @@ export interface VideoProject {
 
 export default function VideoHoverCard({ project }: { project: VideoProject }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -28,7 +27,7 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
     setIsHovered(true);
     if (videoRef.current) {
       videoRef.current.currentTime = 0;
-      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      videoRef.current.play().catch(() => {});
     }
   };
 
@@ -36,7 +35,6 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
     setIsHovered(false);
     if (videoRef.current) {
       videoRef.current.pause();
-      setIsPlaying(false);
     }
   };
 
@@ -47,10 +45,10 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={() => setIsModalOpen(true)}
-        className="group relative rounded-3xl overflow-hidden glass-panel border border-black/[0.08] shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col bg-white"
+        className="group relative rounded-3xl overflow-hidden bg-white border border-black/[0.08] shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
       >
-        {/* Video / Poster Canvas */}
-        <div className="relative aspect-[16/10] overflow-hidden bg-[#0a0a0c]">
+        {/* Video / Poster Canvas (Fitted Aspect Ratio) */}
+        <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-[#0a0a0c]">
           {/* Poster Image */}
           <Image
             src={project.posterImage}
@@ -62,7 +60,7 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
 
-          {/* Video Layer (Autoplays on Hover) */}
+          {/* Video Layer (Autoplays on Hover, smoothly fitted) */}
           {project.videoSrc ? (
             <video
               ref={videoRef}
@@ -75,46 +73,40 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
               }`}
             />
           ) : (
-            /* Animated Canvas Simulation fallback for Drive Links */
             <div
-              className={`absolute inset-0 bg-gradient-to-tr from-[#7c3aed]/40 via-[#06b6d4]/30 to-black/80 flex items-center justify-center transition-opacity duration-500 ${
+              className={`absolute inset-0 bg-gradient-to-tr from-black/80 via-black/40 to-black/80 flex items-center justify-center transition-opacity duration-500 ${
                 isHovered ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <div className="flex flex-col items-center gap-2 text-white">
-                <span className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 animate-pulse">
-                  <svg className="w-6 h-6 fill-current text-white ml-0.5" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-                <span className="text-[11px] font-mono tracking-wider">CLICK TO STREAM 4K</span>
-              </div>
+              <span className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 text-white">
+                ▶
+              </span>
             </div>
           )}
 
           {/* Ambient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
 
           {/* Top Badges */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
-            <span className="bg-black/65 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full border border-white/20">
+            <span className="bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full border border-white/20">
               {project.category}
             </span>
-            <span className="bg-white/90 backdrop-blur-md text-[#0a0a0c] text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md">
+            <span className="bg-white/90 backdrop-blur-md text-[#111111] text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md">
               {project.duration}
             </span>
           </div>
 
-          {/* Live Play Status Indicator at Bottom */}
+          {/* Bottom Telemetry */}
           <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between text-white pointer-events-none">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#06b6d4] animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-[11px] font-mono text-white/90 font-medium">
-                {isHovered ? 'PREVIEW STREAMING' : 'HOVER TO PLAY'}
+                {isHovered ? 'PLAYING PREVIEW' : 'HOVER TO PLAY'}
               </span>
             </div>
-            <span className="text-[12px] font-bold text-white/80 group-hover:text-white transition-colors">
-              REEL ↗
+            <span className="text-xs font-mono font-bold tracking-wider uppercase text-white/90 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15">
+              FIT 4K ↗
             </span>
           </div>
         </div>
@@ -122,60 +114,60 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
         {/* Content Details */}
         <div className="p-6 flex-1 flex flex-col justify-between">
           <div>
-            <span className="text-[12px] font-semibold text-[#7c3aed] uppercase tracking-wider">
+            <span className="text-xs font-mono text-[#8e8e93] uppercase tracking-wider block">
               {project.client}
             </span>
-            <h3 className="text-xl font-bold tracking-tight text-[#0a0a0c] mt-1 group-hover:text-[#7c3aed] transition-colors">
+            <h3 className="text-xl font-light tracking-tight text-[#111111] mt-1 group-hover:text-black transition-colors">
               {project.title}
             </h3>
-            <p className="mt-2 text-[14px] text-[#52525b] leading-relaxed line-clamp-2">
+            <p className="mt-2 text-sm text-[#666664] leading-relaxed line-clamp-2">
               {project.description}
             </p>
           </div>
 
-          <div className="mt-5 pt-4 border-t border-black/[0.06] flex items-center justify-between">
+          <div className="mt-5 pt-4 border-t border-black/[0.08] flex items-center justify-between">
             <div className="flex flex-wrap gap-1.5">
-              {project.modelTags.map((m) => (
+              {project.modelTags.slice(0, 2).map((m) => (
                 <span
                   key={m}
-                  className="text-[11px] font-medium px-2.5 py-0.5 rounded-md bg-[#fafafa] text-[#71717a] border border-black/[0.06]"
+                  className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-black/[0.04] text-[#666664]"
                 >
                   {m}
                 </span>
               ))}
             </div>
-            <span className="text-[13px] font-bold text-[#0a0a0c] group-hover:translate-x-1 transition-transform">
-              →
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#111111] group-hover:underline">
+              Full Reel ↗
             </span>
           </div>
         </div>
       </div>
 
-      {/* Fullscreen Cinema Modal */}
+      {/* ── Fullscreen Cinema Modal (Fitted 100% Without Cropping) ── */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-2xl p-4 sm:p-8 md:p-12 flex items-center justify-center"
+            className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 flex items-center justify-center"
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
-              initial={{ scale: 0.94, opacity: 0, y: 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.94, opacity: 0, y: 20 }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl rounded-3xl overflow-hidden bg-[#0e0e12] border border-white/15 shadow-2xl flex flex-col"
+              className="relative w-full max-w-4xl max-h-[92vh] rounded-3xl overflow-hidden bg-[#0e0e12] border border-white/15 shadow-2xl flex flex-col"
             >
               {/* Modal Top Bar */}
-              <div className="p-4 sm:p-6 bg-[#16161d] border-b border-white/10 flex items-center justify-between text-white">
+              <div className="px-5 py-4 bg-[#16161d] border-b border-white/10 flex items-center justify-between text-white shrink-0">
                 <div>
                   <span className="text-xs font-mono text-[#06b6d4] uppercase tracking-wider">
                     {project.client} · {project.category}
                   </span>
-                  <h3 className="text-lg sm:text-2xl font-bold tracking-tight mt-0.5">
+                  <h3 className="text-base sm:text-xl font-light tracking-tight mt-0.5">
                     {project.title}
                   </h3>
                 </div>
@@ -186,77 +178,51 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
                       href={project.driveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-[13px] font-medium border border-white/20 transition-colors"
+                      className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono tracking-wider uppercase border border-white/20 transition-colors"
                     >
-                      Open in Drive ↗
+                      Drive Archive ↗
                     </a>
                   )}
                   <button
                     onClick={() => setIsModalOpen(false)}
-                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
                   >
                     ✕
                   </button>
                 </div>
               </div>
 
-              {/* Large Viewport Canvas */}
-              <div className="relative aspect-[16/9] w-full bg-black">
+              {/* Viewport Canvas (Fitted to Screen with object-contain) */}
+              <div className="relative flex-1 min-h-[50vh] max-h-[72vh] w-full bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
                 {project.videoSrc ? (
                   <video
                     src={project.videoSrc}
                     controls
                     autoPlay
-                    className="w-full h-full object-cover"
+                    playsInline
+                    className="max-h-[68vh] w-auto max-w-full h-auto object-contain rounded-xl shadow-2xl mx-auto"
                   />
                 ) : (
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full flex flex-col items-center justify-center text-center text-white p-6">
                     <Image
                       src={project.posterImage}
                       alt={project.title}
                       fill
-                      className="object-cover"
-                      sizes="1200px"
+                      className="object-contain"
+                      sizes="1000px"
                     />
-                    <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-6 text-center text-white">
-                      <span className="w-16 h-16 rounded-full bg-[#7c3aed] flex items-center justify-center shadow-2xl mb-4 animate-bounce">
-                        <svg className="w-8 h-8 fill-current ml-1" viewBox="0 0 24 24">
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </span>
-                      <h4 className="text-xl sm:text-2xl font-bold">Direct Drive Cinema Master</h4>
-                      <p className="mt-2 text-sm text-[#a1a1aa] max-w-md">
-                        This cinematic 4K production is hosted on the verified portfolio drive vault.
-                      </p>
-                      {project.driveLink && (
-                        <a
-                          href={project.driveLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-6 px-7 py-3 rounded-full bg-gradient-to-r from-[#7c3aed] to-[#06b6d4] text-white font-semibold text-sm shadow-xl hover:scale-105 transition-transform"
-                        >
-                          Stream Full Master on Google Drive ↗
-                        </a>
-                      )}
-                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Production Metadata Footer */}
-              <div className="p-6 bg-[#16161d] border-t border-white/10 grid sm:grid-cols-3 gap-4 text-white text-[13px]">
-                <div>
-                  <span className="text-[11px] font-mono text-[#71717a] uppercase block">AI & Production Stack</span>
-                  <span className="font-semibold">{project.modelTags.join(' · ')}</span>
-                </div>
-                <div>
-                  <span className="text-[11px] font-mono text-[#71717a] uppercase block">Master Quality</span>
-                  <span className="font-semibold">4K UHD Cinema / 60 FPS Lossless</span>
-                </div>
-                <div>
-                  <span className="text-[11px] font-mono text-[#71717a] uppercase block">Production Turnaround</span>
-                  <span className="font-semibold">60% Timeline Compression</span>
-                </div>
+              {/* Modal Footer Metadata */}
+              <div className="px-5 py-3 bg-[#16161d] border-t border-white/10 flex flex-wrap items-center justify-between text-white text-xs font-mono shrink-0 gap-2">
+                <span className="text-white/70">
+                  STACK: <strong className="text-white">{project.modelTags.join(' · ')}</strong>
+                </span>
+                <span className="text-emerald-400">
+                  ● 100% UNCOMPRESSED MASTER VIEW
+                </span>
               </div>
             </motion.div>
           </motion.div>
