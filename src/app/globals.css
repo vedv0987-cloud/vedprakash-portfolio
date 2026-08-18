@@ -1,0 +1,121 @@
+@import 'tailwindcss';
+
+:root {
+  --bg: #fafafa;
+  --bg-subtle: #f4f4f7;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --text-primary: #0a0a0c;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(124, 58, 237, 0.35);
+  --accent-purple: #7c3aed;
+  --accent-cyan: #06b6d4;
+  --accent-indigo: #4f46e5;
+  --glow: rgba(124, 58, 237, 0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* ── Custom Sleek Scrollbar ── */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(124, 58, 237, 0.18);
+  color: #09090b;
+}
+
+/* ── Apple Pro Gradient Text ── */
+.gradient-text {
+  background: linear-gradient(135deg, #18181b 0%, #7c3aed 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Frosted Glass Card ── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+}
+
+.glass-panel:hover {
+  border-color: rgba(124, 58, 237, 0.25);
+  box-shadow: 0 12px 32px -4px rgba(124, 58, 237, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+}
+
+/* ── Glow Badges ── */
+.badge-glow {
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.25);
+}
+
+/* ── Subtle Dot Grid Background ── */
+.dot-grid {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Keyframe Animations ── */
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.06);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 7s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 5s ease-in-out infinite;
+}
