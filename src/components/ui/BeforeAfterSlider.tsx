@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 
 interface BeforeAfterSliderProps {
@@ -65,7 +65,6 @@ export default function BeforeAfterSlider({
         fill
         className="object-cover pointer-events-none"
         sizes="(max-width: 1024px) 100vw, 60vw"
-        priority
       />
 
       {/* ── After Label ── */}
@@ -88,7 +87,6 @@ export default function BeforeAfterSlider({
           fill
           className="object-cover pointer-events-none"
           sizes="(max-width: 1024px) 100vw, 60vw"
-          priority
         />
 
         {/* ── Before Label ── */}

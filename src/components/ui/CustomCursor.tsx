@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export type CursorState = 'default' | 'pointer' | 'video' | 'drag' | 'view';
@@ -8,7 +8,11 @@ export type CursorState = 'default' | 'pointer' | 'video' | 'drag' | 'view';
 export default function CustomCursor() {
   const [cursorState, setCursorState] = useState<CursorState>('default');
   const [isVisible, setIsVisible] = useState(false);
-  const [isTouch, setIsTouch] = useState(false);
+  const [isTouch] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+  );
+  const isVisibleRef = useRef(false);
+  const cursorStateRef = useRef<CursorState>('default');
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
@@ -18,15 +22,21 @@ export default function CustomCursor() {
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      setIsTouch(true);
-      return;
-    }
+    if (isTouch) return;
+
+    const updateCursorState = (nextState: CursorState) => {
+      if (cursorStateRef.current === nextState) return;
+      cursorStateRef.current = nextState;
+      setCursorState(nextState);
+    };
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      if (!isVisibleRef.current) {
+        isVisibleRef.current = true;
+        setIsVisible(true);
+      }
 
       const target = e.target as HTMLElement | null;
       if (!target) return;
@@ -34,21 +44,27 @@ export default function CustomCursor() {
       const cursorTarget = target.closest('[data-cursor]') as HTMLElement | null;
       if (cursorTarget) {
         const type = cursorTarget.getAttribute('data-cursor') as CursorState;
-        setCursorState(type || 'pointer');
+        updateCursorState(type || 'pointer');
       } else if (
         target.tagName === 'BUTTON' ||
         target.tagName === 'A' ||
         target.closest('button') ||
         target.closest('a')
       ) {
-        setCursorState('pointer');
+        updateCursorState('pointer');
       } else {
-        setCursorState('default');
+        updateCursorState('default');
       }
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => {
+      isVisibleRef.current = false;
+      setIsVisible(false);
+    };
+    const handleMouseEnter = () => {
+      isVisibleRef.current = true;
+      setIsVisible(true);
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseleave', handleMouseLeave);
@@ -59,7 +75,7 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [mouseX, mouseY, isVisible]);
+  }, [isTouch, mouseX, mouseY]);
 
   if (isTouch) return null;
 

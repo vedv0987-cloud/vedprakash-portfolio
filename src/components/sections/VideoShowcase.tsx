@@ -121,7 +121,7 @@ export default function VideoShowcase() {
                   controls
                   autoPlay
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   className="w-full h-full object-contain rounded-3xl"
                 />
               ) : (

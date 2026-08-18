@@ -9,7 +9,7 @@ import ExperienceTimeline from '@/components/sections/ExperienceTimeline';
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-[#ffffff] text-[#1d1d1f] overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#f7f5f0] text-[#1d1b18] overflow-x-hidden">
       <Navbar />
       <main className="relative flex flex-col w-full">
         <Hero />

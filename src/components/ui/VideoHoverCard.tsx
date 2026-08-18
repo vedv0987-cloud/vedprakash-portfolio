@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 import { toolLinks } from '@/data/portfolio';
 
 export interface VideoProject {
@@ -63,14 +62,14 @@ export default function VideoHoverCard({
           sizes="(max-width: 1024px) 100vw, 33vw"
         />
 
-        {project.videoSrc && (
+        {isHovered && project.videoSrc && (
           <video
             ref={videoRef}
             src={project.videoSrc}
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               isHovered ? 'opacity-100' : 'opacity-0'
             }`}

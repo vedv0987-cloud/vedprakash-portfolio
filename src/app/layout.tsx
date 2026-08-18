@@ -1,9 +1,5 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
-import { SmoothScroll } from '@/components/providers/SmoothScroll';
-import CustomCursor from '@/components/ui/CustomCursor';
-import GrainOverlay from '@/components/ui/GrainOverlay';
-import Preloader from '@/components/ui/Preloader';
 import './globals.css';
 
 const sans = Plus_Jakarta_Sans({
@@ -56,10 +52,7 @@ export default function RootLayout({
         className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#ffffff] text-[#1d1d1f] overflow-x-hidden selection:bg-[#0071e3] selection:text-white`}
         suppressHydrationWarning
       >
-        <Preloader />
-        <GrainOverlay />
-        <CustomCursor />
-        <SmoothScroll>{children}</SmoothScroll>
+        {children}
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -55,16 +55,6 @@ const showcaseItems: DynamicShowcaseItem[] = [
 
 export default function HeroImageStack() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % showcaseItems.length);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, [isPaused]);
-
   const currentItem = showcaseItems[currentIndex];
 
   const handleOpenHighRes = (e: React.MouseEvent) => {
@@ -74,8 +64,6 @@ export default function HeroImageStack() {
 
   return (
     <div
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
       className="relative w-full max-w-[460px] mx-auto lg:mx-0 flex flex-col items-center select-none"
     >
       {/* ── Background Card Depth Layers ── */}
@@ -103,7 +91,7 @@ export default function HeroImageStack() {
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 500px"
-              priority
+              priority={currentIndex === 0}
             />
           </motion.div>
         </AnimatePresence>
