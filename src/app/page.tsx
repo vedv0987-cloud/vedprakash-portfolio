@@ -1,11 +1,13 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
-import BentoShowcase from '@/components/sections/BentoShowcase';
-import VideoShowcase from '@/components/sections/VideoShowcase';
-import PipelineFlow from '@/components/sections/PipelineFlow';
-import TechMatrix from '@/components/sections/TechMatrix';
-import ExperienceTimeline from '@/components/sections/ExperienceTimeline';
+import dynamic from 'next/dynamic';
+
+const BentoShowcase = dynamic(() => import('@/components/sections/BentoShowcase'));
+const VideoShowcase = dynamic(() => import('@/components/sections/VideoShowcase'));
+const PipelineFlow = dynamic(() => import('@/components/sections/PipelineFlow'));
+const TechMatrix = dynamic(() => import('@/components/sections/TechMatrix'));
+const ExperienceTimeline = dynamic(() => import('@/components/sections/ExperienceTimeline'));
 
 export default function HomePage() {
   return (

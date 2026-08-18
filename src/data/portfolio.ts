@@ -198,6 +198,62 @@ export const bentoProjects = [
   },
 ];
 
+export const projectNarratives: Record<string, {
+  brief: string;
+  direction: string;
+  delivery: string;
+}> = {
+  'luxury-real-estate': {
+    brief: 'Create a luxury property launch system that communicates atmosphere, scale, and architectural confidence before the site is built.',
+    direction: 'Built twilight compositions around material realism, controlled camera paths, and lifestyle moments rather than generic architectural renders.',
+    delivery: 'A campaign-ready image and motion system for launch presentations, social edits, and sales collateral.',
+  },
+  'python-automation-pipeline': {
+    brief: 'Reduce repetitive production work without compromising creative review and brand consistency.',
+    direction: 'Designed an API-assisted batch workflow for prompt processing, upscaling, asset naming, and campaign-library organisation.',
+    delivery: 'A repeatable production pipeline that keeps human art direction at each approval point.',
+  },
+  'creative-ai-studio': {
+    brief: 'Turn one-off experimentation into a usable creative-production system.',
+    direction: 'Defined reusable prompt structures, reference controls, and hand-off checkpoints across multiple visual-generation tools.',
+    delivery: 'A documented workflow designed for consistent commercial output across teams and formats.',
+  },
+  'luxury-horology-watch': {
+    brief: 'Show fine mechanical detail and material value in a single premium visual language.',
+    direction: 'Used macro-lighting logic, controlled reflections, and retouching to focus the eye on complications and surface finish.',
+    delivery: 'High-resolution stills suitable for campaign, catalogue, and presentation use.',
+  },
+  'luxury-jewelry': {
+    brief: 'Make the product feel tactile, precise, and unmistakably high-value on screen.',
+    direction: 'Balanced refractive highlights, stone detail, and restrained motion so the materials—not the effects—lead the image.',
+    delivery: 'A product-visualisation suite for luxury digital placements and display formats.',
+  },
+  'luxury-automotive-cgi': {
+    brief: 'Build a launch visual that communicates speed, engineering, and premium finish.',
+    direction: 'Combined low-angle automotive framing with wet-surface reflections and deliberately placed light trails.',
+    delivery: 'Cinematic key visuals structured for launch films, web, and performance-led social cut-downs.',
+  },
+  'healthcare-elearning': {
+    brief: 'Explain complex medical information with accuracy, clarity, and visual restraint.',
+    direction: 'Prioritised legible information hierarchy and medically appropriate visual storytelling over decorative animation.',
+    delivery: 'Interactive learning and motion assets for clinical and healthcare-education audiences.',
+  },
+  'fashion-editorial-synthesis': {
+    brief: 'Create a fashion image system with a coherent character, texture, and editorial point of view.',
+    direction: 'Directed lighting, pose, and fabric detail as one visual story, with consistency checks across the series.',
+    delivery: 'Campaign-grade editorial imagery for premium fashion presentations and digital publishing.',
+  },
+  'spatial-architectural-cgi': {
+    brief: 'Translate an architectural proposition into an aspirational buyer experience.',
+    direction: 'Used warm twilight grading, controlled reflections, and spatial framing to make the property feel inhabitable.',
+    delivery: 'Hero imagery and motion-ready frames for real-estate launch communications.',
+  },
+};
+
+export function getProjectBySlug(slug: string) {
+  return bentoProjects.find((project) => project.id === slug);
+}
+
 export const videoProjects = [
   {
     id: 'vid-real-estate-flythrough',

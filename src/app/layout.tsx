@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
+import { siteConfig } from '@/data/portfolio';
+import { getSiteUrl } from '@/lib/site-url';
 import './globals.css';
+
+const siteUrl = getSiteUrl();
 
 const sans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -18,7 +22,11 @@ const serif = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Vedprakash Vishwakarma — Creative AI Lead & Visual Content Architect',
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: {
+    default: 'Vedprakash Vishwakarma — Creative AI Lead & Visual Content Architect',
+    template: '%s — Vedprakash Vishwakarma',
+  },
   description:
     'Executive portfolio of Vedprakash Vishwakarma — Creative AI Lead specializing in luxury real estate visual production, architectural CGI, and commercial cinematic multimedia.',
   keywords: [
@@ -31,6 +39,8 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Vedprakash Vishwakarma' }],
   creator: 'Vedprakash Vishwakarma',
+  alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'Vedprakash Vishwakarma — Creative AI Lead',
     description:
@@ -38,7 +48,9 @@ export const metadata: Metadata = {
     siteName: 'Vedprakash Vishwakarma Portfolio',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: '/images/hero-bg.jpg', alt: 'Vedprakash Vishwakarma creative portfolio' }],
   },
+  twitter: { card: 'summary_large_image', title: 'Vedprakash Vishwakarma — Creative AI Lead', description: 'Creative AI direction, CGI, and commercial visual production.' },
 };
 
 export default function RootLayout({
@@ -53,6 +65,20 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Person',
+              name: siteConfig.name,
+              jobTitle: siteConfig.tagline,
+              email: siteConfig.email,
+              address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },
+              sameAs: [siteConfig.linkedin, siteConfig.behance],
+            }),
+          }}
+        />
       </body>
     </html>
   );

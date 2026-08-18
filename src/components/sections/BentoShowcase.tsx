@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { bentoProjects, siteConfig, toolLinks } from '@/data/portfolio';
 import BeforeAfterSlider from '@/components/ui/BeforeAfterSlider';
@@ -231,6 +232,12 @@ export default function BentoShowcase() {
                 <span>Access Full Real Estate Campaign Deck on Drive</span>
                 <span>↗</span>
               </a>
+              <Link
+                href={`/work/${featured.id}`}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors"
+              >
+                Read case study <span>→</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -346,15 +353,13 @@ export default function BentoShowcase() {
               </div>
 
               <div className="flex items-center justify-between pt-1">
-                <a
-                  href={siteConfig.portfolioDrive}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href={`/work/${project.id}`}
                   className="text-xs font-semibold text-[#0071e3] hover:underline flex items-center gap-1"
                 >
-                  <span>Drive Case Deck</span>
-                  <span>↗</span>
-                </a>
+                  <span>Read case study</span>
+                  <span>→</span>
+                </Link>
 
                 <span className="text-[10px] font-mono text-[#86868b]">
                   {project.period}

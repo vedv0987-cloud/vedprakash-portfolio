@@ -1,13 +1,24 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 import HeroImageStack from '@/components/ui/HeroImageStack';
+import HeroBackgroundEffects from '@/components/ui/HeroBackgroundEffects';
 import { gsap } from '@/hooks/useGSAP';
 
 export default function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
+
+  // Auto-cycle hero roles every 3.2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % heroRoles.length);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -25,10 +36,13 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full pt-28 pb-12 px-6 lg:px-12 overflow-hidden bg-[#f7f5f0] text-[#1d1d1f]"
+      className="relative w-full pt-28 pb-12 px-6 lg:px-12 overflow-hidden bg-[#ffffff] text-[#1d1d1f]"
     >
+      {/* ── Background Particle Network & Floating AI Bubbles ── */}
+      <HeroBackgroundEffects />
+
       {/* ── Main Two-Column Container (Left: Content | Right: Dynamic Image Stack) ── */}
-      <div className="max-w-[1360px] w-full mx-auto">
+      <div className="relative z-10 max-w-[1360px] w-full mx-auto">
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column (Copy & CTAs) */}
           <div className="lg:col-span-7 flex flex-col justify-center">
@@ -43,13 +57,22 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* Super Headline */}
+            {/* Super Headline with Smooth Dynamic Role Rotation */}
             <h1 className="hero-reveal text-[clamp(2.25rem,5.2vw,4.75rem)] font-semibold tracking-[-0.035em] text-[#1d1d1f] leading-[1.06]">
               Directing{' '}
               <span className="inline-block relative min-h-[1.15em] overflow-hidden align-bottom">
-                <span className="serif-italic font-normal text-[#0071e3] inline-block border-b-2 border-[#0071e3]/30 pb-0.5">
-                  {heroRoles[0]}
-                </span>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={heroRoles[roleIndex]}
+                    initial={{ y: 45, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -45, opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
+                    className="serif-italic font-normal text-[#0071e3] inline-block border-b-2 border-[#0071e3]/30 pb-0.5"
+                  >
+                    {heroRoles[roleIndex]}
+                  </motion.span>
+                </AnimatePresence>
               </span>
               <br />
               and commercial cinematic pipelines.
