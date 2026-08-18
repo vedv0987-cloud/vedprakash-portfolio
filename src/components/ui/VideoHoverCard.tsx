@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,6 +11,7 @@ export interface VideoProject {
   client: string;
   duration: string;
   posterImage: string;
+  videoSrc?: string;
   driveLink?: string;
   aspectRatio?: string;
   modelTags: string[];
@@ -20,42 +21,61 @@ export interface VideoProject {
 export default function VideoHoverCard({ project }: { project: VideoProject }) {
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
 
   return (
     <>
       <div
         data-cursor="video"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onClick={() => setIsModalOpen(true)}
         className="group relative rounded-3xl overflow-hidden bg-white border border-black/[0.08] shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
       >
-        {/* Video / Poster Canvas (Ultra-Fast Lightweight Loading) */}
+        {/* Video / Poster Canvas (Fitted Aspect Ratio with Instant Hover Video) */}
         <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-[#0a0a0c]">
-          {/* Poster Image with Next.js Auto-Optimization */}
+          {/* Poster Image */}
           <Image
             src={project.posterImage}
             alt={project.title}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className={`object-cover transition-all duration-700 ${
+              isHovered && project.videoSrc ? 'scale-105 opacity-0' : 'scale-100 opacity-100'
+            }`}
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
 
-          {/* Dynamic Play Overlay */}
-          <div
-            className={`absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center transition-opacity duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <div className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center shadow-2xl scale-95 group-hover:scale-105 transition-transform">
-              <svg className="w-6 h-6 fill-current ml-0.5" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
+          {/* Inline Video Layer (Autoplays on Hover inside website) */}
+          {project.videoSrc && (
+            <video
+              ref={videoRef}
+              src={project.videoSrc}
+              muted
+              loop
+              playsInline
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          )}
 
-          {/* Ambient Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+          {/* Ambient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
 
           {/* Top Badges */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
@@ -70,13 +90,13 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
           {/* Bottom Telemetry */}
           <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between text-white pointer-events-none">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-[11px] font-mono text-white/90 font-medium">
-                4K MASTER REEL
+                {isHovered ? 'PLAYING PREVIEW' : 'HOVER TO PLAY'}
               </span>
             </div>
             <span className="text-xs font-mono font-bold tracking-wider uppercase text-white/90 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15">
-              STREAM ↗
+              WATCH REEL ↗
             </span>
           </div>
         </div>
@@ -107,13 +127,13 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
               ))}
             </div>
             <span className="text-xs font-semibold uppercase tracking-wider text-[#111111] group-hover:underline">
-              Launch Stream ↗
+              Play Inside Website ↗
             </span>
           </div>
         </div>
       </div>
 
-      {/* ── Fullscreen Cinema Master Modal (Direct Google Drive Stream) ── */}
+      {/* ── Fullscreen In-Website Cinema Modal (Plays Video Directly on Website) ── */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -129,7 +149,7 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-[#0e0e12] border border-white/15 shadow-2xl flex flex-col"
+              className="relative w-full max-w-4xl max-h-[92vh] rounded-3xl overflow-hidden bg-[#0e0e12] border border-white/15 shadow-2xl flex flex-col"
             >
               {/* Modal Top Bar */}
               <div className="px-6 py-4 bg-[#16161d] border-b border-white/10 flex items-center justify-between text-white shrink-0">
@@ -137,61 +157,61 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
                   <span className="text-xs font-mono text-[#06b6d4] uppercase tracking-wider">
                     {project.client} · {project.category}
                   </span>
-                  <h3 className="text-lg sm:text-xl font-light tracking-tight mt-0.5">
+                  <h3 className="text-base sm:text-xl font-light tracking-tight mt-0.5">
                     {project.title}
                   </h3>
                 </div>
 
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
-                >
-                  ✕
-                </button>
-              </div>
-
-              {/* Viewport Canvas */}
-              <div className="relative aspect-[16/10] w-full bg-black flex items-center justify-center overflow-hidden">
-                <Image
-                  src={project.posterImage}
-                  alt={project.title}
-                  fill
-                  className="object-cover opacity-60"
-                  sizes="900px"
-                />
-
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center text-white">
-                  <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center shadow-2xl mb-4 hover:scale-105 transition-transform">
-                    <svg className="w-7 h-7 fill-current ml-0.5" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-
-                  <h4 className="text-2xl font-light tracking-tight">Direct Drive 4K Master Video</h4>
-                  <p className="mt-2 text-sm text-[#a1a1aa] max-w-md">
-                    Stream the uncompressed 60FPS master reel directly from the verified client portfolio vault.
-                  </p>
-
+                <div className="flex items-center gap-3">
                   {project.driveLink && (
                     <a
                       href={project.driveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-6 px-8 py-3.5 rounded-full bg-white text-black font-semibold text-xs font-mono uppercase tracking-wider shadow-2xl hover:bg-[#e5e5e0] transition-colors"
+                      className="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-mono tracking-wider uppercase border border-white/20 transition-colors"
                     >
-                      Stream Full 4K Master on Google Drive ↗
+                      Drive Archive ↗
                     </a>
                   )}
+                  <button
+                    onClick={() => setIsModalOpen(false)}
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer text-sm"
+                  >
+                    ✕
+                  </button>
                 </div>
               </div>
 
+              {/* In-Website Video Player (Fitted & Plays Directly) */}
+              <div className="relative flex-1 min-h-[50vh] max-h-[72vh] w-full bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+                {project.videoSrc ? (
+                  <video
+                    src={project.videoSrc}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="max-h-[68vh] w-auto max-w-full h-auto object-contain rounded-xl shadow-2xl mx-auto"
+                  />
+                ) : (
+                  <div className="relative w-full h-full flex flex-col items-center justify-center text-center text-white p-6">
+                    <Image
+                      src={project.posterImage}
+                      alt={project.title}
+                      fill
+                      className="object-contain"
+                      sizes="1000px"
+                    />
+                  </div>
+                )}
+              </div>
+
               {/* Modal Footer Metadata */}
-              <div className="px-6 py-4 bg-[#16161d] border-t border-white/10 flex flex-wrap items-center justify-between text-white text-xs font-mono shrink-0 gap-2">
+              <div className="px-6 py-3 bg-[#16161d] border-t border-white/10 flex flex-wrap items-center justify-between text-white text-xs font-mono shrink-0 gap-2">
                 <span className="text-white/70">
                   STACK: <strong className="text-white">{project.modelTags.join(' · ')}</strong>
                 </span>
                 <span className="text-emerald-400">
-                  ● HIGH-SPEED GOOGLE CLOUD STREAMING
+                  ● PLAYING DIRECTLY IN WEBSITE (HD 60FPS)
                 </span>
               </div>
             </motion.div>

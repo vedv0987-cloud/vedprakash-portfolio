@@ -39,9 +39,7 @@ export default function Navbar() {
 
   const handleScroll = useCallback(() => {
     const currentY = window.scrollY;
-    setIsScrolled(currentY > 60);
-    setIsHidden(currentY > lastScrollY.current && currentY > 200);
-    lastScrollY.current = currentY;
+    setIsScrolled(currentY > 40);
   }, []);
 
   useEffect(() => {
@@ -63,9 +61,6 @@ export default function Navbar() {
             ? 'bg-[#f8f8f6]/95 backdrop-blur-md border-b border-black/[0.08] py-3.5 shadow-xs text-[#111111]'
             : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5 text-white'
         }`}
-        style={{
-          transform: isHidden && !isMobileOpen ? 'translateY(-100%)' : 'translateY(0)',
-        }}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between">
           {/* Logo & Identity */}
