@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { toolLinks } from '@/data/portfolio';
 
@@ -26,21 +26,13 @@ export default function VideoHoverCard({
   onPlayClick: (project: VideoProject) => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {});
-    }
   };
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
   };
 
   return (
@@ -48,10 +40,10 @@ export default function VideoHoverCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={() => onPlayClick(project)}
-      className="group relative rounded-3xl overflow-hidden bg-[#f5f5f7] border border-black/[0.08] hover:border-[#0071e3]/40 shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+      className="group relative overflow-hidden bg-transparent border-t border-black/[0.12] hover:border-[#0071e3] transition-colors duration-300 cursor-pointer flex flex-col justify-between"
     >
       {/* Video / Poster Canvas */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#000000] rounded-t-3xl">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#000000] mt-5">
         <Image
           src={project.posterImage}
           alt={project.title}
@@ -64,8 +56,8 @@ export default function VideoHoverCard({
 
         {isHovered && project.videoSrc && (
           <video
-            ref={videoRef}
             src={project.videoSrc}
+            autoPlay
             muted
             loop
             playsInline
@@ -112,7 +104,7 @@ export default function VideoHoverCard({
       </div>
 
       {/* Content Details */}
-      <div className="p-5 flex-1 flex flex-col justify-between bg-white rounded-b-3xl">
+      <div className="py-5 flex-1 flex flex-col justify-between bg-transparent">
         <div>
           <span className="text-xs font-mono text-[#86868b] uppercase tracking-wider block">
             {project.client}

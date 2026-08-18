@@ -49,6 +49,15 @@ export default function BeforeAfterSlider({
     } catch {}
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const nextPosition =
+      e.key === 'ArrowLeft' ? sliderPos - 5 : e.key === 'ArrowRight' ? sliderPos + 5 : null;
+
+    if (nextPosition === null) return;
+    e.preventDefault();
+    setSliderPos(Math.max(0, Math.min(100, nextPosition)));
+  };
+
   return (
     <div
       ref={containerRef}
@@ -56,7 +65,15 @@ export default function BeforeAfterSlider({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className={`relative w-full ${aspectRatio} rounded-3xl overflow-hidden select-none cursor-ew-resize border border-black/[0.08] shadow-md group touch-none`}
+      onKeyDown={handleKeyDown}
+      role="slider"
+      tabIndex={0}
+      aria-label="Compare before and after images"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(sliderPos)}
+      aria-valuetext={`${Math.round(sliderPos)} percent before image visible`}
+      className={`relative w-full ${aspectRatio} overflow-hidden select-none cursor-ew-resize border-y border-black/[0.12] group touch-none`}
     >
       {/* ── After Image (Full Master) ── */}
       <Image
@@ -69,7 +86,7 @@ export default function BeforeAfterSlider({
 
       {/* ── After Label ── */}
       <div className="absolute top-4 right-4 z-10 pointer-events-none">
-        <span className="px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono font-bold tracking-wider border border-white/20">
+        <span className="px-2 py-1 bg-black/70 text-white text-[10px] font-mono font-bold tracking-wider">
           {afterLabel}
         </span>
       </div>
@@ -91,7 +108,7 @@ export default function BeforeAfterSlider({
 
         {/* ── Before Label ── */}
         <div className="absolute top-4 left-4 z-10">
-          <span className="px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md text-[#1d1d1f] text-[11px] font-mono font-bold tracking-wider border border-black/10 shadow-xs">
+          <span className="px-2 py-1 bg-white/90 text-[#1d1d1f] text-[10px] font-mono font-bold tracking-wider">
             {beforeLabel}
           </span>
         </div>
@@ -102,14 +119,14 @@ export default function BeforeAfterSlider({
         className="absolute top-0 bottom-0 z-30 w-1 bg-white shadow-[0_0_15px_rgba(0,0,0,0.5)] pointer-events-none"
         style={{ left: `${sliderPos}%` }}
       >
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-[#1d1d1f] shadow-2xl flex items-center justify-center border border-black/10 font-bold text-xs group-hover:scale-110 transition-transform">
+        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white text-[#1d1d1f] flex items-center justify-center border border-black/10 font-bold text-xs group-hover:scale-110 transition-transform">
           ↔
         </div>
       </div>
 
       {/* Helper instruction tooltip */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none opacity-80 group-hover:opacity-0 transition-opacity">
-        <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-[10px] font-mono uppercase tracking-wider">
+        <span className="px-2 py-1 bg-black/60 text-white text-[10px] font-mono uppercase tracking-wider">
           Drag or click to compare
         </span>
       </div>

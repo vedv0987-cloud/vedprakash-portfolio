@@ -18,22 +18,6 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState('');
-
-  useEffect(() => {
-    const updateTime = () => {
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      };
-      setCurrentTime(new Intl.DateTimeFormat('en-US', options).format(new Date()));
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 15000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 20);
@@ -76,7 +60,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-7 text-[12px] font-medium text-[#6e6e73]">
+          <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-7 text-[12px] font-medium text-[#6e6e73]">
             {navItems.map((item) => (
               <a
                 key={item.href}
@@ -91,12 +75,6 @@ export default function Navbar() {
 
           {/* Action CTAs */}
           <div className="hidden sm:flex items-center gap-3">
-            {currentTime && (
-              <span className="hidden xl:flex items-center gap-1.5 text-[11px] font-mono text-[#86868b] pr-3 border-r border-black/[0.08]">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                BOM · {currentTime}
-              </span>
-            )}
             <a
               href={siteConfig.behance}
               target="_blank"
@@ -118,6 +96,9 @@ export default function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMobileOpen((p) => !p)}
+            aria-expanded={isMobileOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             className="lg:hidden text-[#1d1d1f] font-medium text-xs px-3 py-1.5 rounded-full bg-black/[0.05]"
           >
             {isMobileOpen ? 'Close' : 'Menu'}
@@ -132,6 +113,10 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
             className="fixed inset-0 z-40 bg-white/95 backdrop-blur-2xl text-[#1d1d1f] pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
           >
             <div className="flex flex-col gap-6">

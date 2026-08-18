@@ -62,6 +62,9 @@ body {
 [class~="text-[#0071e3]"] { color: var(--accent); }
 [class~="bg-[#0071e3]"] { background-color: var(--accent); }
 [class~="border-[#0071e3]"] { border-color: var(--accent); }
+[class*="hover:bg-[#0071e3]"]:hover { background-color: var(--accent) !important; }
+[class*="hover:bg-[#0077ed]"]:hover { background-color: var(--accent-hover) !important; }
+[class*="hover:text-[#0071e3]"]:hover { color: var(--accent) !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

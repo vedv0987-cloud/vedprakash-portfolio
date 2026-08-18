@@ -95,6 +95,9 @@ export default function VideoShowcase() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[99999] bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 md:p-10"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Playing ${selectedVideo.title}`}
             onClick={() => setSelectedVideo(null)}
           >
             {/* Top-Right Floating Close Button */}
@@ -102,6 +105,7 @@ export default function VideoShowcase() {
               onClick={() => setSelectedVideo(null)}
               className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl font-bold backdrop-blur-md transition-all cursor-pointer shadow-lg hover:scale-105"
               title="Close (ESC)"
+              aria-label="Close video player"
             >
               ✕
             </button>

@@ -86,15 +86,15 @@ export default function TechMatrix() {
       </div>
 
       {/* Category Tabs */}
-      <div className="tech-reveal flex flex-wrap gap-2 mb-10 p-1.5 bg-[#f5f5f7] border border-black/[0.06] rounded-2xl">
+      <div className="tech-reveal flex flex-wrap gap-x-6 gap-y-2 mb-10 border-b border-black/[0.12]">
         {techMatrix.map((cat, idx) => (
           <button
             key={cat.category}
             onClick={() => setActiveTab(idx)}
-            className={`px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+            className={`py-3 text-xs font-semibold uppercase tracking-wider transition-all duration-200 border-b-2 cursor-pointer ${
               activeTab === idx
-                ? 'bg-[#0071e3] text-white shadow-xs'
-                : 'bg-transparent text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-white/60'
+                ? 'border-[#0071e3] text-[#1d1d1f]'
+                : 'border-transparent text-[#6e6e73] hover:text-[#1d1d1f]'
             }`}
           >
             {cat.category} ({cat.items.length})
@@ -103,7 +103,7 @@ export default function TechMatrix() {
       </div>
 
       {/* Grid of Tools (Clickable Links) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8">
         {techMatrix[activeTab].items.map((tool, i) => {
           const url = tool.url || toolLinks[tool.name] || 'https://google.com';
           return (
@@ -115,10 +115,10 @@ export default function TechMatrix() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.03, ease: [0.16, 1, 0.3, 1] as const }}
-              className="p-5 rounded-2xl bg-[#f5f5f7] border border-black/[0.06] hover:border-[#0071e3]/40 flex items-center justify-between hover:bg-white hover:shadow-md transition-all duration-200 group cursor-pointer"
+              className="py-5 border-t border-black/[0.12] hover:border-[#0071e3] flex items-center justify-between transition-colors duration-200 group cursor-pointer"
             >
               <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 rounded-xl bg-white border border-black/[0.08] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <div className="w-9 h-9 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                   {iconLookup[tool.name] || <span className="w-2.5 h-2.5 rounded-full bg-[#0071e3]" />}
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export default function TechMatrix() {
                 </div>
               </div>
 
-              <span className="text-[11px] font-mono font-medium text-[#1d1d1f] bg-white px-2.5 py-1 rounded-md border border-black/[0.06] shadow-2xs">
+              <span className="text-[11px] font-mono font-medium text-[#6e6e73]">
                 {tool.level}
               </span>
             </motion.a>

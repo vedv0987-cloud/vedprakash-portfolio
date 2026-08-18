@@ -66,14 +66,10 @@ export default function HeroImageStack() {
     <div
       className="relative w-full max-w-[460px] mx-auto lg:mx-0 flex flex-col items-center select-none"
     >
-      {/* ── Background Card Depth Layers ── */}
-      <div className="absolute inset-0 translate-y-3 translate-x-2 scale-[0.96] rounded-3xl bg-[#e5e5ea] border border-black/[0.06] -z-10 opacity-70" />
-      <div className="absolute inset-0 translate-y-6 translate-x-4 scale-[0.92] rounded-3xl bg-[#d2d2d7] border border-black/[0.04] -z-20 opacity-40" />
-
-      {/* ── Main Active Card (Click to open full high-res in new tab) ── */}
+      {/* Image-led showcase — no decorative card stack. */}
       <div
         onClick={handleOpenHighRes}
-        className="group relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-[#1d1d1f] border border-black/[0.08] shadow-[0_20px_50px_rgba(0,0,0,0.12)] cursor-pointer hover:shadow-[0_25px_60px_rgba(0,0,0,0.2)] transition-shadow duration-300"
+        className="group relative w-full aspect-[4/5] overflow-hidden bg-[#1d1d1f] cursor-pointer"
         title="Click to open full high-resolution image in new tab"
       >
         <AnimatePresence mode="wait">
@@ -96,9 +92,9 @@ export default function HeroImageStack() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Top Right High-Res Action Pill */}
+        {/* Top Right High-Res Action */}
         <div className="absolute top-4 right-4 z-20">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-[#1d1d1f] text-xs font-semibold backdrop-blur-md shadow-md group-hover:scale-105 transition-all">
+          <span className="inline-flex items-center gap-1.5 px-2 py-1 text-white text-xs font-semibold bg-black/35 backdrop-blur-sm transition-colors group-hover:bg-black/60">
             <span>View Full High-Res</span>
             <span>↗</span>
           </span>
@@ -124,7 +120,7 @@ export default function HeroImageStack() {
             ))}
           </div>
 
-          <span className="text-[11px] font-mono font-bold text-white/90 bg-black/50 backdrop-blur-md px-2.5 py-0.5 rounded-full">
+          <span className="text-[11px] font-mono font-bold text-white/90">
             0{currentIndex + 1} / 0{showcaseItems.length}
           </span>
         </div>
@@ -135,7 +131,7 @@ export default function HeroImageStack() {
             e.stopPropagation();
             setCurrentIndex((prev) => (prev + 1) % showcaseItems.length);
           }}
-          className="absolute right-3.5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-[#1d1d1f] shadow-lg flex items-center justify-center font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-110 cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-30 px-2 py-1 text-white bg-black/35 hover:bg-black/60 font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
           title="Next Image"
         >
           →

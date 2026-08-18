@@ -52,17 +52,17 @@ export default function PipelineFlow() {
       </div>
 
       {/* Step Navigation Headers */}
-      <div className="pipeline-reveal grid grid-cols-1 sm:grid-cols-5 gap-2 p-1.5 bg-[#f5f5f7] border border-black/[0.06] rounded-2xl mb-8">
+      <div className="pipeline-reveal grid grid-cols-1 sm:grid-cols-5 gap-x-6 gap-y-2 mb-12 border-y border-black/[0.12]">
         {pipelineWorkflow.map((item, index) => {
           const isSelected = activeStep === index;
           return (
             <button
               key={item.step}
               onClick={() => setActiveStep(index)}
-              className={`p-5 text-left transition-all duration-200 rounded-xl cursor-pointer ${
+              className={`py-5 text-left transition-all duration-200 border-b-2 cursor-pointer ${
                 isSelected
-                  ? 'bg-white text-[#1d1d1f] shadow-sm font-semibold'
-                  : 'bg-transparent text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-white/50'
+                  ? 'border-[#0071e3] text-[#1d1d1f] font-semibold'
+                  : 'border-transparent text-[#6e6e73] hover:text-[#1d1d1f]'
               }`}
             >
               <span className={`font-mono text-[10px] block mb-2 tracking-wider ${isSelected ? 'text-[#0071e3]' : 'text-[#86868b]'}`}>
@@ -77,7 +77,7 @@ export default function PipelineFlow() {
       </div>
 
       {/* Detailed Stage Blueprint */}
-      <div className="pipeline-reveal bg-[#f5f5f7] rounded-3xl p-8 sm:p-12 border border-black/[0.06] shadow-sm">
+      <div className="pipeline-reveal py-2 sm:py-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeStep}
@@ -98,7 +98,7 @@ export default function PipelineFlow() {
 
               <div className="flex items-center gap-2">
                 <span className="text-xs text-[#86868b] font-mono uppercase">Verified Tools:</span>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-x-4 gap-y-2">
                   {pipelineWorkflow[activeStep].tools.map((t) => {
                     const url = toolLinks[t] || 'https://google.com';
                     return (
@@ -107,7 +107,7 @@ export default function PipelineFlow() {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white hover:bg-[#0071e3] text-[#1d1d1f] hover:text-white border border-black/[0.08] transition-all duration-200 shadow-2xs flex items-center gap-1.5"
+                        className="text-xs font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors flex items-center gap-1.5 underline decoration-black/20 underline-offset-4"
                       >
                         <span>{t}</span>
                         <span className="text-[10px] opacity-60">↗</span>
@@ -122,16 +122,16 @@ export default function PipelineFlow() {
               {pipelineWorkflow[activeStep].detail}
             </p>
 
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-black/[0.08]">
-              <div className="p-4 rounded-2xl bg-white border border-black/[0.06] shadow-2xs">
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-black/[0.10]">
+              <div>
                 <span className="text-xs font-mono text-[#86868b] uppercase block">Output Integrity</span>
                 <p className="text-base font-semibold text-[#1d1d1f] mt-1">Lossless Master Asset (8K Master)</p>
               </div>
-              <div className="p-4 rounded-2xl bg-white border border-black/[0.06] shadow-2xs">
+              <div>
                 <span className="text-xs font-mono text-[#86868b] uppercase block">Visual Quality Control</span>
                 <p className="text-base font-semibold text-[#1d1d1f] mt-1">Seed & Character Persistence Locked</p>
               </div>
-              <div className="p-4 rounded-2xl bg-white border border-black/[0.06] shadow-2xs">
+              <div>
                 <span className="text-xs font-mono text-[#86868b] uppercase block">Efficiency Metric</span>
                 <p className="text-base font-semibold text-[#0071e3] mt-1">40–60% Production Compression</p>
               </div>

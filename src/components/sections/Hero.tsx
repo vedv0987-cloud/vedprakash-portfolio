@@ -1,22 +1,13 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useEffect } from 'react';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 import HeroImageStack from '@/components/ui/HeroImageStack';
 import { gsap } from '@/hooks/useGSAP';
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
   const sectionRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % heroRoles.length);
-    }, 3200);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -56,18 +47,9 @@ export default function Hero() {
             <h1 className="hero-reveal text-[clamp(2.25rem,5.2vw,4.75rem)] font-semibold tracking-[-0.035em] text-[#1d1d1f] leading-[1.06]">
               Directing{' '}
               <span className="inline-block relative min-h-[1.15em] overflow-hidden align-bottom">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={heroRoles[roleIndex]}
-                    initial={{ y: 45, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -45, opacity: 0 }}
-                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] as const }}
-                    className="serif-italic font-normal text-[#0071e3] inline-block border-b-2 border-[#0071e3]/30 pb-0.5"
-                  >
-                    {heroRoles[roleIndex]}
-                  </motion.span>
-                </AnimatePresence>
+                <span className="serif-italic font-normal text-[#0071e3] inline-block border-b-2 border-[#0071e3]/30 pb-0.5">
+                  {heroRoles[0]}
+                </span>
               </span>
               <br />
               and commercial cinematic pipelines.

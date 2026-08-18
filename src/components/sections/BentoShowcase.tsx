@@ -19,11 +19,27 @@ const dynamicMetrics = [
   { label: 'Audio Spatial Design', value: 'Lossless', suffix: 'Studio SFX', badge: 'ElevenLabs Voice' },
 ];
 
+const filterCategories = [
+  'All Works',
+  'Creative AI & Python',
+  '3D & Luxury Horology',
+  'Medical & Healthcare',
+  'Cinematic CGI',
+  'Luxury Real Estate',
+];
+
 export default function BentoShowcase() {
   const [metricIndex, setMetricIndex] = useState(0);
+  const [selectedFilter, setSelectedFilter] = useState('All Works');
   const sectionRef = useRef<HTMLElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
   const featured = bentoProjects[0];
-  const secondary = bentoProjects.slice(1);
+  const secondaryProjects = bentoProjects.slice(1);
+
+  const filteredProjects = selectedFilter === 'All Works'
+    ? secondaryProjects
+    : secondaryProjects.filter((p) => p.filterCategory === selectedFilter);
 
   // Auto-cycle dynamic metrics every 2.6 seconds
   useEffect(() => {
@@ -43,7 +59,7 @@ export default function BentoShowcase() {
           opacity: 1,
           y: 0,
           duration: 0.9,
-          stagger: 0.15,
+          stagger: 0.12,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -56,6 +72,15 @@ export default function BentoShowcase() {
     return () => ctx.revert();
   }, []);
 
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (!scrollContainerRef.current) return;
+    const scrollAmount = 420;
+    scrollContainerRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    });
+  };
+
   const currentMetric = dynamicMetrics[metricIndex];
 
   return (
@@ -65,7 +90,7 @@ export default function BentoShowcase() {
       className="py-16 md:py-24 px-6 lg:px-12 max-w-[1360px] mx-auto bg-[#ffffff]"
     >
       {/* Section Header */}
-      <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-black/[0.08] gap-6">
+      <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-black/[0.08] gap-6">
         <div>
           <span className="font-mono text-[11px] text-[#86868b] tracking-wider uppercase block mb-2 font-medium">
             01 / SELECTED COMMISSIONS
@@ -211,43 +236,99 @@ export default function BentoShowcase() {
         </div>
       </div>
 
-      {/* Secondary Project Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {secondary.map((project, i) => (
-          <div
+      {/* ── Specialized Showcase Header & Filter Tabs ── */}
+      <div className="bento-reveal mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Category Pills */}
+        <div className="flex flex-wrap gap-2 p-1.5 bg-[#f5f5f7] border border-black/[0.06] rounded-2xl">
+          {filterCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedFilter(cat)}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 cursor-pointer ${
+                selectedFilter === cat
+                  ? 'bg-[#0071e3] text-white shadow-xs'
+                  : 'bg-transparent text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-white/60'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Carousel Navigation Buttons */}
+        <div className="hidden sm:flex items-center gap-2">
+          <button
+            onClick={() => handleScroll('left')}
+            className="w-10 h-10 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.08] flex items-center justify-center font-bold text-sm transition-all hover:scale-105 cursor-pointer shadow-2xs"
+            title="Scroll Left"
+          >
+            ←
+          </button>
+          <button
+            onClick={() => handleScroll('right')}
+            className="w-10 h-10 rounded-full bg-[#f5f5f7] hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.08] flex items-center justify-center font-bold text-sm transition-all hover:scale-105 cursor-pointer shadow-2xs"
+            title="Scroll Right"
+          >
+            →
+          </button>
+        </div>
+      </div>
+
+      {/* ── Horizontal Scrollable Showcase Gallery (8+ Projects) ── */}
+      <div
+        ref={scrollContainerRef}
+        className="bento-reveal flex gap-6 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-none"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {filteredProjects.map((project, i) => (
+          <motion.div
             key={project.id}
-            className="bento-reveal p-6 rounded-3xl bg-[#f5f5f7] border border-black/[0.06] hover:border-black/[0.14] transition-all duration-300 flex flex-col justify-between shadow-2xs hover:shadow-md"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.35, delay: i * 0.05 }}
+            className="min-w-[340px] sm:min-w-[380px] max-w-[380px] snap-start p-6 rounded-3xl bg-[#f5f5f7] border border-black/[0.06] hover:border-black/[0.14] transition-all duration-300 flex flex-col justify-between shadow-2xs hover:shadow-xl group"
           >
             <div>
-              {/* Visual Thumbnail */}
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white mb-6 border border-black/[0.04]">
+              {/* Visual Thumbnail (Click to open full high-res) */}
+              <div
+                onClick={() => window.open(project.image, '_blank', 'noopener,noreferrer')}
+                className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-white mb-5 border border-black/[0.06] cursor-pointer shadow-2xs group-hover:shadow-md transition-shadow"
+                title="Click to view full high-resolution image in new tab"
+              >
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover transition-transform duration-700 hover:scale-105"
-                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 380px"
                 />
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-md text-[#1d1d1f] text-[10px] font-mono font-bold shadow-xs">
+                    View High-Res ↗
+                  </span>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between text-xs font-mono text-[#86868b] mb-2">
+              <div className="flex items-center justify-between text-xs font-mono text-[#86868b] mb-1.5">
                 <span>0{i + 2} / {project.client.toUpperCase()}</span>
-                <span className="font-semibold text-[#1d1d1f]">{project.stats.metric}</span>
+                <span className="font-semibold text-[#0071e3] bg-[#0071e3]/10 px-2 py-0.5 rounded-full text-[10px]">
+                  {project.stats.metric}
+                </span>
               </div>
 
-              <h4 className="text-xl font-semibold tracking-tight text-[#1d1d1f] leading-snug">
+              <h4 className="text-lg font-semibold tracking-tight text-[#1d1d1f] leading-snug group-hover:text-[#0071e3] transition-colors">
                 {project.title}
               </h4>
 
-              <p className="mt-3 text-sm text-[#6e6e73] leading-relaxed line-clamp-3">
+              <p className="mt-2.5 text-xs text-[#6e6e73] leading-relaxed line-clamp-3">
                 {project.description}
               </p>
             </div>
 
             <div className="mt-6 pt-4 border-t border-black/[0.06]">
               {/* Clickable Tool Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {project.models.slice(0, 3).map((m) => {
+              <div className="flex flex-wrap gap-1.5 mb-3.5">
+                {project.models.map((m) => {
                   const url = toolLinks[m] || 'https://google.com';
                   return (
                     <a
@@ -264,19 +345,23 @@ export default function BentoShowcase() {
                 })}
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between pt-1">
                 <a
                   href={siteConfig.portfolioDrive}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs font-semibold text-[#0071e3] hover:underline flex items-center gap-1"
                 >
-                  <span>View Case Deck</span>
+                  <span>Drive Case Deck</span>
                   <span>↗</span>
                 </a>
+
+                <span className="text-[10px] font-mono text-[#86868b]">
+                  {project.period}
+                </span>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
