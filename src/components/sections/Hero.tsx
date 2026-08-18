@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
@@ -12,8 +13,6 @@ const fadeUp = {
 
 export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,24 +23,21 @@ export default function Hero() {
 
   return (
     <section id="hero" className="relative min-h-screen w-full flex flex-col justify-between pt-32 pb-16 px-6 lg:px-12 overflow-hidden bg-[#0a0a0c] text-white">
-      {/* ── 1. Full-Bleed 16:9 Ambient Background Video ── */}
+      {/* ── 1. Ultra-Fast High-Res Hero Visual Canvas ── */}
       <div className="absolute inset-0 w-full h-full -z-20 overflow-hidden bg-[#08080a]">
-        <video
-          ref={videoRef}
-          src="/videos/hero-background.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          onLoadedData={() => setVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${
-            videoLoaded ? 'opacity-85 scale-102' : 'opacity-40 scale-100'
-          }`}
+        <Image
+          src="/images/realestate-cinema.jpg"
+          alt="Luxury Architectural Cinema by Vedprakash Vishwakarma"
+          fill
+          priority
+          quality={90}
+          className="object-cover opacity-85 scale-102 transition-transform duration-1000"
+          sizes="100vw"
         />
       </div>
 
       {/* ── 2. Cinematic Gradient & Glass Vignette Overlay ── */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/70 via-black/35 to-[#0a0a0c] pointer-events-none" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/75 via-black/35 to-[#0a0a0c] pointer-events-none" />
 
       {/* ── Main Content Container with Glassmorphism ── */}
       <div className="relative max-w-[1400px] w-full mx-auto flex-1 flex flex-col justify-between z-10">
@@ -77,7 +73,7 @@ export default function Hero() {
           className="my-auto py-10 md:py-14"
         >
           {/* High-Contrast Frosted Glass Card Housing the Typographic Manifesto */}
-          <div className="p-8 sm:p-12 md:p-14 rounded-3xl bg-black/55 backdrop-blur-2xl border border-white/20 shadow-2xl max-w-5xl">
+          <div className="p-8 sm:p-12 md:p-14 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/20 shadow-2xl max-w-5xl">
             {/* Dynamic Kinetic Title with Changing Text */}
             <motion.div variants={fadeUp} className="flex flex-col gap-2">
               <span className="font-mono text-xs text-[#06b6d4] tracking-widest uppercase font-semibold">
@@ -109,7 +105,7 @@ export default function Hero() {
               {siteConfig.shortBio}
             </motion.p>
 
-            {/* Action Buttons Cluster with Glass Styling */}
+            {/* Action Buttons Cluster with Instant Response */}
             <motion.div variants={fadeUp} className="mt-9 flex flex-wrap gap-3.5 items-center">
               <button
                 onClick={() => scrollToSection('work')}
