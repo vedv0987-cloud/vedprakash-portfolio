@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#f8f8f6] text-[#111111] overflow-x-hidden selection:bg-[#111111] selection:text-white`}
+        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#050505] text-white overflow-x-hidden selection:bg-white selection:text-black`}
         suppressHydrationWarning
       >
         <GrainOverlay />

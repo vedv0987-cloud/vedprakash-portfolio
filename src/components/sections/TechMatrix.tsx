@@ -43,15 +43,15 @@ export default function TechMatrix() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <section id="stack" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto bg-[#ffffff] border-y border-black/[0.08]">
-      <div className="mb-16 pb-8 border-b border-black/[0.08]">
-        <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase block mb-2">
+    <section id="stack" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto bg-[#ffffff] border-y border-white/10">
+      <div className="mb-16 pb-8 border-b border-white/10">
+        <span className="font-mono text-xs text-white/40 tracking-widest uppercase block mb-2">
           TOOL ECOSYSTEM &amp; MASTERY
         </span>
-        <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-[#111111] leading-[1.08]">
+        <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-white leading-[1.08]">
           Technical &amp; Creative <span className="serif-italic font-normal">Proficiency</span>
         </h2>
-        <p className="mt-3 text-base text-[#666664] max-w-2xl font-normal">
+        <p className="mt-3 text-base text-white/70 max-w-2xl font-normal">
           12+ years of professional post-production and vector mastery fused with state-of-the-art generative diffusion systems.
         </p>
       </div>
@@ -65,7 +65,7 @@ export default function TechMatrix() {
             className={`px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer ${
               activeTab === idx
                 ? 'bg-[#111111] text-white'
-                : 'bg-[#f8f8f6] text-[#666664] hover:text-[#111111] border border-black/[0.08]'
+                : 'bg-[#050505] text-white/70 hover:text-white border border-white/10'
             }`}
           >
             {cat.category} ({cat.items.length})
@@ -81,19 +81,19 @@ export default function TechMatrix() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: i * 0.03, ease: [0.16, 1, 0.3, 1] as const }}
-            className="p-5 rounded-2xl bg-[#f8f8f6] border border-black/[0.06] flex items-center justify-between hover:border-black/[0.2] transition-colors"
+            className="p-5 rounded-2xl bg-[#050505] border border-white/30/[0.06] flex items-center justify-between hover:border-white/30/[0.2] transition-colors"
           >
             <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-white border border-black/[0.06] flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#0a0a0a] border border-white/30/[0.06] flex items-center justify-center shrink-0">
                 {iconLookup[tool.name] || <span className="w-2 h-2 rounded-full bg-black" />}
               </div>
               <div>
-                <h4 className="text-sm font-bold text-[#111111]">{tool.name}</h4>
-                <p className="text-xs text-[#8e8e93] font-normal">{tool.type}</p>
+                <h4 className="text-sm font-bold text-white">{tool.name}</h4>
+                <p className="text-xs text-white/40 font-normal">{tool.type}</p>
               </div>
             </div>
 
-            <span className="text-[11px] font-mono font-medium text-[#666664]">
+            <span className="text-[11px] font-mono font-medium text-white/70">
               {tool.level}
             </span>
           </motion.div>

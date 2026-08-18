@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
@@ -36,8 +36,7 @@ export default function Navbar() {
   }, []);
 
   const handleScroll = useCallback(() => {
-    const currentY = window.scrollY;
-    setIsScrolled(currentY > 40);
+    setIsScrolled(window.scrollY > 40);
   }, []);
 
   useEffect(() => {
@@ -56,162 +55,79 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#f8f8f6]/95 backdrop-blur-md border-b border-black/[0.08] py-3.5 shadow-xs text-[#111111]'
-            : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-5 text-white'
+            ? 'bg-[#050505]/80 backdrop-blur-xl border-b border-white/10 py-4 shadow-2xl'
+            : 'bg-gradient-to-b from-black/90 via-black/40 to-transparent py-6'
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between">
-          {/* Logo & Identity */}
-          <Link
-            href="#hero"
-            onClick={(e) => handleNavClick(e, '#hero')}
-            className="flex items-center gap-3 group"
-          >
-            <span
-              className={`w-7 h-7 rounded-full flex items-center justify-center font-mono text-[10px] font-bold group-hover:scale-105 transition-transform ${
-                isScrolled ? 'bg-[#111111] text-white' : 'bg-white text-black'
-              }`}
-            >
+          {/* Logo */}
+          <Link href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="flex items-center gap-3 group">
+            <span className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform">
               VP
             </span>
             <div className="flex flex-col">
-              <span
-                className={`font-bold text-[13px] sm:text-[14px] tracking-tight uppercase leading-none transition-colors ${
-                  isScrolled ? 'text-[#111111]' : 'text-white'
-                }`}
-              >
+              <span className="font-bold text-[13px] sm:text-[14px] text-white tracking-tight uppercase leading-none">
                 Vedprakash Vishwakarma
               </span>
-              <span
-                className={`text-[10px] tracking-widest uppercase font-mono mt-0.5 transition-colors ${
-                  isScrolled ? 'text-[#8e8e93]' : 'text-white/70'
-                }`}
-              >
+              <span className="text-[10px] tracking-widest text-white/50 uppercase font-mono mt-1">
                 Creative AI Lead · Mumbai
               </span>
             </div>
           </Link>
 
-          {/* Desktop Nav Links */}
-          <nav
-            className={`hidden lg:flex items-center gap-7 text-[12px] font-mono uppercase tracking-widest transition-colors ${
-              isScrolled ? 'text-[#666664]' : 'text-white/80'
-            }`}
-          >
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-8 text-[11px] font-mono uppercase tracking-widest text-white/60">
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className={`transition-colors py-1 cursor-pointer ${
-                  isScrolled ? 'hover:text-[#111111]' : 'hover:text-white'
-                }`}
+                className="hover:text-white transition-colors py-2 cursor-pointer"
               >
                 {item.label}
               </a>
             ))}
           </nav>
 
-          {/* External Action Links & Live Clock */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Actions */}
+          <div className="hidden sm:flex items-center gap-4">
             {currentTime && (
-              <span
-                className={`hidden xl:inline-flex items-center gap-1.5 text-[11px] font-mono pr-2 transition-colors ${
-                  isScrolled ? 'text-[#8e8e93]' : 'text-white/70'
-                }`}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                MUMBAI · {currentTime} IST
+              <span className="hidden xl:flex items-center gap-2 text-[10px] font-mono text-white/40 pr-4 border-r border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                BOM · {currentTime}
               </span>
             )}
-
-            <a
-              href={siteConfig.behance}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-[12px] font-mono uppercase tracking-wider font-semibold transition-colors px-3.5 py-1.5 rounded-full ${
-                isScrolled
-                  ? 'text-[#111111] hover:bg-black/[0.05] border border-black/[0.15]'
-                  : 'text-white hover:bg-white/15 border border-white/25 backdrop-blur-md'
-              }`}
-            >
+            <a href={siteConfig.behance} target="_blank" rel="noopener noreferrer" className="text-[11px] font-mono uppercase tracking-widest text-white hover:text-[#06b6d4] transition-colors font-bold px-2">
               Behance ↗
             </a>
-
-            <a
-              href={siteConfig.portfolioDrive}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`text-[12px] font-mono uppercase tracking-wider font-semibold px-4 py-1.5 rounded-full shadow-xs transition-colors ${
-                isScrolled
-                  ? 'bg-[#111111] text-white hover:bg-black'
-                  : 'bg-white text-black hover:bg-[#e5e5e0]'
-              }`}
-            >
+            <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="text-[11px] font-mono uppercase tracking-widest bg-white text-black hover:bg-gray-200 transition-colors font-bold px-5 py-2.5 rounded-full">
               Drive Vault ↗
             </a>
           </div>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => setIsMobileOpen((p) => !p)}
-            className={`lg:hidden p-2 cursor-pointer transition-colors ${
-              isScrolled ? 'text-[#111111]' : 'text-white'
-            }`}
-            aria-label="Toggle Menu"
-          >
-            <span className="text-xs font-mono font-bold tracking-widest uppercase">
-              {isMobileOpen ? '✕ CLOSE' : '☰ MENU'}
-            </span>
+          {/* Mobile Menu Toggle */}
+          <button onClick={() => setIsMobileOpen((p) => !p)} className="lg:hidden text-white font-mono text-xs tracking-widest uppercase p-2">
+            {isMobileOpen ? 'Close' : 'Menu'}
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="fixed inset-0 z-40 bg-[#0c0c0e] text-white pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-[#050505] text-white pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
           >
             <div className="flex flex-col gap-6">
               {navItems.map((item, i) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-3xl font-light tracking-tight text-white hover:italic transition-all flex items-baseline gap-4 cursor-pointer"
-                >
-                  <span className="font-mono text-xs text-[#8e8e93]">0{i + 1}</span>
+                <a key={item.href} href={item.href} onClick={(e) => handleNavClick(e, item.href)} className="text-3xl font-light text-white flex items-baseline gap-4">
+                  <span className="font-mono text-xs text-white/40">0{i + 1}</span>
                   <span>{item.label}</span>
                 </a>
               ))}
-            </div>
-
-            <div className="pt-8 border-t border-white/10 flex flex-col gap-4">
-              <div className="flex gap-4">
-                <a
-                  href={siteConfig.behance}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-3 text-center rounded-full bg-white text-black text-xs font-mono uppercase tracking-wider font-semibold"
-                >
-                  Behance ↗
-                </a>
-                <a
-                  href={siteConfig.portfolioDrive}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-3 text-center rounded-full border border-white/20 text-white text-xs font-mono uppercase tracking-wider font-semibold"
-                >
-                  Drive Archive ↗
-                </a>
-              </div>
-              <p className="text-xs font-mono text-[#8e8e93] text-center">
-                MUMBAI · {currentTime} IST · AVAILABLE FOR COMMISSIONS
-              </p>
             </div>
           </motion.div>
         )}

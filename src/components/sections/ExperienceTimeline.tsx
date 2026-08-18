@@ -12,15 +12,15 @@ export default function ExperienceTimeline() {
   return (
     <section id="experience" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-black/[0.08] gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
         <div>
-          <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase block mb-2">
+          <span className="font-mono text-xs text-white/40 tracking-widest uppercase block mb-2">
             INDEX 03 / CAREER &amp; LEADERSHIP
           </span>
-          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-[#111111] leading-[1.08]">
+          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-white leading-[1.08]">
             Professional <span className="serif-italic font-normal">Trajectory</span>
           </h2>
-          <p className="mt-3 text-base text-[#666664] max-w-xl">
+          <p className="mt-3 text-base text-white/70 max-w-xl">
             Over a decade orchestrating creative departments, luxury real estate campaign launches, and AI production systems.
           </p>
         </div>
@@ -29,7 +29,7 @@ export default function ExperienceTimeline() {
           href={siteConfig.cvPath}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border border-black/[0.16] hover:border-black bg-white px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-[#111111] transition-colors shrink-0 shadow-xs"
+          className="inline-flex items-center gap-2 border border-white/20 hover:border-white/30 bg-[#0a0a0a] px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white transition-colors shrink-0 shadow-xs"
         >
           <span>Download Verified Resume</span>
           <span>↓</span>
@@ -49,7 +49,7 @@ export default function ExperienceTimeline() {
           >
             {/* Period & Status */}
             <div className="lg:col-span-3">
-              <span className="font-mono text-xs text-[#8e8e93] block mb-2">
+              <span className="font-mono text-xs text-white/40 block mb-2">
                 {exp.period}
               </span>
               {exp.current && (
@@ -61,13 +61,13 @@ export default function ExperienceTimeline() {
 
             {/* Role & Organization */}
             <div className="lg:col-span-4">
-              <h3 className="text-2xl font-light tracking-tight text-[#111111]">
+              <h3 className="text-2xl font-light tracking-tight text-white">
                 {exp.role}
               </h3>
-              <p className="text-sm font-semibold text-[#111111] mt-1">
+              <p className="text-sm font-semibold text-white mt-1">
                 {exp.company}
               </p>
-              <p className="text-xs text-[#8e8e93] mt-0.5">
+              <p className="text-xs text-white/40 mt-0.5">
                 {exp.companyType} · {exp.location}
               </p>
             </div>
@@ -76,8 +76,8 @@ export default function ExperienceTimeline() {
             <div className="lg:col-span-5">
               <ul className="space-y-3">
                 {exp.achievements.map((ach, idx) => (
-                  <li key={idx} className="text-sm text-[#666664] leading-relaxed flex items-start gap-3">
-                    <span className="text-[#8e8e93] font-mono text-xs mt-0.5">—</span>
+                  <li key={idx} className="text-sm text-white/70 leading-relaxed flex items-start gap-3">
+                    <span className="text-white/40 font-mono text-xs mt-0.5">—</span>
                     <span>{ach}</span>
                   </li>
                 ))}

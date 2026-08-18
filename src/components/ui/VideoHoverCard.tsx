@@ -45,11 +45,10 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={() => setIsModalOpen(true)}
-        className="group relative rounded-3xl overflow-hidden bg-white border border-black/[0.08] shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
+        className="group relative rounded-3xl overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer flex flex-col"
       >
-        {/* Video / Poster Canvas (Fitted Aspect Ratio with Instant Hover Video) */}
-        <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-[#0a0a0c]">
-          {/* Poster Image */}
+        {/* Video / Poster Canvas */}
+        <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-[#050505]">
           <Image
             src={project.posterImage}
             alt={project.title}
@@ -60,7 +59,6 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
 
-          {/* Inline Video Layer (Autoplays on Hover inside website) */}
           {project.videoSrc && (
             <video
               ref={videoRef}
@@ -74,15 +72,14 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
             />
           )}
 
-          {/* Ambient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
           {/* Top Badges */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
             <span className="bg-black/70 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full border border-white/20">
               {project.category}
             </span>
-            <span className="bg-white/90 backdrop-blur-md text-[#111111] text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md">
+            <span className="bg-white/90 backdrop-blur-md text-black text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-md">
               {project.duration}
             </span>
           </div>
@@ -91,7 +88,7 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
           <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between text-white pointer-events-none">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span className="text-[11px] font-mono text-white/90 font-medium">
+              <span className="text-[11px] font-mono text-white/90 font-medium drop-shadow-md">
                 {isHovered ? 'PLAYING PREVIEW' : 'HOVER TO PLAY'}
               </span>
             </div>
@@ -104,43 +101,43 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
         {/* Content Details */}
         <div className="p-6 flex-1 flex flex-col justify-between">
           <div>
-            <span className="text-xs font-mono text-[#8e8e93] uppercase tracking-wider block">
+            <span className="text-xs font-mono text-white/40 uppercase tracking-wider block">
               {project.client}
             </span>
-            <h3 className="text-xl font-light tracking-tight text-[#111111] mt-1 group-hover:text-black transition-colors">
+            <h3 className="text-xl font-light tracking-tight text-white mt-1 group-hover:text-[#06b6d4] transition-colors">
               {project.title}
             </h3>
-            <p className="mt-2 text-sm text-[#666664] leading-relaxed line-clamp-2">
+            <p className="mt-2 text-sm text-white/70 leading-relaxed line-clamp-2">
               {project.description}
             </p>
           </div>
 
-          <div className="mt-5 pt-4 border-t border-black/[0.08] flex items-center justify-between">
+          <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between">
             <div className="flex flex-wrap gap-1.5">
               {project.modelTags.slice(0, 2).map((m) => (
                 <span
                   key={m}
-                  className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-black/[0.04] text-[#666664]"
+                  className="text-[11px] font-mono px-2.5 py-0.5 rounded-md bg-white/5 text-white/60"
                 >
                   {m}
                 </span>
               ))}
             </div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[#111111] group-hover:underline">
-              Play Inside Website ↗
+            <span className="text-xs font-semibold uppercase tracking-wider text-white group-hover:underline">
+              Play Inside ↗
             </span>
           </div>
         </div>
       </div>
 
-      {/* ── Fullscreen In-Website Cinema Modal (Plays Video Directly on Website) ── */}
+      {/* ── In-Website Cinema Modal ── */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10000] bg-black/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 flex items-center justify-center"
+            className="fixed inset-0 z-[10000] bg-[#050505]/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 flex items-center justify-center"
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
@@ -149,10 +146,9 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl max-h-[92vh] rounded-3xl overflow-hidden bg-[#0e0e12] border border-white/15 shadow-2xl flex flex-col"
+              className="relative w-full max-w-4xl max-h-[92vh] rounded-3xl overflow-hidden bg-[#0a0a0a] border border-white/10 shadow-2xl flex flex-col"
             >
-              {/* Modal Top Bar */}
-              <div className="px-6 py-4 bg-[#16161d] border-b border-white/10 flex items-center justify-between text-white shrink-0">
+              <div className="px-6 py-4 bg-[#111] border-b border-white/10 flex items-center justify-between text-white shrink-0">
                 <div>
                   <span className="text-xs font-mono text-[#06b6d4] uppercase tracking-wider">
                     {project.client} · {project.category}
@@ -182,8 +178,7 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
                 </div>
               </div>
 
-              {/* In-Website Video Player (Fitted & Plays Directly) */}
-              <div className="relative flex-1 min-h-[50vh] max-h-[72vh] w-full bg-black flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+              <div className="relative flex-1 min-h-[50vh] max-h-[72vh] w-full bg-[#050505] flex items-center justify-center p-2 sm:p-4 overflow-hidden">
                 {project.videoSrc ? (
                   <video
                     src={project.videoSrc}
@@ -205,9 +200,8 @@ export default function VideoHoverCard({ project }: { project: VideoProject }) {
                 )}
               </div>
 
-              {/* Modal Footer Metadata */}
-              <div className="px-6 py-3 bg-[#16161d] border-t border-white/10 flex flex-wrap items-center justify-between text-white text-xs font-mono shrink-0 gap-2">
-                <span className="text-white/70">
+              <div className="px-6 py-3 bg-[#111] border-t border-white/10 flex flex-wrap items-center justify-between text-white text-xs font-mono shrink-0 gap-2">
+                <span className="text-white/50">
                   STACK: <strong className="text-white">{project.modelTags.join(' · ')}</strong>
                 </span>
                 <span className="text-emerald-400">

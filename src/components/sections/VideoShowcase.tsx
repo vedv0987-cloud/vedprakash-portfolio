@@ -11,17 +11,17 @@ const fadeUp = {
 
 export default function VideoShowcase() {
   return (
-    <section id="films" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto bg-[#ffffff] border-y border-black/[0.08]">
+    <section id="films" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto bg-[#ffffff] border-y border-white/10">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-black/[0.08] gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
         <div>
-          <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase block mb-2">
+          <span className="font-mono text-xs text-white/40 tracking-widest uppercase block mb-2">
             INDEX 02 / CINEMATOGRAPHY &amp; MOTION
           </span>
-          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-[#111111] leading-[1.08]">
+          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-white leading-[1.08]">
             Motion <span className="serif-italic font-normal">&amp; Cinematic</span> Reels
           </h2>
-          <p className="mt-3 text-base text-[#666664] max-w-xl">
+          <p className="mt-3 text-base text-white/70 max-w-xl">
             Hover over any project reel to initiate smooth playback. Click to launch the 4K Cinema Master player.
           </p>
         </div>

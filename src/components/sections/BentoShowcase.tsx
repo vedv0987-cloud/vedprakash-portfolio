@@ -17,12 +17,12 @@ export default function BentoShowcase() {
   return (
     <section id="work" className="py-24 md:py-36 px-6 lg:px-12 max-w-[1400px] mx-auto">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-black/[0.08] gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
         <div>
-          <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase block mb-2">
+          <span className="font-mono text-xs text-white/40 tracking-widest uppercase block mb-2">
             INDEX 01 / SELECTED COMMISSIONS
           </span>
-          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-[#111111] leading-[1.08]">
+          <h2 className="text-[clamp(2.25rem,5vw,4rem)] font-light tracking-tight text-white leading-[1.08]">
             Curated Visual <span className="serif-italic font-normal">Productions</span>
           </h2>
         </div>
@@ -32,7 +32,7 @@ export default function BentoShowcase() {
             href={siteConfig.behance}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold uppercase tracking-wider text-[#111111] hover:underline"
+            className="text-xs font-semibold uppercase tracking-wider text-white hover:underline"
           >
             Behance Index ↗
           </a>
@@ -41,7 +41,7 @@ export default function BentoShowcase() {
             href={siteConfig.portfolioDrive}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold uppercase tracking-wider text-[#111111] hover:underline"
+            className="text-xs font-semibold uppercase tracking-wider text-white hover:underline"
           >
             Google Drive Vault (50+ Items) ↗
           </a>
@@ -54,7 +54,7 @@ export default function BentoShowcase() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-60px' }}
-        className="mb-20 pb-20 border-b border-black/[0.08]"
+        className="mb-20 pb-20 border-b border-white/10"
       >
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Interactive Before/After Visual Canvas */}
@@ -71,25 +71,25 @@ export default function BentoShowcase() {
           {/* Editorial Project Breakdown */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-xs font-mono text-[#8e8e93] mb-4">
+              <div className="flex items-center justify-between text-xs font-mono text-white/40 mb-4">
                 <span>01 / REALATTE CREATIVE</span>
                 <span>2025 – PRESENT</span>
               </div>
 
-              <h3 className="text-3xl sm:text-4xl font-light tracking-tight text-[#111111] leading-tight">
+              <h3 className="text-3xl sm:text-4xl font-light tracking-tight text-white leading-tight">
                 {featured.title}
               </h3>
 
-              <p className="mt-5 text-base text-[#666664] leading-relaxed font-normal">
+              <p className="mt-5 text-base text-white/70 leading-relaxed font-normal">
                 {featured.description}
               </p>
 
               {/* Verified Impact */}
-              <div className="mt-8 py-4 border-y border-black/[0.08] flex items-center justify-between">
-                <span className="text-xs font-semibold tracking-wider uppercase text-[#666664]">
+              <div className="mt-8 py-4 border-y border-white/10 flex items-center justify-between">
+                <span className="text-xs font-semibold tracking-wider uppercase text-white/70">
                   Production Efficiency
                 </span>
-                <span className="text-2xl font-light text-[#111111] font-mono">
+                <span className="text-2xl font-light text-white font-mono">
                   {featured.stats.metric} Speedup
                 </span>
               </div>
@@ -99,7 +99,7 @@ export default function BentoShowcase() {
                 {featured.models.map((tool) => (
                   <span
                     key={tool}
-                    className="text-xs font-medium px-3 py-1 rounded-full bg-black/[0.04] text-[#666664]"
+                    className="text-xs font-medium px-3 py-1 rounded-full bg-black/[0.04] text-white/70"
                   >
                     {tool}
                   </span>
@@ -112,7 +112,7 @@ export default function BentoShowcase() {
                 href={siteConfig.portfolioDrive}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#111111] hover:opacity-70 transition-opacity"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:opacity-70 transition-opacity"
               >
                 <span>Access Full Real Estate Campaign Deck on Drive</span>
                 <span>↗</span>
@@ -147,24 +147,24 @@ export default function BentoShowcase() {
             {/* Content Breakdown */}
             <div className="flex flex-col flex-1 justify-between">
               <div>
-                <div className="flex items-center justify-between text-xs font-mono text-[#8e8e93] mb-2">
+                <div className="flex items-center justify-between text-xs font-mono text-white/40 mb-2">
                   <span>0{i + 2} / {project.client.toUpperCase()}</span>
                   <span>{project.stats.metric}</span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-light tracking-tight text-[#111111] group-hover:text-black transition-colors">
+                <h4 className="text-xl sm:text-2xl font-light tracking-tight text-white group-hover:text-white transition-colors">
                   {project.title}
                 </h4>
 
-                <p className="mt-3 text-sm text-[#666664] leading-relaxed line-clamp-3">
+                <p className="mt-3 text-sm text-white/70 leading-relaxed line-clamp-3">
                   {project.description}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-black/[0.08] flex items-center justify-between">
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
                 <div className="flex flex-wrap gap-1.5">
                   {project.models.slice(0, 2).map((m) => (
-                    <span key={m} className="text-[11px] font-mono text-[#8e8e93]">
+                    <span key={m} className="text-[11px] font-mono text-white/40">
                       {m}
                     </span>
                   ))}
@@ -174,7 +174,7 @@ export default function BentoShowcase() {
                   href={siteConfig.portfolioDrive}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-semibold text-[#111111] group-hover:underline"
+                  className="text-xs font-semibold text-white group-hover:underline"
                 >
                   View ↗
                 </a>
