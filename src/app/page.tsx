@@ -6,7 +6,6 @@ import VideoShowcase from '@/components/sections/VideoShowcase';
 import PipelineFlow from '@/components/sections/PipelineFlow';
 import TechMatrix from '@/components/sections/TechMatrix';
 import ExperienceTimeline from '@/components/sections/ExperienceTimeline';
-import ContactStudio from '@/components/sections/ContactStudio';
 
 export default function HomePage() {
   return (
@@ -19,7 +18,6 @@ export default function HomePage() {
         <PipelineFlow />
         <TechMatrix />
         <ExperienceTimeline />
-        <ContactStudio />
       </main>
       <Footer />
     </div>

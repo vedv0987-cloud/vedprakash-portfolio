@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { siteConfig, keyStats } from '@/data/portfolio';
+import { scrollToSection } from '@/lib/scroll';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -36,16 +37,21 @@ export default function Hero() {
 
   const toggleMute = () => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
+      if (videoRef.current.muted) {
+        videoRef.current.muted = false;
+        videoRef.current.volume = 1.0;
+        setIsMuted(false);
+      } else {
+        videoRef.current.muted = true;
+        setIsMuted(true);
+      }
     }
   };
 
   const togglePlay = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlaying(true);
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
       } else {
         videoRef.current.pause();
         setIsPlaying(false);
@@ -99,23 +105,23 @@ export default function Hero() {
           </p>
         </motion.div>
 
-        {/* ── Magnetic Action Buttons Cluster ── */}
+        {/* ── Magnetic Action Buttons Cluster (100% Working) ── */}
         <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3.5 items-center">
-          <a
-            href="#work"
-            className="inline-flex items-center gap-2.5 bg-[#111111] text-white hover:bg-black px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:shadow-xl hover:scale-[1.02] active:scale-98"
+          <button
+            onClick={() => scrollToSection('work')}
+            className="inline-flex items-center gap-2.5 bg-[#111111] text-white hover:bg-black px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:shadow-xl hover:scale-[1.02] active:scale-98 cursor-pointer"
           >
             <span>Explore Selected Work</span>
             <span>↓</span>
-          </a>
+          </button>
 
-          <a
-            href="#films"
-            className="inline-flex items-center gap-2 bg-white text-[#111111] border border-black/[0.16] hover:border-black px-7 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:shadow-xs hover:scale-[1.02] active:scale-98"
+          <button
+            onClick={() => scrollToSection('films')}
+            className="inline-flex items-center gap-2 bg-white text-[#111111] border border-black/[0.16] hover:border-black px-7 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:shadow-xs hover:scale-[1.02] active:scale-98 cursor-pointer"
           >
             <span className="w-2 h-2 rounded-full bg-[#06b6d4]" />
             <span>Watch Film Reels</span>
-          </a>
+          </button>
 
           <a
             href={siteConfig.behance}
@@ -133,6 +139,16 @@ export default function Hero() {
             className="inline-flex items-center gap-2 bg-white text-[#111111] border border-black/[0.16] hover:border-black px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:shadow-xs hover:scale-[1.02] active:scale-98"
           >
             <span>Drive Archive (50+) ↗</span>
+          </a>
+
+          <a
+            href={siteConfig.cvPath}
+            download="Vedprakash_Vishwakarma_CV.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs font-semibold font-mono uppercase tracking-wider text-[#666664] hover:text-[#111111] px-5 py-4 transition-colors"
+          >
+            <span>Download CV (PDF) ↓</span>
           </a>
         </motion.div>
       </motion.div>
@@ -167,7 +183,7 @@ export default function Hero() {
           <div className="flex items-center gap-3">
             <button
               onClick={togglePlay}
-              className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md hover:bg-black/80 border border-white/15 transition-colors cursor-pointer"
+              className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md hover:bg-black/80 border border-white/15 transition-colors cursor-pointer"
             >
               {isPlaying ? 'PAUSE' : 'PLAY'}
             </button>
