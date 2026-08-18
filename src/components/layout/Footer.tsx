@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
+import { gsap, ScrollTrigger } from '@/hooks/useGSAP';
+import MagneticButton from '@/components/ui/MagneticButton';
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
+  const footerRef = useRef<HTMLElement | null>(null);
+  const headlineRef = useRef<HTMLHeadingElement | null>(null);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(siteConfig.email);
@@ -13,113 +17,167 @@ export default function Footer() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  return (
-    <footer id="contact" className="w-full bg-[#0c0c0e] text-white pt-24 pb-12 mt-28 border-t border-white/10">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* ── Top Inquiry Manifesto ── */}
-        <div className="max-w-4xl">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-mono text-xs text-[#8e8e93] tracking-widest uppercase">
-              INDEX 04 / DIRECT INQUIRY &amp; COMMISSIONS
-            </span>
-          </div>
+  // GSAP: Reveal headline words with stagger
+  useEffect(() => {
+    if (!footerRef.current || !headlineRef.current) return;
 
-          <h2 className="text-[clamp(2.5rem,6vw,5.25rem)] font-light tracking-tight text-white leading-[1.04]">
-            Let&apos;s direct your next <span className="serif-italic font-normal text-white">landmark visual</span> production.
+    const ctx = gsap.context(() => {
+      // Animate the CTA headline
+      gsap.fromTo(
+        headlineRef.current,
+        { opacity: 0, y: 80 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headlineRef.current,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+
+      // Stagger contact items
+      const contactItems = footerRef.current?.querySelectorAll('[data-footer-item]');
+      if (contactItems) {
+        gsap.fromTo(
+          contactItems,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.08,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: contactItems[0],
+              start: 'top 90%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <footer ref={footerRef} id="contact" className="relative w-full bg-[#050505] text-white pt-32 pb-12 mt-0">
+      {/* Gradient merge from previous section */}
+      <div className="absolute -top-32 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#050505] pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+        {/* ── Grand CTA Headline ── */}
+        <div className="pb-16 border-b border-white/[0.08]">
+          <span className="font-mono text-xs text-white/30 tracking-widest uppercase block mb-8">
+            04 / INQUIRIES & COMMISSIONS
+          </span>
+
+          <h2
+            ref={headlineRef}
+            className="text-[clamp(2.75rem,8vw,7rem)] font-light tracking-[-0.04em] text-white leading-[1] max-w-5xl"
+          >
+            Let&apos;s direct your next{' '}
+            <span className="serif-italic font-normal">landmark visual</span>{' '}
+            production.
           </h2>
 
-          <p className="mt-8 text-base sm:text-lg text-[#a1a1aa] max-w-2xl font-normal leading-relaxed">
-            Open to Senior / Lead Creative AI roles, agency leadership, enterprise generative workflow consulting, and high-budget luxury campaigns.
+          <p className="mt-8 text-base sm:text-lg text-white/50 max-w-2xl font-light leading-relaxed">
+            Open to Senior / Lead Creative AI roles, agency leadership, enterprise generative workflow consulting,
+            and high-budget luxury campaigns.
           </p>
 
-          {/* Action CTAs Cluster */}
-          <div className="mt-10 flex flex-wrap gap-4 items-center">
-            <a
+          {/* CTAs */}
+          <div className="mt-12 flex flex-wrap gap-4 items-center" data-footer-item>
+            <MagneticButton
               href={`mailto:${siteConfig.email}?subject=Production%20Inquiry%20-%20Creative%20AI%20Lead`}
-              className="inline-flex items-center gap-2.5 bg-white text-[#111111] hover:bg-[#e5e5e0] px-8 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-semibold transition-all duration-200 hover:shadow-2xl hover:scale-[1.02] active:scale-98"
+              className="inline-flex items-center gap-2.5 bg-white text-[#050505] hover:bg-white/90 px-8 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 hover:shadow-[0_0_40px_rgba(255,255,255,0.12)]"
             >
               <span>Send Direct Email</span>
               <span>↗</span>
-            </a>
+            </MagneticButton>
 
-            <button
+            <MagneticButton
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/[0.16] px-6 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-semibold transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 bg-white/[0.06] hover:bg-white/[0.12] text-white border border-white/[0.1] hover:border-white/[0.2] px-6 py-4 rounded-full text-xs font-mono uppercase tracking-wider font-bold transition-all duration-300 cursor-pointer"
             >
-              <span>{copied ? '✓ Email Copied to Clipboard' : `${siteConfig.email} (Click to Copy)`}</span>
-            </button>
-          </div>
-
-          {/* Contact Direct Channels Grid */}
-          <div className="mt-16 pt-12 border-t border-white/[0.12] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div>
-              <span className="font-mono text-xs text-[#8e8e93] uppercase block">Phone / WhatsApp</span>
-              <a
-                href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}
-                className="text-base font-medium text-white hover:text-[#d1d1cf] transition-colors mt-2 block"
-              >
-                {siteConfig.phone}
-              </a>
-            </div>
-
-            <div>
-              <span className="font-mono text-xs text-[#8e8e93] uppercase block">Behance Portfolio</span>
-              <a
-                href={siteConfig.behance}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-medium text-white hover:text-[#0057ff] transition-colors mt-2 block"
-              >
-                behance.net/Vedvish0987 ↗
-              </a>
-            </div>
-
-            <div>
-              <span className="font-mono text-xs text-[#8e8e93] uppercase block">LinkedIn Network</span>
-              <a
-                href={siteConfig.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-medium text-white hover:text-[#d1d1cf] transition-colors mt-2 block"
-              >
-                in/vedprakash-vishwakarma ↗
-              </a>
-            </div>
-
-            <div>
-              <span className="font-mono text-xs text-[#8e8e93] uppercase block">Raw Asset Vault</span>
-              <a
-                href={siteConfig.portfolioDrive}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-base font-medium text-white hover:text-[#7c3aed] transition-colors mt-2 block"
-              >
-                50+ Campaign Decks on Drive ↗
-              </a>
-            </div>
+              <span>{copied ? '✓ Copied' : `${siteConfig.email}`}</span>
+            </MagneticButton>
           </div>
         </div>
 
-        {/* ── Bottom Copyright Bar & Working Top Button ── */}
-        <div className="mt-20 pt-8 border-t border-white/[0.1] flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-[#8e8e93] font-mono">
-          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
-            <span className="font-bold text-white uppercase tracking-wider">
-              {siteConfig.name}
-            </span>
-            <span className="hidden sm:inline text-white/30">/</span>
-            <span>{siteConfig.tagline}</span>
+        {/* ── Contact Channels Grid ── */}
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div data-footer-item>
+            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Phone / WhatsApp</span>
+            <a
+              href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}
+              className="text-base font-light text-white hover:text-white/70 transition-colors block"
+            >
+              {siteConfig.phone}
+            </a>
           </div>
 
-          <div className="flex items-center gap-6">
-            <span>© {new Date().getFullYear()} ALL RIGHTS RESERVED</span>
-            <button
+          <div data-footer-item>
+            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Behance Portfolio</span>
+            <a
+              href={siteConfig.behance}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-light text-white hover:text-[#06b6d4] transition-colors block"
+            >
+              behance.net/Vedvish0987 ↗
+            </a>
+          </div>
+
+          <div data-footer-item>
+            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">LinkedIn</span>
+            <a
+              href={siteConfig.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-light text-white hover:text-white/70 transition-colors block"
+            >
+              in/vedprakash-vishwakarma ↗
+            </a>
+          </div>
+
+          <div data-footer-item>
+            <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-3">Campaign Archives</span>
+            <a
+              href={siteConfig.portfolioDrive}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-light text-white hover:text-[#7c3aed] transition-colors block"
+            >
+              50+ Decks on Drive ↗
+            </a>
+          </div>
+        </div>
+
+        {/* ── Bottom Copyright ── */}
+        <div className="mt-24 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-6 text-[11px] text-white/25 font-mono uppercase tracking-wider">
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            <span className="text-white/50 font-bold">
+              {siteConfig.name}
+            </span>
+            <span className="hidden sm:inline text-white/15">·</span>
+            <span>Creative AI Lead · Visual Content Architect</span>
+          </div>
+
+          <div className="flex items-center gap-8">
+            <span>© {new Date().getFullYear()}</span>
+            <MagneticButton
               onClick={() => scrollToSection('hero')}
-              className="text-white font-bold hover:text-white/70 transition-colors cursor-pointer flex items-center gap-1.5 uppercase tracking-wider"
+              className="text-white/50 font-bold hover:text-white transition-colors cursor-pointer flex items-center gap-1.5"
+              strength={0.4}
             >
               <span>Back to top</span>
               <span>↑</span>
-            </button>
+            </MagneticButton>
           </div>
         </div>
       </div>

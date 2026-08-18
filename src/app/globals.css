@@ -1,18 +1,20 @@
 @import 'tailwindcss';
 
+/* ── Design Tokens (Dark Cinematic Theme) ── */
 :root {
-  --bg: #f8f8f6;
-  --bg-card: #ffffff;
-  --text-main: #111111;
-  --text-muted: #666664;
-  --text-subtle: #8e8e93;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-dark: rgba(0, 0, 0, 0.16);
-  --accent: #111111;
+  --bg: #050505;
+  --bg-card: #0a0a0c;
+  --bg-elevated: #111113;
+  --text-main: #f0f0f0;
+  --text-muted: #a1a1aa;
+  --text-subtle: #52525b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #06b6d4;
 }
 
 html {
-  background-color: #08080a;
+  background-color: var(--bg);
   color: var(--text-main);
 }
 
@@ -32,25 +34,25 @@ html.lenis, html.lenis body {
   scroll-behavior: auto !important;
 }
 
-/* ── Minimalist Scrollbar ── */
+/* ── Dark Cinematic Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d1cf;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #999996;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* ── Selection ── */
 ::selection {
-  background: #111111;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
+  color: #050505;
 }
 
 /* ── Typography Accents ── */
@@ -60,21 +62,21 @@ html.lenis, html.lenis body {
   font-weight: 400;
 }
 
-/* ── Editorial Card ── */
+/* ── Editorial Card (Dark) ── */
 .editorial-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .editorial-card:hover {
-  border-color: rgba(0, 0, 0, 0.2);
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.06);
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Hairline Dividers ── */
 .hairline {
   height: 1px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--border);
   width: 100%;
 }

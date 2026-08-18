@@ -81,8 +81,8 @@ export default function CustomCursor() {
           animate={{ scale: 1 }}
           className="relative flex items-center justify-center"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-[#0a0a0c] shadow-xs" />
-          <span className="absolute w-8 h-8 rounded-full border border-black/20" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white shadow-xs" />
+          <span className="absolute w-8 h-8 rounded-full border border-white/25" />
         </motion.div>
       )}
 
