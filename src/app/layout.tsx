@@ -1,23 +1,22 @@
 import type { Metadata } from 'next';
-import { Plus_Jakarta_Sans, Cormorant_Garamond } from 'next/font/google';
+import { DM_Sans, JetBrains_Mono } from 'next/font/google';
 import { siteConfig } from '@/data/portfolio';
 import { getSiteUrl } from '@/lib/site-url';
 import './globals.css';
 
 const siteUrl = getSiteUrl();
 
-const sans = Plus_Jakarta_Sans({
+const sans = DM_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });
 
-const serif = Cormorant_Garamond({
+const mono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-  variable: '--font-serif',
+  weight: ['400', '500'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -59,9 +58,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body
-        className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#ffffff] text-[#1d1d1f] overflow-x-hidden selection:bg-[#0071e3] selection:text-white`}
+        className={`${sans.variable} ${mono.variable} font-sans antialiased bg-background text-text-main selection:bg-accent selection:text-white`}
       >
         {children}
         <script

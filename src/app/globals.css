@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 
-/* Editorial palette: warm paper, ink, and a restrained vermilion accent. */
+/* ── Design System Tokens ── */
 :root {
+  /* Colors: monochrome base + single vermilion accent */
   --bg: #f7f5f0;
   --bg-secondary: #ede9e1;
   --bg-card: #ffffff;
@@ -13,6 +14,70 @@
   --border-strong: rgba(29, 27, 24, 0.20);
   --accent: #a44331;
   --accent-hover: #843323;
+  --accent-light: rgba(164, 67, 49, 0.08);
+
+  /* Typography Scale — based on 1.25 ratio */
+  --text-hero: clamp(3.5rem, 8vw, 7.5rem);
+  --text-display: clamp(2.5rem, 5.5vw, 5rem);
+  --text-h1: clamp(2.25rem, 5vw, 4rem);
+  --text-h2: clamp(1.75rem, 4vw, 3rem);
+  --text-h3: clamp(1.25rem, 2.5vw, 1.75rem);
+  --text-body-lg: 1.25rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-caption: 0.75rem;
+  --text-micro: 0.6875rem;
+
+  /* Line Heights */
+  --leading-hero: 0.92;
+  --leading-display: 1.0;
+  --leading-heading: 1.1;
+  --leading-body: 1.6;
+  --leading-tight: 1.2;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.035em;
+  --tracking-normal: -0.01em;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+
+  /* Spacing Scale — 4px base */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(29, 27, 24, 0.04);
+  --shadow-sm: 0 2px 8px rgba(29, 27, 24, 0.06);
+  --shadow-md: 0 4px 16px rgba(29, 27, 24, 0.08);
+  --shadow-lg: 0 8px 32px rgba(29, 27, 24, 0.10);
+  --shadow-xl: 0 16px 48px rgba(29, 27, 24, 0.12);
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Font Families */
+  --font-display: 'Clash Display', 'DM Sans', sans-serif;
 }
 
 html {
@@ -25,32 +90,29 @@ body {
   color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: var(--font-sans), Arial, sans-serif;
-  letter-spacing: -0.012em;
+  font-family: var(--font-sans), 'DM Sans', Arial, sans-serif;
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-body);
 }
 
-/* Hide native cursor when custom cursor is active */
-@media (pointer: fine) {
-  body:has([data-cursor]) a,
-  body:has([data-cursor]) button,
-  body:has([data-cursor]) [role="button"] {
-    cursor: none !important;
-  }
+/* ── Headline Typography ── */
+.font-display {
+  font-family: var(--font-display);
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #b7aea2;
-  border-radius: 9999px;
+  background: var(--text-subtle);
+  border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8c8479;
+  background: var(--text-muted);
 }
 
 /* ── Selection ── */
@@ -59,47 +121,54 @@ body {
   color: #ffffff;
 }
 
-/* ── Typography Accents ── */
-.serif-italic {
-  font-family: var(--font-serif), Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-}
-
-/* Keep the existing component markup while replacing the default "SaaS blue". */
+/* ── Accent Overrides ── */
 [class~="text-[#0071e3]"] { color: var(--accent); }
 [class~="bg-[#0071e3]"] { background-color: var(--accent); }
 [class~="border-[#0071e3]"] { border-color: var(--accent); }
 [class*="hover:bg-[#0071e3]"]:hover { background-color: var(--accent-hover) !important; }
 [class*="hover:bg-[#0077ed]"]:hover { background-color: var(--accent-hover) !important; }
 [class*="hover:text-[#0071e3]"]:hover { color: var(--accent) !important; }
+[class*="bg-[#0071e3]/"] { background-color: var(--accent-light); }
+[class*="text-[#0071e3]/"] { color: var(--accent); }
+[class*="border-[#0071e3]/"] { border-color: var(--accent-light); }
 
+/* ── Serif Italic Accent ── */
+.serif-italic {
+  font-family: 'Clash Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ── Magnetic Button Base ── */
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+/* ── Text Split Line Reveal ── */
+.split-line {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.split-line-inner {
+  display: inline-block;
+  transform: translateY(105%);
+  will-change: transform;
+}
+
+/* ── Reduced Motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* ── Apple Bento Card ── */
-.apple-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-}
-
-.apple-card:hover {
-  border-color: rgba(0, 0, 0, 0.16);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
-}
-
-/* ── Hairline Dividers ── */
-.hairline {
-  height: 1px;
-  background: rgba(0, 0, 0, 0.08);
-  width: 100%;
+  .split-line-inner {
+    transform: translateY(0) !important;
+  }
 }

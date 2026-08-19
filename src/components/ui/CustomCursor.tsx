@@ -17,7 +17,7 @@ export default function CustomCursor() {
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  const springConfig = { damping: 28, stiffness: 350, mass: 0.5 };
+  const springConfig = { damping: 20, stiffness: 280, mass: 0.8 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
@@ -26,7 +26,8 @@ export default function CustomCursor() {
 
     document.body.style.cursor = 'none';
     const style = document.createElement('style');
-    style.textContent = 'a, button, [role="button"], input, textarea, select { cursor: none !important; }';
+    style.textContent =
+      'a, button, [role="button"], input, textarea, select, [data-cursor] { cursor: none !important; }';
     document.head.appendChild(style);
 
     const updateCursorState = (nextState: CursorState) => {
@@ -86,65 +87,63 @@ export default function CustomCursor() {
 
   if (isTouch) return null;
 
+  const ringSize = cursorState === 'pointer' ? 56 : cursorState === 'video' ? 64 : 40;
+  const dotSize = cursorState === 'pointer' ? 6 : cursorState === 'video' ? 0 : 4;
+
   return (
     <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
       style={{
         x: cursorX,
         y: cursorY,
         opacity: isVisible ? 1 : 0,
       }}
     >
-      {/* ── Default State ── */}
-      {cursorState === 'default' && (
-        <motion.div
-          initial={{ scale: 0.8 }}
-          animate={{ scale: 1 }}
-          className="relative flex items-center justify-center"
-        >
-          <span className="w-2.5 h-2.5 rounded-full bg-[#1d1d1f] shadow-xs" />
-          <span className="absolute w-8 h-8 rounded-full border border-black/15" />
-        </motion.div>
-      )}
+      {/* Outer ring */}
+      <motion.div
+        className="rounded-full border border-white/60 flex items-center justify-center -translate-x-1/2 -translate-y-1/2"
+        animate={{
+          width: ringSize,
+          height: ringSize,
+        }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+      >
+        {/* Inner dot */}
+        {dotSize > 0 && (
+          <motion.div
+            className="rounded-full bg-white"
+            animate={{
+              width: dotSize,
+              height: dotSize,
+            }}
+            transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+          />
+        )}
 
-      {/* ── Interactive Pointer State ── */}
-      {cursorState === 'pointer' && (
-        <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
-          className="w-10 h-10 rounded-full bg-[#0071e3]/10 border border-[#0071e3]/30 backdrop-blur-sm flex items-center justify-center"
-        >
-          <span className="w-2 h-2 rounded-full bg-[#0071e3]" />
-        </motion.div>
-      )}
+        {/* Video state: PLAY label */}
+        {cursorState === 'video' && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute text-[9px] font-mono font-semibold tracking-wider text-white uppercase"
+          >
+            PLAY
+          </motion.span>
+        )}
 
-      {/* ── Video Hover State: Frosted PLAY Pill ── */}
-      {cursorState === 'video' && (
-        <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.6, opacity: 0 }}
-          className="px-4 py-2 rounded-full bg-[#1d1d1f]/90 backdrop-blur-md text-white flex items-center gap-2 shadow-xl"
-        >
-          <svg className="w-3 h-3 fill-current text-[#0071e3]" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          <span className="text-[11px] font-semibold tracking-wider uppercase">PLAY REEL</span>
-        </motion.div>
-      )}
-
-      {/* ── Draggable Slider State ── */}
-      {cursorState === 'drag' && (
-        <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.6, opacity: 0 }}
-          className="px-3.5 py-1.5 rounded-full bg-[#1d1d1f]/90 backdrop-blur-md text-white flex items-center gap-1.5 shadow-xl"
-        >
-          <span className="text-[11px] font-semibold tracking-wider uppercase">↔ DRAG</span>
-        </motion.div>
-      )}
+        {/* Drag state: DRAG label */}
+        {cursorState === 'drag' && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute text-[9px] font-mono font-semibold tracking-wider text-white uppercase"
+          >
+            DRAG
+          </motion.span>
+        )}
+      </motion.div>
     </motion.div>
   );
 }

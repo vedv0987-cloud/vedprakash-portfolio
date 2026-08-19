@@ -17,11 +17,12 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const mobileNavRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 20);
+    setIsScrolled(window.scrollY > 40);
   }, []);
 
   useEffect(() => {
@@ -29,13 +30,33 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  useEffect(() => {
+    const sections = ['hero', 'work', 'films', 'pipeline', 'stack', 'experience', 'contact'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: '-80px 0px 0px 0px' }
+    );
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     scrollToSection(href);
     setIsMobileOpen(false);
   };
 
-  // Focus trap + Escape key for mobile nav
   useEffect(() => {
     if (!isMobileOpen) return;
 
@@ -74,40 +95,59 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/80 backdrop-blur-2xl border-b border-black/[0.08] py-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.03)]'
-            : 'bg-white/60 backdrop-blur-lg border-b border-black/[0.04] py-4'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? 'pt-3 pb-3' : 'pt-5 pb-5'
         }`}
       >
         <div className="max-w-[1360px] mx-auto px-6 lg:px-12 flex items-center justify-between">
           {/* Logo / Name */}
           <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="flex items-center gap-3 group">
-            <span className="w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform shadow-xs">
+            <span className="w-8 h-8 rounded-full bg-text-main text-bg flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform shadow-xs">
               VP
             </span>
-            <div className="flex flex-col">
-              <span className="font-semibold text-[13px] sm:text-[14px] text-[#1d1d1f] tracking-tight leading-none">
+            <div className="hidden sm:flex flex-col">
+              <span className="font-semibold text-[13px] text-text-main tracking-tight leading-none">
                 Vedprakash Vishwakarma
               </span>
-              <span className="text-[10px] tracking-wider text-[#86868b] uppercase font-mono mt-0.5">
+              <span className="text-[10px] tracking-wider text-text-subtle uppercase font-mono mt-0.5">
                 Creative AI Lead · Mumbai
               </span>
             </div>
           </a>
 
-          {/* Desktop Nav */}
-          <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-7 text-[12px] font-medium text-[#6e6e73]">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className="hover:text-[#0071e3] transition-colors py-1.5 cursor-pointer"
-              >
-                {item.label}
-              </a>
-            ))}
+          {/* Desktop Floating Dock */}
+          <nav
+            aria-label="Primary navigation"
+            className={`hidden lg:flex items-center transition-all duration-500 ${
+              isScrolled
+                ? 'bg-bg-card/90 backdrop-blur-xl border border-border rounded-full px-2 py-1.5 shadow-md'
+                : 'bg-transparent px-0 py-0'
+            }`}
+          >
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`relative px-4 py-2 rounded-full text-[11px] font-medium tracking-wide transition-all duration-300 cursor-pointer ${
+                    isActive
+                      ? 'text-text-main'
+                      : 'text-text-muted hover:text-text-main'
+                  }`}
+                >
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-0 bg-bg-secondary rounded-full"
+                      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </a>
+              );
+            })}
           </nav>
 
           {/* Action CTAs */}
@@ -116,7 +156,7 @@ export default function Navbar() {
               href={siteConfig.behance}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-medium text-[#1d1d1f] hover:text-[#0071e3] transition-colors px-3 py-1.5 rounded-full hover:bg-black/[0.04]"
+              className="text-[12px] font-medium text-text-main hover:text-accent transition-colors px-3 py-1.5 rounded-full hover:bg-accent/5"
             >
               Behance ↗
             </a>
@@ -124,7 +164,7 @@ export default function Navbar() {
               href={siteConfig.portfolioDrive}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[12px] font-semibold bg-[#0071e3] text-white hover:bg-[#0077ed] transition-all px-4 py-2 rounded-full shadow-xs hover:shadow-sm"
+              className="text-[12px] font-semibold bg-accent text-white hover:bg-accent-hover transition-all px-4 py-2 rounded-full shadow-xs hover:shadow-sm"
             >
               Drive Vault ↗
             </a>
@@ -137,7 +177,7 @@ export default function Navbar() {
             aria-expanded={isMobileOpen}
             aria-controls="mobile-navigation"
             aria-label={isMobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="lg:hidden text-[#1d1d1f] font-medium text-xs px-3 py-1.5 rounded-full bg-black/[0.05]"
+            className="lg:hidden text-text-main font-medium text-xs px-4 py-2 rounded-full bg-bg-secondary border border-border"
           >
             {isMobileOpen ? 'Close' : 'Menu'}
           </button>
@@ -149,35 +189,39 @@ export default function Navbar() {
         {isMobileOpen && (
           <motion.div
             ref={mobileNavRef}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, clipPath: 'circle(0% at calc(100% - 48px) 48px)' }}
+            animate={{ opacity: 1, clipPath: 'circle(150% at calc(100% - 48px) 48px)' }}
+            exit={{ opacity: 0, clipPath: 'circle(0% at calc(100% - 48px) 48px)' }}
+            transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             id="mobile-navigation"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="fixed inset-0 z-40 bg-white/95 backdrop-blur-2xl text-[#1d1d1f] pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
+            className="fixed inset-0 z-40 bg-background text-text-main pt-28 px-8 flex flex-col justify-between pb-12 lg:hidden"
           >
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
               {navItems.map((item, i) => (
-                <a
+                <motion.a
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-2xl font-light text-[#1d1d1f] hover:text-[#0071e3] flex items-baseline gap-4 py-2 border-b border-black/[0.04]"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                  className="text-3xl font-display font-medium text-text-main hover:text-accent flex items-center gap-4 py-3 border-b border-border"
                 >
-                  <span className="font-mono text-xs text-[#86868b]">0{i + 1}</span>
+                  <span className="font-mono text-xs text-text-subtle">0{i + 1}</span>
                   <span>{item.label}</span>
-                </a>
+                </motion.a>
               ))}
             </div>
 
-            <div className="flex flex-col gap-3 pt-6 border-t border-black/[0.08]">
+            <div className="flex flex-col gap-3 pt-6 border-t border-border">
               <a
                 href={siteConfig.portfolioDrive}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center py-3.5 rounded-full bg-[#0071e3] text-white font-medium text-sm"
+                className="w-full text-center py-3.5 rounded-full bg-accent text-white font-medium text-sm"
               >
                 Access Google Drive Vault ↗
               </a>
