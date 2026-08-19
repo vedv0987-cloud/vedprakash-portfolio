@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { DM_Sans, JetBrains_Mono, Fraunces } from 'next/font/google';
 import { siteConfig } from '@/data/portfolio';
 import { getSiteUrl } from '@/lib/site-url';
 import './globals.css';
@@ -17,6 +17,14 @@ const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
+  display: 'swap',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -66,7 +74,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${sans.variable} ${mono.variable} font-sans antialiased bg-background text-text-main selection:bg-accent selection:text-white`}
+        className={`${sans.variable} ${mono.variable} ${fraunces.variable} font-sans antialiased bg-background text-text-main selection:bg-accent selection:text-black`}
       >
         {children}
         <script

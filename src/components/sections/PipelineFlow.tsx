@@ -59,7 +59,8 @@ export default function PipelineFlow() {
             <button
               key={item.step}
               onClick={() => setActiveStep(index)}
-              className={`py-5 text-left transition-all duration-200 border-b-2 cursor-pointer ${
+              data-cursor="hover"
+              className={`py-5 text-left transition-all duration-200 border-b-2 ${
                 isSelected
                   ? 'border-accent text-text-main font-semibold'
                   : 'border-transparent text-text-muted hover:text-text-main'

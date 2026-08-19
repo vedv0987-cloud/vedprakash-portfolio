@@ -91,7 +91,8 @@ export default function TechMatrix() {
           <button
             key={cat.category}
             onClick={() => setActiveTab(idx)}
-            className={`py-3 text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 border-b-2 cursor-pointer font-mono ${
+            data-cursor="hover"
+            className={`py-3 text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 border-b-2 font-mono ${
               activeTab === idx
                 ? 'border-accent text-text-main'
                 : 'border-transparent text-text-muted hover:text-text-main'
@@ -112,10 +113,11 @@ export default function TechMatrix() {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
+              data-cursor="link"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: i * 0.03, ease: [0.16, 1, 0.3, 1] as const }}
-              className="py-5 border-t border-border hover:border-accent flex items-center justify-between transition-colors duration-200 group cursor-pointer"
+              className="py-5 border-t border-border hover:border-accent flex items-center justify-between transition-colors duration-200 group"
             >
               <div className="flex items-center gap-3.5">
                 <div className="w-9 h-9 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">

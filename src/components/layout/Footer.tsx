@@ -43,7 +43,8 @@ export default function Footer() {
           <div className="mt-12 flex flex-wrap gap-4 items-center">
             <a
               href={`mailto:${siteConfig.email}?subject=Production%20Inquiry%20-%20Creative%20AI%20Lead`}
-              className="magnetic-btn inline-flex items-center gap-2 bg-accent text-white hover:bg-accent-hover px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] shadow-sm active:scale-95"
+              data-cursor="hover"
+              className="inline-flex items-center gap-2 bg-accent text-black hover:shadow-[0_0_20px_rgba(var(--theme-mint-rgb),0.3)] px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:scale-95"
             >
               <span>Send Direct Email</span>
               <span>↗</span>
@@ -51,7 +52,8 @@ export default function Footer() {
 
             <button
               onClick={handleCopyEmail}
-              className="magnetic-btn inline-flex items-center gap-2 bg-bg-card hover:bg-bg-secondary text-text-main border border-border px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-xs min-w-[200px]"
+              data-cursor="hover"
+              className="inline-flex items-center gap-2 bg-bg-card hover:bg-bg-secondary text-text-main border border-border px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors min-w-[200px]"
             >
               <span>{copied ? '✓ Email Copied' : `${siteConfig.email} (Click to Copy)`}</span>
             </button>
@@ -123,7 +125,8 @@ export default function Footer() {
             <span className="text-[11px] font-mono text-text-subtle">© {new Date().getFullYear()}</span>
             <button
               onClick={() => scrollToSection('hero')}
-              className="text-text-main font-semibold text-[11px] font-mono uppercase tracking-wider hover:text-accent transition-colors cursor-pointer flex items-center gap-1.5"
+              data-cursor="hover"
+              className="text-text-main font-semibold text-[11px] font-mono uppercase tracking-wider hover:text-accent transition-colors flex items-center gap-1.5"
             >
               <span>Back to top</span>
               <span>↑</span>

@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from 'react';
 import { experienceData, siteConfig } from '@/data/portfolio';
-import TextReveal from '@/components/ui/TextReveal';
 import { gsap } from '@/hooks/useGSAP';
 
 export default function ExperienceTimeline() {
@@ -54,7 +53,8 @@ export default function ExperienceTimeline() {
         <a
           href={siteConfig.cvPath}
           download="Vedprakash_Vishwakarma_CV.pdf"
-          className="magnetic-btn inline-flex items-center gap-2 border border-border hover:border-border-strong bg-bg-secondary hover:bg-bg-card px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-wider text-text-main transition-colors shrink-0 shadow-xs font-mono"
+          data-cursor="hover"
+          className="inline-flex items-center gap-2 border border-border hover:border-border-strong bg-bg-secondary hover:bg-bg-card px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-wider text-text-main transition-colors shrink-0 font-mono"
         >
           <span>Download Resume</span>
           <span>↓</span>
@@ -70,7 +70,7 @@ export default function ExperienceTimeline() {
                 {exp.period}
               </span>
               {exp.current && (
-                <span className="inline-block text-[10px] font-mono font-bold tracking-wider uppercase text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <span className="inline-block text-[10px] font-mono font-bold tracking-wider uppercase text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                   ● ACTIVE
                 </span>
               )}

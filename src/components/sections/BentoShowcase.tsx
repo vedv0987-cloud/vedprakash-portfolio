@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { bentoProjects, siteConfig, toolLinks } from '@/data/portfolio';
 import BeforeAfterSlider from '@/components/ui/BeforeAfterSlider';
-import TextReveal from '@/components/ui/TextReveal';
+import SpotlightCard from '@/components/ui/SpotlightCard';
+import Marquee from '@/components/ui/Marquee';
 import { gsap } from '@/hooks/useGSAP';
 
 const dynamicMetrics = [
@@ -39,9 +40,10 @@ export default function BentoShowcase() {
   const featured = bentoProjects[0];
   const secondaryProjects = bentoProjects.slice(1);
 
-  const filteredProjects = selectedFilter === 'All Works'
-    ? secondaryProjects
-    : secondaryProjects.filter((p) => p.filterCategory === selectedFilter);
+  const filteredProjects =
+    selectedFilter === 'All Works'
+      ? secondaryProjects
+      : secondaryProjects.filter((p) => p.filterCategory === selectedFilter);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -91,13 +93,16 @@ export default function BentoShowcase() {
       className="py-20 md:py-32 px-6 lg:px-12 max-w-[1360px] mx-auto"
     >
       {/* Section Header */}
-      <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-border gap-6">
+      <div className="bento-reveal flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/5 gap-6">
         <div>
-          <span className="font-mono text-[11px] text-text-subtle tracking-wider uppercase block mb-3 font-medium">
+          <span className="font-mono text-[11px] text-[var(--text-subtle)] tracking-wider uppercase block mb-3 font-medium">
             01 / SELECTED COMMISSIONS
           </span>
-          <h2 className="text-display font-display font-semibold tracking-tight text-text-main leading-[1.0]">
-            Curated Visual <span className="serif-italic font-normal text-accent">Productions</span>
+          <h2 className="font-display text-[var(--text-display)] font-semibold tracking-tight text-[var(--text-main)] leading-[1.0]">
+            Curated Visual{' '}
+            <span className="font-serif-display italic font-normal text-[var(--accent)]">
+              Productions
+            </span>
           </h2>
         </div>
 
@@ -106,24 +111,24 @@ export default function BentoShowcase() {
             href={siteConfig.behance}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] font-semibold uppercase tracking-wider text-accent hover:underline font-mono"
+            className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--accent)] hover:underline"
           >
             Behance Index ↗
           </a>
-          <span className="text-border-strong">·</span>
+          <span className="text-white/20">·</span>
           <a
             href={siteConfig.portfolioDrive}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[11px] font-semibold uppercase tracking-wider text-accent hover:underline font-mono"
+            className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--accent)] hover:underline"
           >
             Drive Vault (50+ Items) ↗
           </a>
         </div>
       </div>
 
-      {/* Featured Project */}
-      <div className="bento-reveal mb-20 p-8 lg:p-12 rounded-3xl bg-bg-secondary border border-border">
+      {/* Featured Project — SpotlightCard */}
+      <SpotlightCard className="bento-reveal mb-20 p-8 lg:p-12 rounded-3xl">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7">
             <BeforeAfterSlider
@@ -137,21 +142,21 @@ export default function BentoShowcase() {
 
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between text-[11px] font-mono text-text-subtle mb-4">
+              <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-subtle)] mb-4">
                 <span>01 / REALATTE CREATIVE</span>
                 <span>2025 – PRESENT</span>
               </div>
 
-              <h3 className="text-h3 font-display font-semibold tracking-tight text-text-main leading-snug">
+              <h3 className="font-display text-[var(--text-h3)] font-semibold tracking-tight text-[var(--text-main)] leading-snug">
                 {featured.title}
               </h3>
 
-              <p className="mt-4 text-body text-text-muted leading-relaxed font-normal">
+              <p className="mt-4 text-[var(--text-body)] text-[var(--text-muted)] leading-relaxed">
                 {featured.description}
               </p>
 
               {/* Dynamic Metric Card */}
-              <div className="mt-6 p-4 rounded-2xl bg-bg-card border border-border overflow-hidden">
+              <div className="mt-6 glass-panel rounded-2xl p-4 overflow-hidden">
                 <div className="flex items-center justify-between min-h-[44px]">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -163,18 +168,18 @@ export default function BentoShowcase() {
                       className="flex flex-col"
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] font-mono uppercase tracking-wider text-text-subtle font-medium">
+                        <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-subtle)] font-medium">
                           {currentMetric.label}
                         </span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-accent/10 text-accent font-semibold">
+                        <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] font-semibold">
                           {currentMetric.badge}
                         </span>
                       </div>
                       <div className="mt-0.5">
-                        <span className="text-2xl font-display font-bold text-text-main tabular-nums">
+                        <span className="font-display text-2xl font-bold text-[var(--text-main)] tabular-nums">
                           {currentMetric.value}
                         </span>{' '}
-                        <span className="text-xs text-accent font-semibold">
+                        <span className="text-xs text-[var(--accent)] font-semibold">
                           {currentMetric.suffix}
                         </span>
                       </div>
@@ -186,7 +191,7 @@ export default function BentoShowcase() {
                       <span
                         key={idx}
                         className={`h-1 rounded-full transition-all duration-300 ${
-                          metricIndex === idx ? 'w-4 bg-accent' : 'w-1 bg-border-strong'
+                          metricIndex === idx ? 'w-4 bg-[var(--accent)]' : 'w-1 bg-white/20'
                         }`}
                       />
                     ))}
@@ -196,7 +201,7 @@ export default function BentoShowcase() {
 
               {/* Tool Tags */}
               <div className="mt-6">
-                <span className="text-[11px] font-mono text-text-subtle uppercase tracking-wider block mb-2">
+                <span className="font-mono text-[11px] text-[var(--text-subtle)] uppercase tracking-wider block mb-2">
                   Integrated Toolchain:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -208,7 +213,7 @@ export default function BentoShowcase() {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[11px] font-medium px-3 py-1.5 rounded-full bg-bg-card hover:bg-accent text-text-main hover:text-white border border-border transition-all duration-200 shadow-xs flex items-center gap-1.5 font-mono"
+                        className="font-mono text-[11px] font-medium px-3 py-1.5 rounded-full border border-white/10 bg-white/5 hover:bg-[var(--accent)] text-[var(--text-main)] hover:text-black transition-all duration-200 flex items-center gap-1.5"
                       >
                         <span>{tool}</span>
                         <span className="text-[10px] opacity-60">↗</span>
@@ -219,37 +224,43 @@ export default function BentoShowcase() {
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-border flex items-center gap-6">
+            <div className="mt-8 pt-6 border-t border-white/5 flex items-center gap-6">
               <a
                 href={siteConfig.portfolioDrive}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold text-accent hover:underline"
+                className="text-sm font-semibold text-[var(--accent)] hover:underline"
               >
                 Access Full Campaign Deck ↗
               </a>
               <Link
                 href={`/work/${featured.id}`}
-                className="text-sm font-semibold text-text-main hover:text-accent transition-colors"
+                className="text-sm font-semibold text-[var(--text-main)] hover:text-[var(--accent)] transition-colors"
               >
                 Read case study →
               </Link>
             </div>
           </div>
         </div>
+      </SpotlightCard>
+
+      {/* Marquee ticker */}
+      <div className="bento-reveal mb-12">
+        <Marquee items={['Creative AI', 'Architectural CGI', 'Cinematic', 'Luxury Real Estate', 'Generative Media']} />
       </div>
 
       {/* Filter Tabs */}
       <div className="bento-reveal mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-2 p-1.5 bg-bg-secondary border border-border rounded-2xl">
+        <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md">
           {filterCategories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedFilter(cat)}
-              className={`px-4 py-2 rounded-xl text-[11px] font-semibold tracking-wide transition-all duration-200 cursor-pointer font-mono ${
+              data-cursor="hover"
+              className={`px-4 py-2 rounded-xl text-[11px] font-semibold tracking-wide transition-all duration-200 font-mono ${
                 selectedFilter === cat
-                  ? 'bg-accent text-white shadow-xs'
-                  : 'bg-transparent text-text-muted hover:text-text-main hover:bg-bg-card/60'
+                  ? 'bg-[var(--accent)] text-black shadow-xs'
+                  : 'bg-transparent text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-white/5'
               }`}
             >
               {cat}
@@ -260,39 +271,36 @@ export default function BentoShowcase() {
         <div className="hidden sm:flex items-center gap-2">
           <button
             onClick={() => handleScroll('left')}
-            className="w-10 h-10 rounded-full bg-bg-secondary hover:bg-bg-card text-text-main border border-border flex items-center justify-center font-bold text-sm transition-all hover:scale-105 cursor-pointer shadow-xs"
-            title="Scroll Left"
+            data-cursor="hover"
+            className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center font-bold text-sm transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)]/10"
           >
             ←
           </button>
           <button
             onClick={() => handleScroll('right')}
-            className="w-10 h-10 rounded-full bg-bg-secondary hover:bg-bg-card text-text-main border border-border flex items-center justify-center font-bold text-sm transition-all hover:scale-105 cursor-pointer shadow-xs"
-            title="Scroll Right"
+            data-cursor="hover"
+            className="w-10 h-10 rounded-full border border-white/10 bg-white/5 flex items-center justify-center font-bold text-sm transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)]/10"
           >
             →
           </button>
         </div>
       </div>
 
-      {/* Project Cards Carousel */}
+      {/* Project Cards Carousel — SpotlightCards */}
       <div
         ref={scrollContainerRef}
         className="bento-reveal flex gap-6 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scrollbar-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {filteredProjects.map((project, i) => (
-          <motion.div
+          <SpotlightCard
             key={project.id}
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: i * 0.04 }}
-            className="min-w-[340px] sm:min-w-[380px] max-w-[380px] snap-start p-6 rounded-3xl bg-bg-secondary border border-border hover:border-border-strong transition-all duration-300 flex flex-col justify-between group"
+            className="min-w-[340px] sm:min-w-[380px] max-w-[380px] snap-start flex flex-col justify-between"
           >
-            <div>
+            <div className="p-6">
               <div
                 onClick={() => window.open(project.image, '_blank', 'noopener,noreferrer')}
-                className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-bg-card mb-5 border border-border cursor-pointer group-hover:shadow-md transition-shadow"
+                className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-[var(--bg-card)] mb-5 border border-white/5 cursor-pointer group-hover:shadow-md transition-shadow"
                 title="Click to view full high-resolution image"
               >
                 <Image
@@ -303,29 +311,31 @@ export default function BentoShowcase() {
                   sizes="(max-width: 1024px) 100vw, 380px"
                 />
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="px-2.5 py-1 rounded-full bg-bg-card/90 backdrop-blur-md text-text-main text-[10px] font-mono font-bold shadow-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-[var(--bg-card)]/90 backdrop-blur-md text-[var(--text-main)] text-[10px] font-mono font-bold">
                     View High-Res ↗
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] font-mono text-text-subtle mb-1.5">
-                <span>{String(i + 2).padStart(2, '0')} / {project.client.toUpperCase()}</span>
-                <span className="font-semibold text-accent bg-accent/10 px-2 py-0.5 rounded-full text-[10px]">
+              <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-subtle)] mb-1.5">
+                <span>
+                  {String(i + 2).padStart(2, '0')} / {project.client.toUpperCase()}
+                </span>
+                <span className="font-semibold text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-0.5 rounded-full text-[10px]">
                   {project.stats.metric}
                 </span>
               </div>
 
-              <h4 className="text-lg font-display font-semibold tracking-tight text-text-main leading-snug group-hover:text-accent transition-colors">
+              <h4 className="font-display text-lg font-semibold tracking-tight text-[var(--text-main)] leading-snug group-hover:text-[var(--accent)] transition-colors">
                 {project.title}
               </h4>
 
-              <p className="mt-2.5 text-xs text-text-muted leading-relaxed line-clamp-3">
+              <p className="mt-2.5 text-xs text-[var(--text-muted)] leading-relaxed line-clamp-3">
                 {project.description}
               </p>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-border">
+            <div className="px-6 pb-6 pt-4 border-t border-white/5">
               <div className="flex flex-wrap gap-1.5 mb-3.5">
                 {project.models.map((m) => {
                   const url = toolLinks[m] || 'https://google.com';
@@ -335,7 +345,7 @@ export default function BentoShowcase() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-bg-card hover:bg-accent text-text-main hover:text-white border border-border transition-colors flex items-center gap-1 shadow-xs"
+                      className="font-mono text-[10px] px-2.5 py-1 rounded-md border border-white/10 bg-white/5 hover:bg-[var(--accent)] text-[var(--text-main)] hover:text-black transition-colors flex items-center gap-1"
                     >
                       <span>{m}</span>
                       <span className="opacity-50">↗</span>
@@ -347,17 +357,15 @@ export default function BentoShowcase() {
               <div className="flex items-center justify-between pt-1">
                 <Link
                   href={`/work/${project.id}`}
-                  className="text-xs font-semibold text-accent hover:underline flex items-center gap-1"
+                  className="text-xs font-semibold text-[var(--accent)] hover:underline flex items-center gap-1"
                 >
                   <span>Read case study</span>
                   <span>→</span>
                 </Link>
-                <span className="text-[10px] font-mono text-text-subtle">
-                  {project.period}
-                </span>
+                <span className="font-mono text-[10px] text-[var(--text-subtle)]">{project.period}</span>
               </div>
             </div>
-          </motion.div>
+          </SpotlightCard>
         ))}
       </div>
     </section>

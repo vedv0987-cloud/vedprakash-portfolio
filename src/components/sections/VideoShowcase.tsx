@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { videoProjects, siteConfig } from '@/data/portfolio';
 import VideoHoverCard, { VideoProject } from '@/components/ui/VideoHoverCard';
-import TextReveal from '@/components/ui/TextReveal';
 import { gsap } from '@/hooks/useGSAP';
 
 export default function VideoShowcase() {
@@ -22,9 +21,7 @@ export default function VideoShowcase() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        handleClose();
-      }
+      if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -77,7 +74,8 @@ export default function VideoShowcase() {
           href={siteConfig.portfolioDrive}
           target="_blank"
           rel="noopener noreferrer"
-          className="magnetic-btn inline-flex items-center gap-2 bg-accent text-white hover:bg-accent-hover px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 shadow-xs shrink-0 font-mono"
+          data-cursor="hover"
+          className="inline-flex items-center gap-2 bg-accent text-black hover:shadow-[0_0_20px_rgba(var(--theme-mint-rgb),0.3)] px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-wider transition-all duration-200 shrink-0 font-mono"
         >
           <span>Stream All Master Reels</span>
           <span>↗</span>
@@ -111,7 +109,7 @@ export default function VideoShowcase() {
           >
             <button
               onClick={handleClose}
-              className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl font-bold backdrop-blur-md transition-all cursor-pointer shadow-lg hover:scale-105"
+              className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl font-bold backdrop-blur-md transition-all shadow-lg hover:scale-105"
               title="Close (ESC)"
               aria-label="Close video player"
             >

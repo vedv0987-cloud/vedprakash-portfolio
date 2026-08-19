@@ -1,149 +1,280 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { siteConfig, keyStats, heroRoles } from '@/data/portfolio';
+import { siteConfig, heroRoles, keyStats } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
-import HeroImageStack from '@/components/ui/HeroImageStack';
-import TextReveal from '@/components/ui/TextReveal';
-import { gsap } from '@/hooks/useGSAP';
+
+function Typewriter({ words, speed = 80, pause = 2000 }: { words: string[]; speed?: number; pause?: number }) {
+  const [wordIdx, setWordIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const word = words[wordIdx];
+    const timeout = setTimeout(
+      () => {
+        if (!isDeleting) {
+          setCharIdx((c) => c + 1);
+          if (charIdx + 1 === word.length) {
+            setTimeout(() => setIsDeleting(true), pause);
+          }
+        } else {
+          setCharIdx((c) => c - 1);
+          if (charIdx - 1 === 0) {
+            setIsDeleting(false);
+            setWordIdx((w) => (w + 1) % words.length);
+          }
+        }
+      },
+      isDeleting ? speed / 2 : speed
+    );
+    return () => clearTimeout(timeout);
+  }, [charIdx, isDeleting, wordIdx, words, speed, pause]);
+
+  return (
+    <span>
+      {words[wordIdx].slice(0, charIdx)}
+      <span className="animate-pulse">|</span>
+    </span>
+  );
+}
+
+function CornerBracket({ position }: { position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' }) {
+  const posClasses = {
+    'top-left': 'top-4 left-4',
+    'top-right': 'top-4 right-4 rotate-90',
+    'bottom-left': 'bottom-4 left-4 -rotate-90',
+    'bottom-right': 'bottom-4 right-4 rotate-180',
+  };
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className={`absolute ${posClasses[position]}`}>
+      <path d="M2 8V3C2 2.44772 2.44772 2 3 2H8" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function OrbitCircles() {
+  return (
+    <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+      {[300, 400, 500].map((size, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full border border-white/[0.04]"
+          style={{ width: size, height: size }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 30 + i * 15, repeat: Infinity, ease: 'linear' }}
+        >
+          <div
+            className="absolute h-1.5 w-1.5 rounded-full bg-[var(--accent)]"
+            style={{ top: 0, left: '50%', transform: 'translate(-50%, -50%)' }}
+          />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function HudSocialRail() {
+  const socials = [
+    { icon: 'in', label: 'LinkedIn', href: siteConfig.linkedin },
+    { icon: 'Be', label: 'Behance', href: siteConfig.behance },
+    { icon: '@', label: 'Email', href: `mailto:${siteConfig.email}` },
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -30 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 1.5, duration: 0.6 }}
+      className="pointer-events-auto absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-4"
+    >
+      {socials.map((s) => (
+        <a
+          key={s.label}
+          href={s.href}
+          target={s.label !== 'Email' ? '_blank' : undefined}
+          rel={s.label !== 'Email' ? 'noopener noreferrer' : undefined}
+          data-cursor="link"
+          className="group flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/5 font-mono text-[10px] text-[var(--text-muted)] backdrop-blur-md transition-all hover:border-[var(--accent)] hover:bg-[var(--accent)]/10 hover:text-[var(--accent)]"
+          title={s.label}
+        >
+          {s.icon}
+        </a>
+      ))}
+    </motion.div>
+  );
+}
+
+function HudInfoCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 1.8, duration: 0.6 }}
+      className="pointer-events-auto absolute right-6 bottom-24 hidden lg:block"
+    >
+      <div className="glass-panel rounded-xl p-4 space-y-3 text-[11px] font-mono text-[var(--text-muted)]">
+        <div className="flex items-center gap-2">
+          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="text-emerald-400">Available for projects</span>
+        </div>
+        <div className="h-px bg-white/5" />
+        <div className="flex items-center gap-2">
+          <span className="text-[var(--accent)]">→</span>
+          <span>{siteConfig.location}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[var(--accent)]">→</span>
+          <span>12+ yrs experience</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function HudScrollIndicator() {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 2.2 }}
+      className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+    >
+      <motion.div
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="h-10 w-6 rounded-full border border-white/20 flex items-start justify-center pt-2"
+      >
+        <div className="h-2 w-0.5 rounded-full bg-[var(--accent)]" />
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const parallaxRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % heroRoles.length);
-    }, 3200);
-    return () => clearInterval(interval);
+    setMounted(true);
   }, []);
 
-  // Parallax depth effect on scroll
-  useEffect(() => {
-    if (!parallaxRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.to(parallaxRef.current!, {
-        yPercent: 15,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: parallaxRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      });
-    });
-    return () => ctx.revert();
-  }, []);
+  if (!mounted) return null;
 
   return (
     <section
       ref={sectionRef}
       id="hero"
-      className="relative w-full min-h-screen flex items-center px-6 lg:px-12 overflow-hidden bg-background"
+      className="relative w-full min-h-screen flex items-center overflow-hidden"
     >
-      {/* Background depth layers */}
-      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-20%] right-[-10%] w-[700px] h-[700px] bg-accent/[0.04] rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-accent/[0.03] rounded-full blur-[100px]" />
-      </div>
+      {/* Corner brackets */}
+      <CornerBracket position="top-left" />
+      <CornerBracket position="top-right" />
+      <CornerBracket position="bottom-left" />
+      <CornerBracket position="bottom-right" />
 
-      <div className="relative z-10 max-w-[1360px] w-full mx-auto pt-28 pb-16">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          {/* Left Column */}
-          <div className="lg:col-span-7 flex flex-col justify-center">
-            {/* Status Pill */}
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-bg-secondary border border-border text-text-main text-[11px] font-mono font-medium uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Available for Creative Leadership</span>
-              </div>
-              <span className="text-[11px] font-mono text-text-subtle uppercase tracking-widest">
-                Mumbai · 12+ Yrs
-              </span>
-            </div>
+      {/* Orbit circles */}
+      <OrbitCircles />
 
-            {/* Super Headline */}
-            <h1 className="text-hero font-display font-semibold tracking-[-0.035em] text-text-main leading-[0.95]">
-              <TextReveal as="span" split="lines" delay={0.3}>
-                Directing
-              </TextReveal>{' '}
-              <span className="inline-block relative min-h-[1.1em] overflow-hidden align-bottom">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={heroRoles[roleIndex]}
-                    initial={{ y: 60, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -60, opacity: 0 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="serif-italic font-normal text-accent inline-block border-b-2 border-accent/20 pb-1"
-                  >
-                    {heroRoles[roleIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </span>
-              <br />
-              <TextReveal as="span" split="lines" delay={0.5}>
-                and commercial cinematic pipelines.
-              </TextReveal>
-            </h1>
+      {/* HUD panels */}
+      <HudSocialRail />
+      <HudInfoCard />
+      <HudScrollIndicator />
 
-            {/* Subtitle */}
-            <p className="mt-8 text-body-lg text-text-muted max-w-xl leading-relaxed font-normal">
-              {siteConfig.shortBio}
-            </p>
+      {/* Center content */}
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-6 lg:px-12 pt-32 pb-24">
+        <div className="flex flex-col items-center text-center">
+          {/* Status line */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-md"
+          >
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="font-mono text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
+              Available for Creative Leadership
+            </span>
+          </motion.div>
 
-            {/* CTAs */}
-            <div className="mt-10 flex flex-wrap gap-4 items-center">
-              <button
-                onClick={() => scrollToSection('work')}
-                className="magnetic-btn inline-flex items-center gap-2 bg-accent text-white hover:bg-accent-hover px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] shadow-sm active:scale-95 cursor-pointer"
-              >
-                Explore Selected Work ↓
-              </button>
+          {/* Main headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="font-display text-[var(--text-hero)] font-semibold leading-[0.95] tracking-[-0.04em] text-[var(--text-main)]"
+          >
+            Directing{' '}
+            <span className="text-glow-mint text-[var(--accent)]">
+              <Typewriter words={heroRoles} />
+            </span>
+            <br />
+            and commercial cinematic pipelines.
+          </motion.h1>
 
-              <button
-                onClick={() => scrollToSection('films')}
-                className="magnetic-btn inline-flex items-center gap-2 bg-bg-secondary hover:bg-bg-card text-text-main border border-border px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer"
-              >
-                <span className="w-2 h-2 rounded-full bg-accent" />
-                Watch Film Reels
-              </button>
-            </div>
-          </div>
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+            className="mt-8 max-w-xl text-[var(--text-body-lg)] text-[var(--text-muted)] leading-relaxed"
+          >
+            {siteConfig.shortBio}
+          </motion.p>
 
-          {/* Right Column */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <HeroImageStack />
-          </div>
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3, duration: 0.6 }}
+            className="mt-10 flex flex-wrap gap-4 justify-center"
+          >
+            <button
+              onClick={() => scrollToSection('work')}
+              data-cursor="hover"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--accent)] px-8 py-4 text-xs font-semibold uppercase tracking-wider text-black transition-all duration-200 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(var(--theme-mint-rgb),0.3)] active:scale-95"
+            >
+              Explore Selected Work ↓
+            </button>
+            <button
+              onClick={() => scrollToSection('films')}
+              data-cursor="hover"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)] backdrop-blur-md transition-all duration-200 hover:border-[var(--accent)] hover:bg-[var(--accent)]/10 active:scale-95"
+            >
+              <span className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+              Watch Film Reels
+            </button>
+          </motion.div>
         </div>
 
-        {/* Key Metrics Bar */}
-        <div className="mt-20 pt-8 border-t border-border flex flex-wrap items-center justify-between gap-6">
+        {/* Key metrics */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
+          className="mt-20 pt-8 border-t border-white/5 flex flex-wrap items-center justify-between gap-6"
+        >
           <div className="flex items-center gap-10 md:gap-16">
             {keyStats.slice(0, 3).map((stat, i) => (
               <div key={i} className="flex flex-col">
-                <span className="text-3xl md:text-4xl font-display font-semibold text-text-main tabular-nums">
+                <span className="font-display text-3xl md:text-4xl font-semibold text-[var(--text-main)] tabular-nums">
                   {stat.value}
-                  <span className="serif-italic font-normal text-accent">{stat.suffix}</span>
+                  <span className="font-serif-display italic font-normal text-[var(--accent)]">{stat.suffix}</span>
                 </span>
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-subtle mt-1">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-[var(--text-subtle)] mt-1">
                   {stat.label}
                 </span>
               </div>
             ))}
           </div>
-
           <a
             href={siteConfig.cvPath}
             download="Vedprakash_Vishwakarma_CV.pdf"
-            className="text-[12px] font-semibold text-accent hover:underline flex items-center gap-1.5 font-mono"
+            className="font-mono text-[12px] font-semibold text-[var(--accent)] hover:underline flex items-center gap-1.5"
           >
             Download Resume <span>↓</span>
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
