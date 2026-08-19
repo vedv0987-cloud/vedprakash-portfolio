@@ -80,6 +80,28 @@
   --font-display: 'Clash Display', 'DM Sans', sans-serif;
 }
 
+/* ── Dark Mode ── */
+[data-theme="dark"] {
+  --bg: #111110;
+  --bg-secondary: #1a1918;
+  --bg-card: #1f1e1d;
+  --bg-elevated: #2a2928;
+  --text-main: #f0ede8;
+  --text-muted: #a8a198;
+  --text-subtle: #6d6861;
+  --border: rgba(240, 237, 232, 0.10);
+  --border-strong: rgba(240, 237, 232, 0.20);
+  --accent: #d4735e;
+  --accent-hover: #e08a78;
+  --accent-light: rgba(212, 115, 94, 0.12);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
 html {
   background-color: var(--bg);
   color: var(--text-main);

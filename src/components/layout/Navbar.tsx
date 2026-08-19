@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const navItems = [
   { label: 'Work', href: '#work' },
@@ -168,6 +169,7 @@ export default function Navbar() {
             >
               Drive Vault ↗
             </a>
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -217,6 +219,9 @@ export default function Navbar() {
             </div>
 
             <div className="flex flex-col gap-3 pt-6 border-t border-border">
+              <div className="flex items-center justify-center mb-2">
+                <ThemeToggle />
+              </div>
               <a
                 href={siteConfig.portfolioDrive}
                 target="_blank"
