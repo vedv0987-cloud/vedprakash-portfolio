@@ -62,9 +62,7 @@ export default function VideoHoverCard({
             loop
             playsInline
             preload="metadata"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100"
           />
         )}
 

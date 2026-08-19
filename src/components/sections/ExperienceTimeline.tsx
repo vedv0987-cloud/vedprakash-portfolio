@@ -11,7 +11,7 @@ export default function ExperienceTimeline() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.exp-reveal',
+        sectionRef.current!.querySelectorAll('.exp-reveal'),
         { opacity: 0, y: 40 },
         {
           opacity: 1,
@@ -53,8 +53,6 @@ export default function ExperienceTimeline() {
         <a
           href={siteConfig.cvPath}
           download="Vedprakash_Vishwakarma_CV.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 border border-black/[0.12] hover:border-black/[0.25] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-[#1d1d1f] transition-colors shrink-0 shadow-2xs"
         >
           <span>Download Verified Resume</span>

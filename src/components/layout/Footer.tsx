@@ -1,17 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleCopyEmail = async () => {
     try {
       await navigator.clipboard.writeText(siteConfig.email);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setCopied(false), 2500);
     } catch {
       window.location.href = `mailto:${siteConfig.email}`;
     }
@@ -20,7 +28,7 @@ export default function Footer() {
   return (
     <footer id="contact" className="w-full bg-[#f5f5f7] text-[#1d1d1f] pt-16 pb-12 mt-10 border-t border-black/[0.08]">
       <div className="max-w-[1360px] mx-auto px-6 lg:px-12">
-        {/* ── Top Inquiry Manifesto ── */}
+        {/* Top Inquiry Manifesto */}
         <div className="max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -49,7 +57,7 @@ export default function Footer() {
 
             <button
               onClick={handleCopyEmail}
-              className="inline-flex items-center gap-2 bg-white hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.12] px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs"
+              className="inline-flex items-center gap-2 bg-white hover:bg-[#e8e8ed] text-[#1d1d1f] border border-black/[0.12] px-6 py-4 rounded-full text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer shadow-2xs min-w-[200px]"
             >
               <span>{copied ? '✓ Email Copied to Clipboard' : `${siteConfig.email} (Click to Copy)`}</span>
             </button>
@@ -105,7 +113,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── Bottom Copyright Bar & Working Top Button ── */}
+        {/* Bottom Copyright Bar & Working Top Button */}
         <div className="mt-20 pt-8 border-t border-black/[0.08] flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-[#86868b] font-mono">
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <span className="font-bold text-[#1d1d1f] uppercase tracking-wider">

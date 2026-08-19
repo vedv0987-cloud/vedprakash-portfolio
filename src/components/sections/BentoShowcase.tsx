@@ -54,7 +54,7 @@ export default function BentoShowcase() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.bento-reveal',
+        sectionRef.current!.querySelectorAll('.bento-reveal'),
         { opacity: 0, y: 40 },
         {
           opacity: 1,
@@ -317,7 +317,7 @@ export default function BentoShowcase() {
               </div>
 
               <div className="flex items-center justify-between text-xs font-mono text-[#86868b] mb-1.5">
-                <span>0{i + 2} / {project.client.toUpperCase()}</span>
+                <span>{String(i + 2).padStart(2, '0')} / {project.client.toUpperCase()}</span>
                 <span className="font-semibold text-[#0071e3] bg-[#0071e3]/10 px-2 py-0.5 rounded-full text-[10px]">
                   {project.stats.metric}
                 </span>

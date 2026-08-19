@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { videoProjects, siteConfig } from '@/data/portfolio';
 import VideoHoverCard, { VideoProject } from '@/components/ui/VideoHoverCard';
@@ -9,23 +9,31 @@ import { gsap } from '@/hooks/useGSAP';
 export default function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState<VideoProject | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Close on ESC key
+  const handleClose = useCallback(() => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current = null;
+    }
+    setSelectedVideo(null);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setSelectedVideo(null);
+        handleClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleClose]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.video-reveal',
+        sectionRef.current!.querySelectorAll('.video-reveal'),
         { opacity: 0, y: 40 },
         {
           opacity: 1,
@@ -87,22 +95,22 @@ export default function VideoShowcase() {
         ))}
       </div>
 
-      {/* ── Single Clean Centered Popup Window (No Text Clutter) ── */}
+      {/* Single Clean Centered Popup Window */}
       <AnimatePresence>
         {selectedVideo && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[99999] bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 md:p-10"
+            className="fixed inset-0 z-[99998] bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6 md:p-10"
             role="dialog"
             aria-modal="true"
             aria-label={`Playing ${selectedVideo.title}`}
-            onClick={() => setSelectedVideo(null)}
+            onClick={handleClose}
           >
             {/* Top-Right Floating Close Button */}
             <button
-              onClick={() => setSelectedVideo(null)}
+              onClick={handleClose}
               className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center text-xl font-bold backdrop-blur-md transition-all cursor-pointer shadow-lg hover:scale-105"
               title="Close (ESC)"
               aria-label="Close video player"
@@ -110,7 +118,7 @@ export default function VideoShowcase() {
               ✕
             </button>
 
-            {/* Video Window - Pure & Centered */}
+            {/* Video Window */}
             <motion.div
               initial={{ scale: 0.92, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -121,6 +129,7 @@ export default function VideoShowcase() {
             >
               {selectedVideo.videoSrc ? (
                 <video
+                  ref={videoRef}
                   src={selectedVideo.videoSrc}
                   controls
                   autoPlay

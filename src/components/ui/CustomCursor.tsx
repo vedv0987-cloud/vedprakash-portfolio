@@ -24,6 +24,11 @@ export default function CustomCursor() {
   useEffect(() => {
     if (isTouch) return;
 
+    document.body.style.cursor = 'none';
+    const style = document.createElement('style');
+    style.textContent = 'a, button, [role="button"], input, textarea, select { cursor: none !important; }';
+    document.head.appendChild(style);
+
     const updateCursorState = (nextState: CursorState) => {
       if (cursorStateRef.current === nextState) return;
       cursorStateRef.current = nextState;
@@ -74,6 +79,8 @@ export default function CustomCursor() {
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
+      document.body.style.cursor = '';
+      style.remove();
     };
   }, [isTouch, mouseX, mouseY]);
 
@@ -106,7 +113,7 @@ export default function CustomCursor() {
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.5, opacity: 0 }}
-          className="w-10 h-10 rounded-full bg-[#0071e3]/10 border border-[#0071e3]/30 backdrop-blur-2xs flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-[#0071e3]/10 border border-[#0071e3]/30 backdrop-blur-sm flex items-center justify-center"
         >
           <span className="w-2 h-2 rounded-full bg-[#0071e3]" />
         </motion.div>

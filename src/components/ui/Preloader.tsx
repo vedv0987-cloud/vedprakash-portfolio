@@ -1,17 +1,20 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Preloader() {
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
-  const counterRef = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     let current = 0;
+    let timeoutIds: ReturnType<typeof setTimeout>[] = [];
+
     const increment = () => {
+      if (cancelled) return;
       const remaining = 100 - current;
       const step = Math.max(1, Math.floor(remaining * 0.1));
       current = Math.min(100, current + step);
@@ -19,17 +22,20 @@ export default function Preloader() {
 
       if (current < 100) {
         const delay = current < 30 ? 60 : current < 70 ? 30 : 15;
-        setTimeout(increment, delay);
+        timeoutIds.push(setTimeout(increment, delay));
       } else {
-        setTimeout(() => setIsComplete(true), 200);
-        setTimeout(() => setIsHidden(true), 800);
+        timeoutIds.push(setTimeout(() => { if (!cancelled) setIsComplete(true); }, 200));
+        timeoutIds.push(setTimeout(() => { if (!cancelled) setIsHidden(true); }, 800));
       }
     };
 
-    setTimeout(increment, 100);
-  }, []);
+    timeoutIds.push(setTimeout(increment, 100));
 
-  if (isHidden) return null;
+    return () => {
+      cancelled = true;
+      timeoutIds.forEach(clearTimeout);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
@@ -55,7 +61,6 @@ export default function Preloader() {
           {/* Counter */}
           <div className="relative">
             <motion.span
-              ref={counterRef}
               initial={{ opacity: 0 }}
               animate={isComplete ? { opacity: 0, y: -10 } : { opacity: 1 }}
               transition={{ duration: 0.3 }}

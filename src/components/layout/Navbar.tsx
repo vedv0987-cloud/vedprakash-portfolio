@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { siteConfig } from '@/data/portfolio';
 import { scrollToSection } from '@/lib/scroll';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +17,8 @@ const navItems = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 20);
@@ -34,6 +35,42 @@ export default function Navbar() {
     setIsMobileOpen(false);
   };
 
+  // Focus trap + Escape key for mobile nav
+  useEffect(() => {
+    if (!isMobileOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsMobileOpen(false);
+        menuButtonRef.current?.focus();
+        return;
+      }
+
+      if (e.key === 'Tab' && mobileNavRef.current) {
+        const focusable = mobileNavRef.current.querySelectorAll<HTMLElement>(
+          'a, button, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    mobileNavRef.current?.querySelector<HTMLElement>('a')?.focus();
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileOpen]);
+
   return (
     <>
       <header
@@ -45,7 +82,7 @@ export default function Navbar() {
       >
         <div className="max-w-[1360px] mx-auto px-6 lg:px-12 flex items-center justify-between">
           {/* Logo / Name */}
-          <Link href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="flex items-center gap-3 group">
+          <a href="#hero" onClick={(e) => handleNavClick(e, '#hero')} className="flex items-center gap-3 group">
             <span className="w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-mono text-[11px] font-bold group-hover:scale-105 transition-transform shadow-xs">
               VP
             </span>
@@ -57,7 +94,7 @@ export default function Navbar() {
                 Creative AI Lead · Mumbai
               </span>
             </div>
-          </Link>
+          </a>
 
           {/* Desktop Nav */}
           <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-7 text-[12px] font-medium text-[#6e6e73]">
@@ -95,6 +132,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button
+            ref={menuButtonRef}
             onClick={() => setIsMobileOpen((p) => !p)}
             aria-expanded={isMobileOpen}
             aria-controls="mobile-navigation"
@@ -110,6 +148,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
+            ref={mobileNavRef}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}

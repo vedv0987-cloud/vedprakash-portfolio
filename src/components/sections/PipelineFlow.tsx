@@ -13,7 +13,7 @@ export default function PipelineFlow() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.pipeline-reveal',
+        sectionRef.current!.querySelectorAll('.pipeline-reveal'),
         { opacity: 0, y: 40 },
         {
           opacity: 1,

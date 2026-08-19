@@ -18,8 +18,9 @@ export function useScrollReveal(containerRef: React.RefObject<HTMLElement | null
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Fade-up reveals
-      gsap.utils.toArray<HTMLElement>('[data-animate="fade-up"]').forEach((el) => {
+      const container = containerRef.current;
+
+      gsap.utils.toArray<HTMLElement>('[data-animate="fade-up"]', container).forEach((el) => {
         gsap.fromTo(
           el,
           { opacity: 0, y: 60 },
@@ -37,9 +38,8 @@ export function useScrollReveal(containerRef: React.RefObject<HTMLElement | null
         );
       });
 
-      // Staggered children reveals
-      gsap.utils.toArray<HTMLElement>('[data-animate="stagger"]').forEach((container) => {
-        const children = container.children;
+      gsap.utils.toArray<HTMLElement>('[data-animate="stagger"]', container).forEach((staggerContainer) => {
+        const children = staggerContainer.children;
         gsap.fromTo(
           children,
           { opacity: 0, y: 40 },
@@ -50,7 +50,7 @@ export function useScrollReveal(containerRef: React.RefObject<HTMLElement | null
             stagger: 0.1,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: container,
+              trigger: staggerContainer,
               start: 'top 85%',
               toggleActions: 'play none none none',
             },
@@ -99,7 +99,6 @@ export function useTextReveal(elementRef: React.RefObject<HTMLElement | null>) {
     if (!elementRef.current) return;
     const el = elementRef.current;
 
-    // Wrap each word in a span for animation
     const text = el.textContent || '';
     const words = text.split(' ');
     el.innerHTML = words
@@ -125,7 +124,9 @@ export function useTextReveal(elementRef: React.RefObject<HTMLElement | null>) {
       });
     });
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, [elementRef]);
 }
 

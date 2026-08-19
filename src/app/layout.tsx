@@ -59,10 +59,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth">
       <body
         className={`${sans.variable} ${serif.variable} font-sans antialiased bg-[#ffffff] text-[#1d1d1f] overflow-x-hidden selection:bg-[#0071e3] selection:text-white`}
-        suppressHydrationWarning
       >
         {children}
         <script
@@ -72,7 +71,7 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Person',
               name: siteConfig.name,
-              jobTitle: siteConfig.tagline,
+              jobTitle: 'Creative AI Lead',
               email: siteConfig.email,
               address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },
               sameAs: [siteConfig.linkedin, siteConfig.behance],

@@ -42,6 +42,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (!project) notFound();
 
   const narrative = projectNarratives[project.id];
+  if (!narrative) notFound();
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
@@ -111,8 +113,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <Link href="/#work" className="text-sm font-semibold text-[#0071e3] hover:underline">← Return to selected work</Link>
           <a href={siteConfig.portfolioDrive} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-[#1d1b18] hover:text-[#0071e3]">Request campaign material ↗</a>
         </div>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </main>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Footer />
     </div>
   );

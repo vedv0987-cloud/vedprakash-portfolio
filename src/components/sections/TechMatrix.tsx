@@ -48,7 +48,7 @@ export default function TechMatrix() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.tech-reveal',
+        sectionRef.current!.querySelectorAll('.tech-reveal'),
         { opacity: 0, y: 40 },
         {
           opacity: 1,

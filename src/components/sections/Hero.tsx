@@ -24,7 +24,7 @@ export default function Hero() {
     if (!sectionRef.current) return;
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        '.hero-reveal',
+        sectionRef.current!.querySelectorAll('.hero-reveal'),
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out' }
       );
@@ -127,8 +127,6 @@ export default function Hero() {
           <a
             href={siteConfig.cvPath}
             download="Vedprakash_Vishwakarma_CV.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-[12px] font-semibold text-[#0071e3] hover:underline flex items-center gap-1.5"
           >
             Download Verified Resume <span>↓</span>
